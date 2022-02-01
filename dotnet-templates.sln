@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web-spa-vue", "web-spa-vue\web-spa-vue.csproj", "{4B1908A7-5FBA-4299-BB74-660C48793F18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF7BBED8-545E-4925-A33E-4BA35AD6C14C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {451228AD-265C-4410-B958-65D6057ECE6E}
+	EndGlobalSection
+EndGlobal
