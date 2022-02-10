@@ -5,7 +5,7 @@ using web_spa_vue.HostedServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHostedService<SpaDevelopmentService>();
+builder.Services.AddHostedService<ViteJsDevelopmentService>();
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
