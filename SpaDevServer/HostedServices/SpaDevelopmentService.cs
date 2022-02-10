@@ -8,20 +8,24 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using SpaDevServer.Contracts;
 using SpaDevServer.Utils;
 
 namespace SpaDevServer.HostedServices
 {
-  public class ViteJsDevelopmentService : IHostedService
+  public class SpaDevelopmentService : IHostedService
   {
     internal const string DefaultRegex = "running at";
     private static readonly Regex AnsiColorRegex = new("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
     private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5);
-    private readonly ILogger<ViteJsDevelopmentService> _logger; // This is a development-time only feature, so a very long timeout is fine
+    private readonly ILogger<SpaDevelopmentService> _logger; // This is a development-time only feature, so a very long timeout is fine
+    private readonly ISpaDevServerSettings _devServerSettings;
 
-    public ViteJsDevelopmentService(ILogger<ViteJsDevelopmentService> logger)
+    public SpaDevelopmentService(ILogger<SpaDevelopmentService> logger, ISpaDevServerSettings devServerSettings)
     {
       _logger = logger;
+      _devServerSettings = devServerSettings;
+      // TODO: use Akka.NET for multiple node-runners
     }
 
     internal Process RunnerProcess { get; set; }

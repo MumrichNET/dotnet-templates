@@ -1,4 +1,4 @@
-namespace web_spa_vue;
+namespace SpaDevServer;
 
 public class SpaSettings
 {

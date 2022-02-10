@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
+using SpaDevServer.Contracts;
 using SpaDevServer.HostedServices;
 
 using web_spa_vue;
@@ -15,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();
 
 builder.Services.AddSingleton(appSettings);
+builder.Services.AddSingleton<ISpaDevServerSettings, AppSettings>();
 builder.Services.AddControllersWithViews();
 
 builder.RegisterSinglePageAppMiddleware(appSettings.SinglePageApps);
