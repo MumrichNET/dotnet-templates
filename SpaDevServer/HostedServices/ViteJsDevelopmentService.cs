@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,15 +8,16 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using SpaDevServer.Utils;
+
 namespace SpaDevServer.HostedServices
 {
   public class ViteJsDevelopmentService : IHostedService
   {
     internal const string DefaultRegex = "running at";
-    private static Regex AnsiColorRegex = new("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
-    private static TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5);
-    private readonly ILogger<ViteJsDevelopmentService> _logger;
-    // This is a development-time only feature, so a very long timeout is fine
+    private static readonly Regex AnsiColorRegex = new("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
+    private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5);
+    private readonly ILogger<ViteJsDevelopmentService> _logger; // This is a development-time only feature, so a very long timeout is fine
 
     public ViteJsDevelopmentService(ILogger<ViteJsDevelopmentService> logger)
     {
@@ -32,50 +32,34 @@ namespace SpaDevServer.HostedServices
 
     public void AttachToLogger()
     {
+      void StdOutOrErr_OnReceivedLine(string line)
+      {
+        if (string.IsNullOrWhiteSpace(line))
+        {
+          return;
+        }
+
+        // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
+        // those to loggers (because a logger isn't necessarily any kind of terminal)
+        // making this console for debug purpose
+        if (line.StartsWith("<s>"))
+        {
+          line = line[3..];
+        }
+
+        if (_logger == null)
+        {
+          Console.Error.WriteLine(line);
+        }
+        else
+        {
+          _logger.LogInformation(StripAnsiColors(line).TrimEnd('\n'));
+        }
+      }
+
       // When the NPM task emits complete lines, pass them through to the real logger
-      StdOut.OnReceivedLine += line =>
-      {
-        if (!string.IsNullOrWhiteSpace(line))
-        {
-          // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
-          // those to loggers (because a logger isn't necessarily any kind of terminal)
-          // making this console for debug purpose
-          if (line.StartsWith("<s>"))
-          {
-            line = line.Substring(3);
-          }
-
-          if (_logger == null)
-          {
-            Console.Error.WriteLine(line);
-          }
-          else
-          {
-            _logger.LogInformation(StripAnsiColors(line).TrimEnd('\n'));
-          }
-        }
-      };
-
-      StdErr.OnReceivedLine += line =>
-      {
-        if (!string.IsNullOrWhiteSpace(line))
-        {
-          // making this console for debug purpose
-          if (line.StartsWith("<s>"))
-          {
-            line = line.Substring(3);
-          }
-
-          if (_logger == null)
-          {
-            Console.Error.WriteLine(line);
-          }
-          else
-          {
-            _logger.LogError(StripAnsiColors(line).TrimEnd('\n'));
-          }
-        }
-      };
+      StdOut.OnReceivedLine += StdOutOrErr_OnReceivedLine;
+      StdErr.OnReceivedLine += StdOutOrErr_OnReceivedLine;
 
       // But when it emits incomplete lines, assume this is progress information and
       // hence just pass it through to StdOut regardless of logger config.
@@ -99,10 +83,10 @@ namespace SpaDevServer.HostedServices
     public async Task StartAsync(CancellationToken cancellationToken)
     {
       var regex = "dev server running at:";
-      var npmScriptName = "/c yarn dev";
+      var arguments = "/c yarn dev";
       var processStartInfo = new ProcessStartInfo("cmd")
       {
-        Arguments = npmScriptName,
+        Arguments = arguments,
         UseShellExecute = false,
         RedirectStandardInput = true,
         RedirectStandardOutput = true,
@@ -137,8 +121,8 @@ namespace SpaDevServer.HostedServices
       catch (EndOfStreamException ex)
       {
         throw new InvalidOperationException(
-          $"The NPM script '{npmScriptName}' exited without indicating that the " +
-          $"server was listening for requests. The error output was: " +
+          $"The NPM script '{arguments}' exited without indicating that the " +
+          "server was listening for requests. The error output was: " +
           $"{stdErrReader.ReadAsString()}", ex);
       }
     }
@@ -174,152 +158,5 @@ namespace SpaDevServer.HostedServices
 
     private static string StripAnsiColors(string line)
           => AnsiColorRegex.Replace(line, string.Empty);
-  }
-
-  internal class EventedStreamReader
-  {
-    private readonly StringBuilder _linesBuffer;
-
-    private readonly StreamReader _streamReader;
-
-    public EventedStreamReader(StreamReader streamReader)
-    {
-      _streamReader = streamReader ?? throw new ArgumentNullException(nameof(streamReader));
-      _linesBuffer = new StringBuilder();
-      Task.Factory.StartNew(Run);
-    }
-
-    public delegate void OnReceivedChunkHandler(ArraySegment<char> chunk);
-
-    public delegate void OnReceivedLineHandler(string line);
-
-    public delegate void OnStreamClosedHandler();
-
-    public event OnReceivedChunkHandler OnReceivedChunk;
-
-    public event OnReceivedLineHandler OnReceivedLine;
-
-    public event OnStreamClosedHandler OnStreamClosed;
-
-    public Task<Match> WaitForMatch(Regex regex)
-    {
-      var tcs = new TaskCompletionSource<Match>();
-      var completionLock = new object();
-
-      OnReceivedLineHandler onReceivedLineHandler = null;
-      OnStreamClosedHandler onStreamClosedHandler = null;
-
-      void ResolveIfStillPending(Action applyResolution)
-      {
-        lock (completionLock)
-        {
-          if (!tcs.Task.IsCompleted)
-          {
-            OnReceivedLine -= onReceivedLineHandler;
-            OnStreamClosed -= onStreamClosedHandler;
-            applyResolution();
-          }
-        }
-      }
-
-      onReceivedLineHandler = line =>
-      {
-        var match = regex.Match(line);
-        if (match.Success)
-        {
-          ResolveIfStillPending(() => tcs.SetResult(match));
-        }
-      };
-
-      onStreamClosedHandler = () =>
-      {
-        ResolveIfStillPending(() => tcs.SetException(new EndOfStreamException()));
-      };
-
-      OnReceivedLine += onReceivedLineHandler;
-      OnStreamClosed += onStreamClosedHandler;
-
-      return tcs.Task;
-    }
-
-    private void OnChunk(ArraySegment<char> chunk)
-    {
-      var dlg = OnReceivedChunk;
-      dlg?.Invoke(chunk);
-    }
-
-    private void OnClosed()
-    {
-      var dlg = OnStreamClosed;
-      dlg?.Invoke();
-    }
-
-    private void OnCompleteLine(string line)
-    {
-      var dlg = OnReceivedLine;
-      dlg?.Invoke(line);
-    }
-
-    private async Task Run()
-    {
-      var buf = new char[8 * 1024];
-      while (true)
-      {
-        var chunkLength = await _streamReader.ReadAsync(buf, 0, buf.Length);
-        if (chunkLength == 0)
-        {
-          OnClosed();
-          break;
-        }
-
-        OnChunk(new ArraySegment<char>(buf, 0, chunkLength));
-
-        int lineBreakPos = -1;
-        int startPos = 0;
-
-        // get all the newlines
-        while ((lineBreakPos = Array.IndexOf(buf, '\n', startPos, chunkLength - startPos)) >= 0 && startPos < chunkLength)
-        {
-          var length = lineBreakPos - startPos;
-          _linesBuffer.Append(buf, startPos, length);
-          OnCompleteLine(_linesBuffer.ToString());
-          _linesBuffer.Clear();
-          startPos = lineBreakPos + 1;
-        }
-
-        // get the rest
-        if (lineBreakPos < 0 && startPos < chunkLength)
-        {
-          _linesBuffer.Append(buf, startPos, chunkLength - startPos);
-        }
-      }
-    }
-  }
-
-  internal class EventedStreamStringReader : IDisposable
-  {
-    private EventedStreamReader _eventedStreamReader;
-    private bool _isDisposed;
-    private StringBuilder _stringBuilder = new StringBuilder();
-
-    public EventedStreamStringReader(EventedStreamReader eventedStreamReader)
-    {
-      _eventedStreamReader = eventedStreamReader
-                             ?? throw new ArgumentNullException(nameof(eventedStreamReader));
-      _eventedStreamReader.OnReceivedLine += OnReceivedLine;
-    }
-
-    public void Dispose()
-    {
-      if (!_isDisposed)
-      {
-        _eventedStreamReader.OnReceivedLine -= OnReceivedLine;
-        _isDisposed = true;
-      }
-    }
-
-    public string ReadAsString() => _stringBuilder.ToString();
-
-    private void OnReceivedLine(string line) => _stringBuilder.AppendLine(line);
   }
 }
