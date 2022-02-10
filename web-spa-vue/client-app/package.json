@@ -2,7 +2,7 @@
   "name": "client-app",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host --debug",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },
