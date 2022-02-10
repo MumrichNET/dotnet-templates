@@ -9,6 +9,7 @@ using Microsoft.Extensions.FileProviders;
 using SpaDevServer.HostedServices;
 
 using web_spa_vue;
+using web_spa_vue.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();
@@ -16,10 +17,7 @@ var appSettings = builder.Configuration.Get<AppSettings>();
 builder.Services.AddSingleton(appSettings);
 builder.Services.AddControllersWithViews();
 
-#if DEBUG
-builder.Services.AddHostedService<ViteJsDevelopmentService>();
-builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
-#endif
+builder.RegisterSinglePageAppMiddleware(appSettings.SinglePageApps);
 
 var app = builder.Build();
 
@@ -35,10 +33,7 @@ app.UseStaticFiles(new StaticFileOptions
 #endif
 
 app.UseRouting();
-
-#if DEBUG
 app.MapReverseProxy();
-#endif
 
 app.MapControllers();
 app.MapDefaultControllerRoute();
