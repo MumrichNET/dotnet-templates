@@ -1,20 +1,16 @@
-using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace web_spa_vue.HostedServices
+namespace SpaDevServer.HostedServices
 {
   public class ViteJsDevelopmentService : IHostedService
   {
     internal const string DefaultRegex = "running at";
-    private static Regex AnsiColorRegex = new Regex("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
+    private static Regex AnsiColorRegex = new("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
     private static TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5);
     private readonly ILogger<ViteJsDevelopmentService> _logger;
     // This is a development-time only feature, so a very long timeout is fine
@@ -110,7 +106,7 @@ namespace web_spa_vue.HostedServices
         WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), "client-app")
       };
 
-      processStartInfo.Environment["HMR_PORT"] = "7189";
+      processStartInfo.Environment["HMR_PORT"] = Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORT") ?? "7189";
       processStartInfo.Environment["HMR_PROTOCOL"] = "wss";
 
       RunnerProcess = LaunchNodeProcess(processStartInfo);

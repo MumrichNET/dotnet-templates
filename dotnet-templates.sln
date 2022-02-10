@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web-spa-vue", "web-spa-vue\web-spa-vue.csproj", "{4B1908A7-5FBA-4299-BB74-660C48793F18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "web-spa-vue", "web-spa-vue\web-spa-vue.csproj", "{4B1908A7-5FBA-4299-BB74-660C48793F18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF7BBED8-545E-4925-A33E-4BA35AD6C14C}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaDevServer", "SpaDevServer\SpaDevServer.csproj", "{508C839E-04A9-4654-B228-206F5BCB5638}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,10 @@ Global
 		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{508C839E-04A9-4654-B228-206F5BCB5638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{508C839E-04A9-4654-B228-206F5BCB5638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{508C839E-04A9-4654-B228-206F5BCB5638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{508C839E-04A9-4654-B228-206F5BCB5638}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
