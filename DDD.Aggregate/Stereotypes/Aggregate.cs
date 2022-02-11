@@ -1,6 +1,9 @@
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 using Akka.Actor;
+using Akka.Event;
 using Akka.Persistence;
 using Akka.Persistence.Fsm;
 using Akka.Routing;
@@ -11,12 +14,13 @@ namespace DDD.Aggregate.Stereotypes
   {
   }
 
-  public abstract class AggregateBase<TAggregate, TModel, TCommand> : PersistentFSM<IAggregateState, TModel, AggregateEventBase<TAggregate>>
-    where TAggregate : PersistentFSM<IAggregateState, TModel, AggregateEventBase<TAggregate>>
+  public abstract class AggregateBase<TAggregateState, TAggregate, TModel, TCommand> : PersistentFSM<TAggregateState, TModel, AggregateEventBase<TAggregate>>
+    where TAggregateState : IAggregateState
+    where TAggregate : PersistentFSM<TAggregateState, TModel, AggregateEventBase<TAggregate>>
     where TModel : AggregateModelBase<TAggregate, TModel>
     where TCommand : AggregateWriterCommand<TAggregate>
   {
-    private readonly Guid _aggregateId;
+    protected readonly Guid _aggregateId;
 
     protected AggregateBase(Guid aggregateId)
     {
@@ -24,10 +28,26 @@ namespace DDD.Aggregate.Stereotypes
     }
 
     public override string PersistenceId => $"Aggregate-{_aggregateId}";
+
+    protected sealed override TModel ApplyEvent(AggregateEventBase<TAggregate> domainEvent, TModel currentData)
+    {
+      currentData = OnApplyEvent(domainEvent, currentData, out bool hasDataChanged);
+
+      if (hasDataChanged)
+      {
+        Context.System.EventStream.Publish(new AggregateUpdateEvent<TAggregate, TModel>(_aggregateId, currentData));
+      }
+
+      return currentData;
+    }
+
+    protected abstract TModel OnApplyEvent(AggregateEventBase<TAggregate> domainEvent, TModel currentData,
+      out bool hasDataChanged);
   }
 
-  public abstract class AggregateManagerBase<TAggregate, TAggregateReader, TModel, TCommand, TQuery> : UntypedActor
-    where TAggregate : PersistentFSM<IAggregateState, TModel, AggregateEventBase<TAggregate>>
+  public abstract class AggregateManagerBase<TAggregateState, TAggregate, TAggregateReader, TModel, TCommand, TQuery> : UntypedActor
+    where TAggregateState : IAggregateState
+    where TAggregate : PersistentFSM<TAggregateState, TModel, AggregateEventBase<TAggregate>>
     where TAggregateReader : AggregateReaderBase<TAggregate, TModel, TQuery>
     where TModel : AggregateModelBase<TAggregate, TModel>
     where TCommand : AggregateWriterCommand<TAggregate>
@@ -117,19 +137,42 @@ namespace DDD.Aggregate.Stereotypes
 
   public record AggregateWriterCommand<TAggregate>(Guid AggregateId) : AggregateEventBase<TAggregate>(AggregateId);
 
+  public record AggregateUpdateEvent<TAggregate, TModel>(Guid AggregateId, TModel Model) : AggregateEventBase<TAggregate>(AggregateId);
+
   public record AggregateReaderQuery<TAggregate>(Guid AggregateId);
 
-  public abstract class AggregateReaderBase<TAggregate, TModel, TQuery> : PersistentActor
+  public record AggregateReaderResponse<TAggregate, TModel>(Guid AggregateId, TModel Model);
+
+  public abstract class AggregateReaderBase<TAggregate, TModel, TQuery> : ReceiveActor
     where TModel : AggregateModelBase<TAggregate, TModel>
     where TQuery : AggregateReaderQuery<TAggregate>
   {
-    private readonly Guid _aggregateId;
+    protected readonly Guid _aggregateId;
+    protected TModel _model;
 
     protected AggregateReaderBase(Guid aggregateId)
     {
       _aggregateId = aggregateId;
+
+      Context.System.EventStream.Subscribe<AggregateUpdateEvent<TAggregate, TModel>>(Self);
+
+      Receive<AggregateUpdateEvent<TAggregate, TModel>>(OnUpdate);
+      Receive<AggregateReaderQuery<TAggregate>>(query => Sender.Tell(new AggregateReaderResponse<TAggregate, TModel>(_aggregateId, OnReadQuery(query, _model))));
     }
 
-    public override string PersistenceId => $"AggregateReader-{_aggregateId}";
+    protected override void PostStop()
+    {
+      Context.System.EventStream.Unsubscribe<AggregateReaderQuery<TAggregate>>(Self);
+    }
+
+    protected virtual void OnUpdate(AggregateUpdateEvent<TAggregate, TModel> @event)
+    {
+      _model = @event.Model;
+    }
+
+    protected virtual TModel OnReadQuery(AggregateReaderQuery<TAggregate> query, TModel currentModel)
+    {
+      return currentModel;
+    }
   }
 }

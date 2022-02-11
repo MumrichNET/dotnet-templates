@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DDD.Aggregate\DDD.Aggregate.csproj" />
+    <ProjectReference Include="..\Extensions\Extensions.csproj" />
     <ProjectReference Include="..\SpaDevServer\SpaDevServer.csproj" />
   </ItemGroup>
 
