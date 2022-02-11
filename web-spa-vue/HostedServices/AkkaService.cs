@@ -71,7 +71,7 @@ namespace web_spa_vue.HostedServices
   {
     public string Name { get; set; }
     public string FamilyName { get; set; }
-    public DateTime Birthday { get; set; }
+    public DateTime BirthDay { get; set; }
     public IEnumerable<FormFile> Attachments { get; set; }
   }
 
@@ -83,23 +83,30 @@ namespace web_spa_vue.HostedServices
   public class AkkaService : AkkaServiceBase, IHostedService
   {
     private readonly IServiceProvider _serviceProvider;
+    private readonly IHostApplicationLifetime _appLifetime;
 
-    public AkkaService(IServiceProvider serviceProvider) : base("akka-service", serviceProvider)
+    public AkkaService(IServiceProvider serviceProvider, IHostApplicationLifetime appLifetime) : base("akka-service", serviceProvider)
     {
       _serviceProvider = serviceProvider;
+      _appLifetime = appLifetime;
     }
     public Task StartAsync(CancellationToken cancellationToken)
     {
       var formExampleManager = AkkaSystem.ActorOf(DependencyInjectionResolver.Props<FormExampleManager>());
-      var aggreagateId = Guid.NewGuid();
+      var aggregateId = Guid.NewGuid();
+      // TODO instanciate aggregates...
 
+      // add a continuation task that will guarantee shutdown of application if ActorSystem terminates
+      AkkaSystem.WhenTerminated.ContinueWith(_ => _appLifetime.StopApplication(), cancellationToken);
 
       return Task.CompletedTask;
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-      throw new System.NotImplementedException();
+      // strictly speaking this may not be necessary - terminating the ActorSystem would also work
+      // but this call guarantees that the shutdown of the cluster is graceful regardless
+      await CoordinatedShutdown.Get(AkkaSystem).Run(CoordinatedShutdown.ClrExitReason.Instance);
     }
   }
 }

@@ -1,10 +1,8 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 using Akka.Actor;
+using Akka.DependencyInjection;
 using Akka.Event;
-using Akka.Persistence;
 using Akka.Persistence.Fsm;
 using Akka.Routing;
 
@@ -29,7 +27,7 @@ namespace DDD.Aggregate.Stereotypes
 
     public override string PersistenceId => $"Aggregate-{_aggregateId}";
 
-    protected sealed override TModel ApplyEvent(AggregateEventBase<TAggregate> domainEvent, TModel currentData)
+    protected override sealed TModel ApplyEvent(AggregateEventBase<TAggregate> domainEvent, TModel currentData)
     {
       currentData = OnApplyEvent(domainEvent, currentData, out bool hasDataChanged);
 
@@ -57,7 +55,7 @@ namespace DDD.Aggregate.Stereotypes
 
     protected virtual IActorRef CreateAggregate(Guid aggregateId)
     {
-      var aggregateRef = Context.ActorOf(Props.Create<TAggregate>(args: aggregateId), aggregateId.ToString());
+      var aggregateRef = Context.ActorOf(DependencyResolver.For(Context.System).Props<TAggregate>(args: aggregateId), aggregateId.ToString());
 
       Context.Watch(aggregateRef);
 
@@ -123,7 +121,7 @@ namespace DDD.Aggregate.Stereotypes
 
     private IActorRef CreateAggregateReaderPool(Guid aggregateId)
     {
-      var props = new RoundRobinPool(InitialAggregateReaderPoolSize).Props(Props.Create<TAggregateReader>(args: aggregateId));
+      var props = new RoundRobinPool(InitialAggregateReaderPoolSize).Props(DependencyResolver.For(Context.System).Props<TAggregateReader>(args: aggregateId));
 
       return Context.ActorOf(props, GetAggregateReaderName(aggregateId));
     }
