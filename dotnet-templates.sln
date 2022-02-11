@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaDevServer", "SpaDevServe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Aggregate", "DDD.Aggregate\DDD.Aggregate.csproj", "{AC3A7161-20C6-4917-BD11-8F85C341ABC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenericEntity", "GenericEntity\GenericEntity.csproj", "{7BF53A12-4E33-4467-8611-DB5666CDAA76}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions", "Extensions\Extensions.csproj", "{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers", "Helpers\Helpers.csproj", "{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}"
@@ -42,10 +40,6 @@ Global
 		{AC3A7161-20C6-4917-BD11-8F85C341ABC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC3A7161-20C6-4917-BD11-8F85C341ABC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC3A7161-20C6-4917-BD11-8F85C341ABC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BF53A12-4E33-4467-8611-DB5666CDAA76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BF53A12-4E33-4467-8611-DB5666CDAA76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BF53A12-4E33-4467-8611-DB5666CDAA76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BF53A12-4E33-4467-8611-DB5666CDAA76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
