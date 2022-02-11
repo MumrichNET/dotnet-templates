@@ -12,6 +12,8 @@ using Newtonsoft.Json.Linq;
 using SpaDevServer;
 using SpaDevServer.HostedServices;
 
+using web_spa_vue.Helpers;
+
 namespace web_spa_vue.Extensions
 {
   public static class WebApplicationBuilderExtensions
@@ -20,22 +22,7 @@ namespace web_spa_vue.Extensions
     {
       guid ??= Guid.NewGuid();
 
-      if (string.IsNullOrWhiteSpace(appPath))
-      {
-        appPath = "/";
-      }
-      else
-      {
-        if (!appPath.StartsWith("/"))
-        {
-          appPath = $"/{appPath}";
-        }
-
-        if (!appPath.EndsWith("/"))
-        {
-          appPath = $"{appPath}/";
-        }
-      }
+      appPath = AppPathHelper.GetValidIntermediateAppPath(appPath);
 
       string clusterId = $"spa-cluster-{guid}";
 
@@ -68,7 +55,7 @@ namespace web_spa_vue.Extensions
         }}";
     }
 
-    public static WebApplicationBuilder RegisterSinglePageAppMiddleware(this WebApplicationBuilder builder, Dictionary<string, SpaSettings> singlePageApps)
+    public static void RegisterSinglePageAppMiddleware(this WebApplicationBuilder builder, Dictionary<string, SpaSettings> singlePageApps)
     {
 #if DEBUG
       builder.Host.ConfigureHostConfiguration(configurationBuilder =>
@@ -90,8 +77,6 @@ namespace web_spa_vue.Extensions
       builder.Services.AddHostedService<SpaDevelopmentService>();
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
 #endif
-
-      return builder;
     }
   }
 }
