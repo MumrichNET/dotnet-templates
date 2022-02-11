@@ -15,7 +15,7 @@ namespace SpaDevServer.HostedServices
 {
   public class SpaDevelopmentService : IHostedService
   {
-    internal const string DefaultRegex = "running at";
+    private const string DefaultRegex = "running at";
     private static readonly Regex AnsiColorRegex = new("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
     private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5);
     private readonly ILogger<SpaDevelopmentService> _logger; // This is a development-time only feature, so a very long timeout is fine
@@ -28,13 +28,13 @@ namespace SpaDevServer.HostedServices
       // TODO: use Akka.NET for multiple node-runners
     }
 
-    internal Process RunnerProcess { get; set; }
+    private Process RunnerProcess { get; set; }
 
-    internal EventedStreamReader StdErr { get; set; }
+    private EventedStreamReader StdErr { get; set; }
 
-    internal EventedStreamReader StdOut { get; set; }
+    private EventedStreamReader StdOut { get; set; }
 
-    public void AttachToLogger()
+    private void AttachToLogger()
     {
       void StdOutOrErr_OnReceivedLine(string line)
       {
@@ -78,7 +78,7 @@ namespace SpaDevServer.HostedServices
       };
     }
 
-    public void Kill()
+    private void Kill()
     {
       try { RunnerProcess?.Kill(); } catch { }
       try { RunnerProcess?.WaitForExit(); } catch { }
