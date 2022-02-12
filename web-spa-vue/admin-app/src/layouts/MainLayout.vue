@@ -51,6 +51,12 @@ const linksList = [
     icon: 'public',
     link: '/hello-dotnetify',
   },
+  {
+    title: 'Media',
+    caption: 'Photos, videos and Assets',
+    icon: 'perm_media',
+    link: '/media',
+  },
 ];
 
 import { defineComponent, ref } from 'vue';
