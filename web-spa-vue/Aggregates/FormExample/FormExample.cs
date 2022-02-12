@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using DDD.Aggregate.Stereotypes;
+using DDD.Aggregate.Stereotypes.Aggregate;
 
 using Extensions;
 
