@@ -1,25 +1,34 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <div>
+    <div v-if="state">
       <h3>{{ state.Greetings }}</h3>
       <p>Server time is: {{ state.ServerTime }}</p>
     </div>
   </div>
 </template>
 
-<script>
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import dotnetify from 'dotnetify/vue';
+<script setup lang="ts">
+import dotnetify from 'dotnetify/dist/dotnetify';
+import { IDotnetifyVM } from 'dotnetify';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 dotnetify.hubServerUrl = 'https://localhost:7189';
 
-export default dotnetify.vue.component(
-  {
-    name: 'hello-dotnetify',
-    props: { msg: String },
-  },
-  'HelloDotnetify'
+type HelloDotnetify = {
+  Greetings: string;
+  ServerTime: string;
+};
+
+const vm = ref<IDotnetifyVM | null>(null);
+const state = ref<HelloDotnetify>();
+
+onMounted(
+  () =>
+    (vm.value = dotnetify.connect('HelloDotnetify', {
+      setState: (newState: HelloDotnetify) => {
+        state.value = { ...state.value, ...newState };
+      },
+    }))
 );
+onUnmounted(() => vm.value?.$destroy());
 </script>

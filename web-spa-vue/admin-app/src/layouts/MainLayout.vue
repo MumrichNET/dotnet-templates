@@ -19,8 +19,14 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header>Main</q-item-label>
-
+        <q-item to="/" active-class="q-item-no-link-highlighting">
+          <q-item-section avatar>
+            <q-icon name="dashboard" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Dashboard</q-item-label>
+          </q-item-section>
+        </q-item>
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"
