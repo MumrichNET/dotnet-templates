@@ -18,7 +18,7 @@ namespace DDD.Aggregate.Stereotypes
     where TModel : AggregateModelBase<TAggregate, TModel>
     where TCommand : AggregateWriterCommand<TAggregate>
   {
-    protected readonly Guid _aggregateId;
+    private readonly Guid _aggregateId;
 
     protected AggregateBase(Guid aggregateId)
     {
@@ -51,55 +51,7 @@ namespace DDD.Aggregate.Stereotypes
     where TCommand : AggregateWriterCommand<TAggregate>
     where TQuery : AggregateReaderQuery<TAggregate>
   {
-    protected virtual int InitialAggregateReaderPoolSize => 1;
-
-    protected virtual IActorRef CreateAggregate(Guid aggregateId)
-    {
-      var aggregateRef = Context.ActorOf(DependencyResolver.For(Context.System).Props<TAggregate>(args: aggregateId), aggregateId.ToString());
-
-      Context.Watch(aggregateRef);
-
-      return aggregateRef;
-    }
-
-    protected virtual IActorRef FindOrCreateAggregate(Guid aggregateId)
-    {
-      var aggregate = Context.Child(GetAggregateName(aggregateId));
-
-      if (aggregate.IsNobody())
-      {
-        aggregate = CreateAggregate(aggregateId);
-      }
-
-      return aggregate;
-    }
-
-    protected virtual IActorRef FindOrCreateAggregateReaderPool(Guid aggregateId)
-    {
-      var aggregateReaderPool = Context.Child(GetAggregateReaderName(aggregateId));
-
-      if (aggregateReaderPool.IsNobody())
-      {
-        aggregateReaderPool = CreateAggregateReaderPool(aggregateId);
-      }
-
-      return aggregateReaderPool;
-    }
-
-    protected virtual string GetAggregateName(Guid aggregateId)
-    {
-      return $"Aggregate-{aggregateId}";
-    }
-
-    protected virtual string GetAggregateReaderName(Guid aggregateId)
-    {
-      return $"AggregateReader-{aggregateId}";
-    }
-
-    protected virtual void HandleAggregateTerminated(Terminated message)
-    {
-      Context.Unwatch(message.ActorRef);
-    }
+    private static int InitialAggregateReaderPoolSize => 1;
 
     protected override void OnReceive(object message)
     {
@@ -119,11 +71,61 @@ namespace DDD.Aggregate.Stereotypes
       }
     }
 
-    private IActorRef CreateAggregateReaderPool(Guid aggregateId)
+    private static IActorRef CreateAggregate(Guid aggregateId)
+    {
+      var aggregateRef = Context.ActorOf(DependencyResolver.For(Context.System).Props<TAggregate>(args: aggregateId), aggregateId.ToString());
+
+      Context.Watch(aggregateRef);
+
+      return aggregateRef;
+    }
+
+    private static IActorRef CreateAggregateReaderPool(Guid aggregateId)
     {
       var props = new RoundRobinPool(InitialAggregateReaderPoolSize).Props(DependencyResolver.For(Context.System).Props<TAggregateReader>(args: aggregateId));
 
       return Context.ActorOf(props, GetAggregateReaderName(aggregateId));
+    }
+
+    private static IActorRef FindOrCreateAggregate(Guid aggregateId)
+    {
+      return FindOrCreateChildActor(
+        GetAggregateName(aggregateId),
+        () => CreateAggregate(aggregateId));
+    }
+
+    private static IActorRef FindOrCreateAggregateReaderPool(Guid aggregateId)
+    {
+      return FindOrCreateChildActor(
+        GetAggregateReaderName(aggregateId),
+        () => CreateAggregateReaderPool(aggregateId));
+    }
+
+    private static IActorRef FindOrCreateChildActor(string childName, Func<IActorRef> createFunc)
+    {
+      var actorRef = Context.Child(childName);
+
+      if (actorRef.IsNobody())
+      {
+        actorRef = createFunc.Invoke();
+      }
+
+      return actorRef;
+    }
+
+    private static string GetAggregateName(Guid aggregateId)
+    {
+      return $"Aggregate-{aggregateId}";
+    }
+
+    private static string GetAggregateReaderName(Guid aggregateId)
+    {
+      return $"AggregateReader-{aggregateId}";
+    }
+
+    private static void HandleAggregateTerminated(Terminated message)
+    {
+      Context.Unwatch(message.ActorRef);
     }
   }
 
@@ -145,8 +147,8 @@ namespace DDD.Aggregate.Stereotypes
     where TModel : AggregateModelBase<TAggregate, TModel>
     where TQuery : AggregateReaderQuery<TAggregate>
   {
-    protected readonly Guid _aggregateId;
-    protected TModel _model;
+    private readonly Guid _aggregateId;
+    private TModel _model;
 
     protected AggregateReaderBase(Guid aggregateId)
     {
@@ -158,9 +160,9 @@ namespace DDD.Aggregate.Stereotypes
       Receive<AggregateReaderQuery<TAggregate>>(query => Sender.Tell(new AggregateReaderResponse<TAggregate, TModel>(_aggregateId, OnReadQuery(query, _model))));
     }
 
-    protected override void PostStop()
+    protected virtual TModel OnReadQuery(AggregateReaderQuery<TAggregate> query, TModel currentModel)
     {
-      Context.System.EventStream.Unsubscribe<AggregateReaderQuery<TAggregate>>(Self);
+      return currentModel;
     }
 
     protected virtual void OnUpdate(AggregateUpdateEvent<TAggregate, TModel> @event)
@@ -168,9 +170,9 @@ namespace DDD.Aggregate.Stereotypes
       _model = @event.Model;
     }
 
-    protected virtual TModel OnReadQuery(AggregateReaderQuery<TAggregate> query, TModel currentModel)
+    protected override void PostStop()
     {
-      return currentModel;
+      Context.System.EventStream.Unsubscribe<AggregateReaderQuery<TAggregate>>(Self);
     }
   }
 }
