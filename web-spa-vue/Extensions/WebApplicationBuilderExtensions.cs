@@ -25,6 +25,10 @@ namespace web_spa_vue.Extensions
       appPath = AppPathHelper.GetValidIntermediateAppPath(appPath);
 
       string clusterId = $"spa-cluster-{guid}";
+      //language=regexp
+      const string spaRootExpression = @"^.+\\..+$";
+      //language=regexp
+      const string spaAssetsExpression = "^(src|node_modules|@[a-zA-Z]+)$";
 
       return $@"{{
           ""ReverseProxy"": {{
@@ -41,13 +45,13 @@ namespace web_spa_vue.Extensions
               ""SpaRoot-{guid}"": {{
                 ""ClusterId"": ""{clusterId}"",
                 ""Match"": {{
-                  ""Path"": ""{appPath}{{filename:regex(^.+\\..+$)?}}""
+                  ""Path"": ""{appPath}{{filename:regex({spaRootExpression})?}}""
                 }}
               }},
               ""SpaAssets-{guid}"": {{
                 ""ClusterId"": ""{clusterId}"",
                 ""Match"": {{
-                  ""Path"": ""{appPath}{{name:regex(^(src|node_modules|@vite|@id)$)}}/{{**any}}""
+                  ""Path"": ""{appPath}{{name:regex({spaAssetsExpression})}}/{{**any}}""
                 }}
               }}
             }}
