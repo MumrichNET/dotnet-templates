@@ -1,10 +1,22 @@
 import { RouteRecordRaw } from 'vue-router';
 
+const mainLayout = () => import('layouts/MainLayout.vue');
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: mainLayout,
     children: [{ path: '', component: () => import('pages/Index.vue') }],
+  },
+  {
+    path: '/hello-dotnetify',
+    component: mainLayout,
+    children: [
+      {
+        path: '',
+        component: () => import('pages/HelloDotnetify.vue'),
+      },
+    ],
   },
 
   // Always leave this as last one,

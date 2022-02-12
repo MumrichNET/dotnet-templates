@@ -1,3 +1,5 @@
+using DotNetify;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -5,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SpaDevServer.Contracts;
 
 using web_spa_vue;
-using web_spa_vue.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();
@@ -13,15 +14,28 @@ var appSettings = builder.Configuration.Get<AppSettings>();
 builder.Services.AddSingleton(appSettings);
 builder.Services.AddSingleton<ISpaDevServerSettings, AppSettings>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddCors();
+builder.Services.AddMemoryCache();
+builder.Services.AddSignalR();
+builder.Services.AddDotNetify();
 
-builder.RegisterSinglePageAppMiddleware(appSettings.SinglePageApps);
+//builder.RegisterSinglePageAppMiddleware(appSettings.SinglePageApps);
 
 var app = builder.Build();
+
+app.UseCors(corsPolicyBuilder => corsPolicyBuilder
+  .AllowAnyMethod()
+  .AllowAnyHeader()
+  .WithOrigins("http://localhost:8080")
+  .AllowCredentials());
 
 app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
 app.MapDefaultControllerRoute();
-app.MapSinglePageApps(appSettings.SinglePageApps);
+app.UseWebSockets();
+app.UseDotNetify();
+app.MapHub<DotNetifyHub>("/dotnetify");
+//app.MapSinglePageApps(appSettings.SinglePageApps);
 
 app.Run();
