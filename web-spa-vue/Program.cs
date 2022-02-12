@@ -13,6 +13,7 @@ var appSettings = builder.Configuration.Get<AppSettings>();
 
 builder.Services.AddSingleton(appSettings);
 builder.Services.AddSingleton<ISpaDevServerSettings, AppSettings>();
+builder.Services.AddSwaggerDocument();
 builder.Services.AddControllersWithViews();
 builder.Services.AddCors();
 builder.Services.AddMemoryCache();
@@ -29,8 +30,11 @@ app.UseCors(corsPolicyBuilder => corsPolicyBuilder
   .WithOrigins("http://localhost:8080")
   .AllowCredentials());
 
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseOpenApi();
+app.UseSwaggerUi3();
 app.MapControllers();
 app.MapDefaultControllerRoute();
 app.UseWebSockets();

@@ -53,7 +53,7 @@ const linksList = [
   },
   {
     title: 'Media',
-    caption: 'Photos, videos and Assets',
+    caption: 'Images, videos and other assets',
     icon: 'perm_media',
     link: '/media',
   },
