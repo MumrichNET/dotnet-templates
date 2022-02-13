@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SpaDevServer.Contracts;
 
 using web_spa_vue;
+using web_spa_vue.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();
@@ -20,7 +21,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSignalR();
 builder.Services.AddDotNetify();
 
-//builder.RegisterSinglePageAppMiddleware(appSettings.SinglePageApps);
+builder.RegisterSinglePageAppMiddleware(appSettings.SinglePageApps);
 
 var app = builder.Build();
 
@@ -40,6 +41,6 @@ app.MapDefaultControllerRoute();
 app.UseWebSockets();
 app.UseDotNetify();
 app.MapHub<DotNetifyHub>("/dotnetify");
-//app.MapSinglePageApps(appSettings.SinglePageApps);
+app.MapSinglePageApps(appSettings.SinglePageApps);
 
 app.Run();

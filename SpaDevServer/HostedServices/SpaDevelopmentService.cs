@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using SpaDevServer.Contracts;
 using SpaDevServer.Utils;
 
 namespace SpaDevServer.HostedServices
@@ -19,13 +18,12 @@ namespace SpaDevServer.HostedServices
     private static readonly Regex AnsiColorRegex = new("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
     private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5);
     private readonly ILogger<SpaDevelopmentService> _logger; // This is a development-time only feature, so a very long timeout is fine
-    private readonly ISpaDevServerSettings _devServerSettings;
+    private readonly SpaSettings _spaSettings;
 
-    public SpaDevelopmentService(ILogger<SpaDevelopmentService> logger, ISpaDevServerSettings devServerSettings)
+    public SpaDevelopmentService(ILogger<SpaDevelopmentService> logger, SpaSettings spaSettings)
     {
       _logger = logger;
-      _devServerSettings = devServerSettings;
-      // TODO: use Akka.NET for multiple node-runners
+      _spaSettings = spaSettings;
     }
 
     private Process RunnerProcess { get; set; }
@@ -87,7 +85,7 @@ namespace SpaDevServer.HostedServices
     public async Task StartAsync(CancellationToken cancellationToken)
     {
       var regex = "dev server running at:";
-      var arguments = "/c yarn dev";
+      var arguments = $"/c {_spaSettings.StartCommand}";
       var processStartInfo = new ProcessStartInfo("cmd")
       {
         Arguments = arguments,
@@ -95,7 +93,7 @@ namespace SpaDevServer.HostedServices
         RedirectStandardInput = true,
         RedirectStandardOutput = true,
         RedirectStandardError = true,
-        WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), "client-app")
+        WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), _spaSettings.SpaRootPath)
       };
 
       processStartInfo.Environment["HMR_PORT"] = Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORT") ?? "7189";
@@ -125,7 +123,7 @@ namespace SpaDevServer.HostedServices
       catch (EndOfStreamException ex)
       {
         throw new InvalidOperationException(
-          $"The NPM script '{arguments}' exited without indicating that the " +
+          $"The Command '{arguments}' exited without indicating that the " +
           "server was listening for requests. The error output was: " +
           $"{stdErrReader.ReadAsString()}", ex);
       }
