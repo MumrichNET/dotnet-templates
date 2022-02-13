@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SpaDevServer;
 using SpaDevServer.Contracts;
 
-namespace web_spa_vue
+namespace WebSpaVue
 {
   public class AppSettings : ISpaDevServerSettings
   {

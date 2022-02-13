@@ -1,5 +1,5 @@
 using System;
 
-namespace DDD.Aggregate.Stereotypes.Aggregate;
+namespace DDD.Stereotypes.Aggregate;
 
 public abstract record AggregateEventBase<TAggregate>(Guid AggregateId);

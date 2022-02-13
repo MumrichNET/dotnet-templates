@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-using DDD.Aggregate.Stereotypes;
-using DDD.Aggregate.Stereotypes.Aggregate;
+using DDD.Stereotypes.Aggregate;
 
 using Extensions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace web_spa_vue.Aggregates.FormExample;
+namespace WebSpaVue.Aggregates.FormExample;
 
 public abstract record FormExampleStateBase(string Identifier) : IAggregateState;
 

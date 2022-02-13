@@ -1,5 +1,5 @@
 using System;
 
-namespace DDD.Aggregate.Stereotypes.Aggregate;
+namespace DDD.Stereotypes.Aggregate;
 
 public record AggregateReaderResponse<TAggregate, TModel>(Guid AggregateId, TModel Model);

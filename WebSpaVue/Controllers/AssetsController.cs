@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace web_spa_vue.Controllers
+namespace WebSpaVue.Controllers
 {
   [ApiController]
   [Route("assets")]

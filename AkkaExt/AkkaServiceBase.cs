@@ -4,7 +4,7 @@ using Akka.Actor;
 using Akka.Configuration;
 using Akka.DependencyInjection;
 
-namespace DDD.Aggregate
+namespace AkkaExt
 {
   public abstract class AkkaServiceBase
   {

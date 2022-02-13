@@ -5,7 +5,7 @@ using Akka.DependencyInjection;
 using Akka.Persistence.Fsm;
 using Akka.Routing;
 
-namespace DDD.Aggregate.Stereotypes.Aggregate;
+namespace DDD.Stereotypes.Aggregate;
 
 public abstract class AggregateManagerBase<TAggregateState, TAggregate, TAggregateReader, TModel, TCommand, TQuery> : UntypedActor
   where TAggregateState : IAggregateState

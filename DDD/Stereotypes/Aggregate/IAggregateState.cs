@@ -1,6 +1,6 @@
 using Akka.Persistence.Fsm;
 
-namespace DDD.Aggregate.Stereotypes.Aggregate;
+namespace DDD.Stereotypes.Aggregate;
 
 public interface IAggregateState : PersistentFSM.IFsmState
 {

@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using SpaDevServer.Contracts;
 
-using web_spa_vue;
-using web_spa_vue.Extensions;
+using WebSpaVue;
+using WebSpaVue.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();

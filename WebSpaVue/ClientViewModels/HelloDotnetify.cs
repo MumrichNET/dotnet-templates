@@ -3,7 +3,7 @@ using System.Threading;
 
 using DotNetify;
 
-namespace web_spa_vue.ClientViewModels
+namespace WebSpaVue.ClientViewModels
 {
   public class HelloDotnetify : BaseVM
   {

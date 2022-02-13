@@ -3,7 +3,7 @@ using System;
 using Akka.Actor;
 using Akka.Event;
 
-namespace DDD.Aggregate.Stereotypes.Aggregate;
+namespace DDD.Stereotypes.Aggregate;
 
 public abstract class AggregateReaderBase<TAggregate, TModel, TQuery> : ReceiveActor
   where TModel : AggregateModelBase<TAggregate, TModel>

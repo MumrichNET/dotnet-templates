@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions", "Extensions\Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers", "Helpers\Helpers.csproj", "{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaExt", "AkkaExt\AkkaExt.csproj", "{22E64488-C461-465F-BBE4-F725280AE521}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22E64488-C461-465F-BBE4-F725280AE521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E64488-C461-465F-BBE4-F725280AE521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E64488-C461-465F-BBE4-F725280AE521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E64488-C461-465F-BBE4-F725280AE521}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

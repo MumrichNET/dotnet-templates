@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 
 using Akka.Actor;
 
-using DDD.Aggregate;
+using AkkaExt;
 
 using Microsoft.Extensions.Hosting;
 
-using web_spa_vue.Aggregates.FormExample;
+using WebSpaVue.Aggregates.FormExample;
 
-namespace web_spa_vue.HostedServices;
+namespace WebSpaVue.HostedServices;
 
 public class AkkaService : AkkaServiceBase, IHostedService
 {

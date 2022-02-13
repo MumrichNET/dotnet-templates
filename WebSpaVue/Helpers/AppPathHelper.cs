@@ -1,4 +1,4 @@
-namespace web_spa_vue.Helpers
+namespace WebSpaVue.Helpers
 {
   public static class AppPathHelper
   {

@@ -12,9 +12,9 @@ using Newtonsoft.Json.Linq;
 using SpaDevServer;
 using SpaDevServer.HostedServices;
 
-using web_spa_vue.Helpers;
+using WebSpaVue.Helpers;
 
-namespace web_spa_vue.Extensions
+namespace WebSpaVue.Extensions
 {
   public static class WebApplicationBuilderExtensions
   {

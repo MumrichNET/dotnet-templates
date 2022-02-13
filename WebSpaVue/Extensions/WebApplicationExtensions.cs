@@ -1,15 +1,10 @@
 using System.Collections.Generic;
-using System.IO;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.FileProviders;
 
 using SpaDevServer;
 
-using web_spa_vue.Helpers;
-
-namespace web_spa_vue.Extensions
+namespace WebSpaVue.Extensions
 {
   public static class WebApplicationExtensions
   {
@@ -26,7 +21,6 @@ namespace web_spa_vue.Extensions
         });
 
         var clientAppIndex = Path.Combine(clientAppRoot, "index.html");
-
 
         webApplication.MapGet(
           AppPathHelper.GetValidIntermediateAppPath(appPath),
