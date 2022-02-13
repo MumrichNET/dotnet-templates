@@ -16,47 +16,6 @@ namespace SpaDevServer.Extensions
 {
   public static class WebApplicationBuilderExtensions
   {
-    private static string GetViteJsYarpConfig(string appPath, string address, Guid? guid = null)
-    {
-      guid ??= Guid.NewGuid();
-
-      appPath = AppPathHelper.GetValidIntermediateAppPath(appPath);
-
-      string clusterId = $"spa-cluster-{guid}";
-      //language=regexp
-      const string spaRootExpression = @"^.+\\..+$";
-      //language=regexp
-      const string spaAssetsExpression = "^(src|node_modules|@[a-zA-Z]+)$";
-
-      return $@"{{
-          ""ReverseProxy"": {{
-            ""Clusters"": {{
-              ""{clusterId}"": {{
-                ""Destinations"": {{
-                  ""spa-cluster-destination-{guid}"": {{
-                    ""Address"": ""{address}""
-                  }}
-                }}
-              }}
-            }},
-            ""Routes"": {{
-              ""SpaRoot-{guid}"": {{
-                ""ClusterId"": ""{clusterId}"",
-                ""Match"": {{
-                  ""Path"": ""{appPath}{{filename:regex({spaRootExpression})?}}""
-                }}
-              }},
-              ""SpaAssets-{guid}"": {{
-                ""ClusterId"": ""{clusterId}"",
-                ""Match"": {{
-                  ""Path"": ""{appPath}{{name:regex({spaAssetsExpression})}}/{{**any}}""
-                }}
-              }}
-            }}
-          }}
-        }}";
-    }
-
     public static void RegisterSinglePageAppMiddleware(this WebApplicationBuilder builder, Dictionary<string, SpaSettings> singlePageApps)
     {
 #if DEBUG
@@ -66,7 +25,13 @@ namespace SpaDevServer.Extensions
 
         foreach ((string appPath, SpaSettings spaSettings) in singlePageApps)
         {
-          var current = JObject.Parse(GetViteJsYarpConfig(appPath, spaSettings.DevServerAddress));
+          var guid = Guid.NewGuid();
+          var current = JObject.Parse(spaSettings.Bundler switch
+          {
+            BundlerType.ViteJs => GetViteJsYarpConfig(appPath, spaSettings.DevServerAddress, guid),
+            BundlerType.QuasarCli => GetQuasarYarpConfig(appPath, spaSettings.DevServerAddress, guid),
+            _ => throw new NotImplementedException()
+          });
 
           origin.Merge(current);
         }
@@ -79,6 +44,77 @@ namespace SpaDevServer.Extensions
       builder.Services.AddHostedService<SpaDevelopmentService>();
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
 #endif
+    }
+
+    private static string GetQuasarYarpConfig(string appPath, string address, Guid guid)
+    {
+      return GetYarpConfig(appPath, address, new Dictionary<string, string>
+      {
+        {
+          $"SpaRoot-{guid}", "{**any}"
+        }
+      }, guid);
+    }
+
+    private static string GetViteJsYarpConfig(string appPath, string address, Guid guid)
+    {
+      //language=regexp
+      const string spaRootExpression = @"^.+\\..+$";
+      //language=regexp
+      const string spaAssetsExpression = "^(src|node_modules|@[a-zA-Z]+)$";
+
+      return GetYarpConfig(appPath, address, new Dictionary<string, string>
+      {
+        {
+          $"SpaRoot-{guid}", $"{{filename:regex({spaRootExpression})?}}"
+        },
+        {
+          $"SpaAssets-{guid}", $"{{name:regex({spaAssetsExpression})}}/{{**any}}"
+        }
+      }, guid);
+    }
+
+    private static string GetYarpConfig(string appPath, string address, Dictionary<string, string> routeMatches, Guid guid)
+    {
+      appPath = AppPathHelper.GetValidIntermediateAppPath(appPath);
+      string clusterId = $"spa-cluster-{guid}";
+
+      var rootConfig = JObject.Parse($@"{{
+          ""ReverseProxy"": {{
+            ""Clusters"": {{
+              ""{clusterId}"": {{
+                ""Destinations"": {{
+                  ""spa-cluster-destination-{guid}"": {{
+                    ""Address"": ""{address}""
+                  }}
+                }}
+              }}
+            }}
+          }}
+        }}");
+
+      foreach ((string route, string path) in routeMatches)
+      {
+        rootConfig.Merge(JObject.Parse(GetYarpRoute(route, clusterId, appPath + path)));
+      }
+
+      return rootConfig.ToString();
+    }
+
+    private static string GetYarpRoute(string route, string clusterId, string path)
+    {
+      return $@"{{
+        ""ReverseProxy"": {{
+          ""Routes"": {{
+            ""{route}"": {{
+              ""ClusterId"": ""{clusterId}"",
+              ""Match"": {{
+                ""Path"": ""{path}""
+              }}
+            }}
+          }}
+        }}
+      }}";
     }
   }
 }
