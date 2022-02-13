@@ -1,31 +1,47 @@
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Akka.Actor;
 
+using AkkaExt;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+using SpaDevServer.Actors;
 using SpaDevServer.Contracts;
 
 namespace SpaDevServer.HostedServices
 {
-  public class SpaDevelopmentService : IHostedService
+  public class SpaDevelopmentService : AkkaServiceBase, IHostedService
   {
-    private readonly ILogger<SpaDevelopmentService> _logger; // This is a development-time only feature, so a very long timeout is fine
+    private readonly IHostApplicationLifetime _appLifetime;
+    private readonly Dictionary<string, IActorRef> _processRunners = new();
     private readonly ISpaDevServerSettings _spaDevServerSettings;
 
-    public SpaDevelopmentService(ILogger<SpaDevelopmentService> logger, ISpaDevServerSettings spaDevServerSettings)
+    public SpaDevelopmentService(IServiceProvider serviceProvider) : base("spa-development-system", serviceProvider)
     {
-      _logger = logger;
-      _spaDevServerSettings = spaDevServerSettings;
+      _appLifetime = serviceProvider.GetService<IHostApplicationLifetime>();
+      _spaDevServerSettings = serviceProvider.GetService<ISpaDevServerSettings>();
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public Task StartAsync(CancellationToken cancellationToken)
     {
-    }
+      foreach ((string spaPath, SpaSettings spaSettings) in _spaDevServerSettings.SinglePageApps)
+      {
+        _processRunners.Add(spaPath, AkkaSystem.ActorOf(DependencyInjectionResolver.Props<ProcessRunnerActor>(spaSettings)));
+      }
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
+      RegisterApplicationShutdownIfAkkaSystemTerminates(_appLifetime, cancellationToken);
+
       return Task.CompletedTask;
+    }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+      await GracefullyShutdownAkkaSystemAsync();
     }
   }
 }
