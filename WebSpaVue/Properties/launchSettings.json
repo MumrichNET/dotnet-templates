@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "web_spa_vue": {
+    "WebSpaVue": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

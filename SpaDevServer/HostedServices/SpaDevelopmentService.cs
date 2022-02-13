@@ -16,6 +16,7 @@ namespace SpaDevServer.HostedServices
   {
     private const string DefaultRegex = "running at";
     private static readonly Regex AnsiColorRegex = new("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
+    private static readonly Regex EnvVarRegex = new("^%.+%$");
     private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5);
     private readonly ILogger<SpaDevelopmentService> _logger; // This is a development-time only feature, so a very long timeout is fine
     private readonly SpaSettings _spaSettings;
@@ -32,59 +33,9 @@ namespace SpaDevServer.HostedServices
 
     private EventedStreamReader StdOut { get; set; }
 
-    private void AttachToLogger()
-    {
-      void StdOutOrErr_OnReceivedLine(string line)
-      {
-        if (string.IsNullOrWhiteSpace(line))
-        {
-          return;
-        }
-
-        // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
-        // those to loggers (because a logger isn't necessarily any kind of terminal)
-        // making this console for debug purpose
-        if (line.StartsWith("<s>"))
-        {
-          line = line[3..];
-        }
-
-        if (_logger == null)
-        {
-          Console.Error.WriteLine(line);
-        }
-        else
-        {
-          _logger.LogInformation(StripAnsiColors(line).TrimEnd('\n'));
-        }
-      }
-
-      // When the NPM task emits complete lines, pass them through to the real logger
-      StdOut.OnReceivedLine += StdOutOrErr_OnReceivedLine;
-      StdErr.OnReceivedLine += StdOutOrErr_OnReceivedLine;
-
-      // But when it emits incomplete lines, assume this is progress information and
-      // hence just pass it through to StdOut regardless of logger config.
-      StdErr.OnReceivedChunk += chunk =>
-      {
-        var containsNewline = Array.IndexOf(chunk.Array, '\n', chunk.Offset, chunk.Count) >= 0;
-
-        if (!containsNewline)
-        {
-          Console.Write(chunk.Array, chunk.Offset, chunk.Count);
-        }
-      };
-    }
-
-    private void Kill()
-    {
-      try { RunnerProcess?.Kill(); } catch { }
-      try { RunnerProcess?.WaitForExit(); } catch { }
-    }
-
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-      var regex = "dev server running at:";
+      var regex = _spaSettings.Regex;
       var arguments = $"/c {_spaSettings.StartCommand}";
       var processStartInfo = new ProcessStartInfo("cmd")
       {
@@ -96,8 +47,12 @@ namespace SpaDevServer.HostedServices
         WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), _spaSettings.SpaRootPath)
       };
 
-      processStartInfo.Environment["HMR_PORT"] = Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORT") ?? "7189";
-      processStartInfo.Environment["HMR_PROTOCOL"] = "wss";
+      foreach (var kvp in _spaSettings.Environment)
+      {
+        processStartInfo.Environment[kvp.Key] = EnvVarRegex.IsMatch(kvp.Value)
+          ? Environment.GetEnvironmentVariable(kvp.Value.Replace("%", string.Empty))
+          : kvp.Value;
+      }
 
       RunnerProcess = LaunchNodeProcess(processStartInfo);
 
@@ -160,5 +115,55 @@ namespace SpaDevServer.HostedServices
 
     private static string StripAnsiColors(string line)
           => AnsiColorRegex.Replace(line, string.Empty);
+
+    private void AttachToLogger()
+    {
+      void StdOutOrErr_OnReceivedLine(string line)
+      {
+        if (string.IsNullOrWhiteSpace(line))
+        {
+          return;
+        }
+
+        // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
+        // those to loggers (because a logger isn't necessarily any kind of terminal)
+        // making this console for debug purpose
+        if (line.StartsWith("<s>"))
+        {
+          line = line[3..];
+        }
+
+        if (_logger == null)
+        {
+          Console.Error.WriteLine(line);
+        }
+        else
+        {
+          _logger.LogInformation(StripAnsiColors(line).TrimEnd('\n'));
+        }
+      }
+
+      // When the NPM task emits complete lines, pass them through to the real logger
+      StdOut.OnReceivedLine += StdOutOrErr_OnReceivedLine;
+      StdErr.OnReceivedLine += StdOutOrErr_OnReceivedLine;
+
+      // But when it emits incomplete lines, assume this is progress information and
+      // hence just pass it through to StdOut regardless of logger config.
+      StdErr.OnReceivedChunk += chunk =>
+      {
+        var containsNewline = Array.IndexOf(chunk.Array, '\n', chunk.Offset, chunk.Count) >= 0;
+
+        if (!containsNewline)
+        {
+          Console.Write(chunk.Array, chunk.Offset, chunk.Count);
+        }
+      };
+    }
+
+    private void Kill()
+    {
+      try { RunnerProcess?.Kill(); } catch { }
+      try { RunnerProcess?.WaitForExit(); } catch { }
+    }
   }
 }
