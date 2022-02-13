@@ -1,4 +1,4 @@
-namespace WebSpaVue.Helpers
+namespace SpaDevServer.Helpers
 {
   public static class AppPathHelper
   {

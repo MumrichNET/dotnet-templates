@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using SpaDevServer.Contracts;
+using SpaDevServer.Extensions;
 
 using WebSpaVue;
-using WebSpaVue.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();

@@ -15,6 +15,7 @@ namespace SpaDevServer.Actors
 {
   public record StartProcessCommand;
 
+  // ReSharper disable once ClassNeverInstantiated.Global
   public class ProcessRunnerActor : ReceiveActor
   {
     private const string DefaultRegex = "running at";

@@ -2,9 +2,7 @@ using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Builder;
 
-using SpaDevServer;
-
-namespace WebSpaVue.Extensions
+namespace SpaDevServer.Extensions
 {
   public static class WebApplicationExtensions
   {

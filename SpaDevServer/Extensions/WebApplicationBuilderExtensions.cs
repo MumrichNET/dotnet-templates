@@ -9,12 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json.Linq;
 
-using SpaDevServer;
+using SpaDevServer.Helpers;
 using SpaDevServer.HostedServices;
 
-using WebSpaVue.Helpers;
-
-namespace WebSpaVue.Extensions
+namespace SpaDevServer.Extensions
 {
   public static class WebApplicationBuilderExtensions
   {
