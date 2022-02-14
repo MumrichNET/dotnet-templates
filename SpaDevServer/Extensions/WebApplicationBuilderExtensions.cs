@@ -36,7 +36,9 @@ namespace SpaDevServer.Extensions
           origin.Merge(current);
         }
 
-        configurationBuilder.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(origin.ToString())));
+        var newConfig = origin.ToString();
+
+        configurationBuilder.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(newConfig)));
       });
 
       var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
