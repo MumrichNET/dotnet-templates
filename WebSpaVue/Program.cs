@@ -12,8 +12,10 @@ using WebSpaVue;
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();
 
+// AppSettings & variants
 builder.Services.AddSingleton(appSettings);
-builder.Services.AddSingleton<ISpaDevServerSettings, AppSettings>();
+builder.Services.AddSingleton<ISpaDevServerSettings>(appSettings);
+
 builder.Services.AddSwaggerDocument();
 builder.Services.AddControllersWithViews();
 builder.Services.AddCors();
