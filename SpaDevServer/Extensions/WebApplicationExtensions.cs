@@ -1,6 +1,12 @@
 using System.Collections.Generic;
+using System.IO;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+
+using SpaDevServer.Helpers;
 
 namespace SpaDevServer.Extensions
 {
@@ -8,25 +14,33 @@ namespace SpaDevServer.Extensions
   {
     public static void MapSinglePageApps(this WebApplication webApplication, Dictionary<string, SpaSettings> singlePageApps)
     {
-#if RELEASE
-      foreach ((string appPath, SpaSettings spaSettings) in singlePageApps)
+      if (!webApplication.Environment.IsDevelopment())
       {
-        var clientAppRoot = Path.Combine(webApplication.Environment.ContentRootPath, $"{spaSettings.SpaRootPath}/dist");
-        webApplication.UseStaticFiles(new StaticFileOptions
+        foreach ((string appPath, SpaSettings spaSettings) in singlePageApps)
         {
-          FileProvider = new PhysicalFileProvider(clientAppRoot),
-          RequestPath = ""
-        });
-
-        var clientAppIndex = Path.Combine(clientAppRoot, "index.html");
-
-        webApplication.MapGet(
-          AppPathHelper.GetValidIntermediateAppPath(appPath),
-          async context => await context.Response.SendFileAsync(clientAppIndex));
+          webApplication.MapSinglePageApp(appPath, spaSettings);
+        }
       }
-#else
-      webApplication.MapReverseProxy();
-#endif
+      else
+      {
+        webApplication.MapReverseProxy();
+      }
+    }
+
+    public static void MapSinglePageApp(this WebApplication webApplication, string appPath, SpaSettings spaSettings)
+    {
+      var clientAppRoot = Path.Combine(webApplication.Environment.ContentRootPath, $"{spaSettings.SpaRootPath}/dist");
+      webApplication.UseStaticFiles(new StaticFileOptions
+      {
+        FileProvider = new PhysicalFileProvider(clientAppRoot),
+        RequestPath = ""
+      });
+
+      var clientAppIndex = Path.Combine(clientAppRoot, "index.html");
+
+      webApplication.MapGet(
+        AppPathHelper.GetValidIntermediateAppPath(appPath),
+        async context => await context.Response.SendFileAsync(clientAppIndex));
     }
   }
 }

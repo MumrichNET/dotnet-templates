@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json.Linq;
 
@@ -18,8 +19,9 @@ namespace SpaDevServer.Extensions
   {
     public static void RegisterSinglePageAppDevMiddleware(this WebApplicationBuilder builder, Dictionary<string, SpaSettings> singlePageApps)
     {
-#if DEBUG
-      builder.Host.ConfigureHostConfiguration(configurationBuilder =>
+      if (builder.Environment.IsDevelopment())
+      {
+        builder.Host.ConfigureHostConfiguration(configurationBuilder =>
       {
         var origin = new JObject();
 
@@ -41,11 +43,11 @@ namespace SpaDevServer.Extensions
         configurationBuilder.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(newConfig)));
       });
 
-      var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
+        var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
 
-      builder.Services.AddHostedService<SpaDevelopmentService>();
-      builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
-#endif
+        builder.Services.AddHostedService<SpaDevelopmentService>();
+        builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
+      }
     }
 
     private static string GetQuasarYarpConfig(string appPath, string address, Guid guid)
