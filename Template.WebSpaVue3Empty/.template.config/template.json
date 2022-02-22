@@ -12,5 +12,6 @@
         "type": "project"
     },
     "sourceName": "Template.WebSpaVue3Empty", // Will replace the string 'Template.WebSpaVue3Empty' with the value provided via -n.
-    "preferNameDirectory": true
+    "preferNameDirectory": true,
+    "symbols": {}
 }
