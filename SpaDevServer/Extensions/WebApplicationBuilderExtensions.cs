@@ -16,7 +16,7 @@ namespace SpaDevServer.Extensions
 {
   public static class WebApplicationBuilderExtensions
   {
-    public static void RegisterSinglePageAppMiddleware(this WebApplicationBuilder builder, Dictionary<string, SpaSettings> singlePageApps)
+    public static void RegisterSinglePageAppDevMiddleware(this WebApplicationBuilder builder, Dictionary<string, SpaSettings> singlePageApps)
     {
 #if DEBUG
       builder.Host.ConfigureHostConfiguration(configurationBuilder =>

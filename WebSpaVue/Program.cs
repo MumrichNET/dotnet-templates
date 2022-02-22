@@ -23,7 +23,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSignalR();
 builder.Services.AddDotNetify();
 
-builder.RegisterSinglePageAppMiddleware(appSettings.SinglePageApps);
+builder.RegisterSinglePageAppDevMiddleware(appSettings.SinglePageApps);
 
 var app = builder.Build();
 
