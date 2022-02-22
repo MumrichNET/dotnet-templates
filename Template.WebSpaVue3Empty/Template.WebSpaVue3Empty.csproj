@@ -23,4 +23,8 @@
     <Compile Remove="**\*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SpaDevServer\SpaDevServer.csproj" />
+  </ItemGroup>
+
 </Project>
