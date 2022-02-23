@@ -1,4 +1,7 @@
+using Cake.Common;
+using Cake.Common.IO;
 using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.NuGet.Push;
 using Cake.Common.Tools.DotNet.Pack;
 using Cake.Core;
 using Cake.Frosting;
@@ -17,12 +20,18 @@ public static class Program
 
 public class BuildContext : FrostingContext
 {
-  public bool Delay { get; set; }
+  public string BuildOutputPath { get; set; }
+  public string MsBuildConriguration { get; set; }
+  public string NugetOrgApiKey { get; set; }
+  public string NugetOrgSource { get; set; }
 
   public BuildContext(ICakeContext context)
     : base(context)
   {
-    Delay = context.Arguments.HasArgument("delay");
+    MsBuildConriguration = context.Argument(nameof(MsBuildConriguration), "Release");
+    BuildOutputPath = context.Argument(nameof(BuildOutputPath), "../build-output");
+    NugetOrgApiKey = context.Argument<string>(nameof(NugetOrgApiKey), null);
+    NugetOrgSource = context.Argument(nameof(NugetOrgSource), "https://api.nuget.org/v3/index.json");
   }
 }
 
@@ -32,10 +41,10 @@ public abstract class PackTaskBase : FrostingTask<BuildContext>
   {
     context.DotNetPack($"../{csprojName}/{csprojName}.csproj", new DotNetPackSettings
     {
-      Configuration = "Release",
+      Configuration = context.MsBuildConriguration,
       NoLogo = true,
       IncludeSymbols = true,
-      OutputDirectory = "../build-output"
+      OutputDirectory = context.BuildOutputPath
     });
   }
 }
@@ -65,4 +74,28 @@ public class PackAkkaExtTask : PackTaskBase
 [IsDependentOn(typeof(PackAkkaExtTask))]
 public class DefaultTask : FrostingTask<BuildContext>
 {
+}
+
+[TaskName("NugetPublish")]
+[IsDependentOn(typeof(PackSpaDevMiddlewareTask))]
+[IsDependentOn(typeof(PackAkkaExtTask))]
+public class NugetPublishTask : FrostingTask<BuildContext>
+{
+  public override void Run(BuildContext context)
+  {
+    if (string.IsNullOrWhiteSpace(context.NugetOrgApiKey))
+    {
+      throw new CakeException($"Property '{nameof(context.NugetOrgApiKey)}' must be set!");
+    }
+
+    foreach (var nugetFile in context.GetFiles($"{context.BuildOutputPath}/*.nupkg"))
+    {
+      context.DotNetNuGetPush(nugetFile, new DotNetNuGetPushSettings
+      {
+        ApiKey = context.NugetOrgApiKey,
+        Source = context.NugetOrgSource,
+        SkipDuplicate = true
+      });
+    }
+  }
 }
