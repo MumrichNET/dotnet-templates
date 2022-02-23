@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaDevServer", "SpaDevServer\SpaDevServer.csproj", "{508C839E-04A9-4654-B228-206F5BCB5638}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.SpaDevMiddleware", "Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj", "{508C839E-04A9-4654-B228-206F5BCB5638}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD", "DDD\DDD.csproj", "{AC3A7161-20C6-4917-BD11-8F85C341ABC7}"
 EndProject
@@ -27,6 +27,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaExt", "AkkaExt\AkkaExt.csproj", "{22E64488-C461-465F-BBE4-F725280AE521}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.WebSpaVue3Empty", "Template.WebSpaVue3Empty\Template.WebSpaVue3Empty.csproj", "{82E72FFF-1C19-4814-8E78-B233B62A1391}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "build\Build.csproj", "{B610BE10-01A5-4E1C-8B18-8F56ABE36170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{82E72FFF-1C19-4814-8E78-B233B62A1391}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82E72FFF-1C19-4814-8E78-B233B62A1391}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82E72FFF-1C19-4814-8E78-B233B62A1391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B610BE10-01A5-4E1C-8B18-8F56ABE36170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B610BE10-01A5-4E1C-8B18-8F56ABE36170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B610BE10-01A5-4E1C-8B18-8F56ABE36170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B610BE10-01A5-4E1C-8B18-8F56ABE36170}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

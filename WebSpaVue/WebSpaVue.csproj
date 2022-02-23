@@ -20,7 +20,7 @@
     <ItemGroup>
         <ProjectReference Include="..\DDD\DDD.csproj" />
         <ProjectReference Include="..\Extensions\Extensions.csproj" />
-        <ProjectReference Include="..\SpaDevServer\SpaDevServer.csproj" />
+        <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build">
