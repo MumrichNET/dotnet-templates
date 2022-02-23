@@ -1,0 +1,9 @@
+assembly-versioning-scheme: MajorMinorPatch
+mode: Mainline
+branches:
+  main:
+    regex: "^master$|^main$"
+    increment: Patch
+ignore:
+  sha: []
+merge-message-formats: {}
