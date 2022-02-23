@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AkkaExt\AkkaExt.csproj" />
+    <ProjectReference Include="..\Mumrich.AkkaExt\Mumrich.AkkaExt.csproj" />
   </ItemGroup>
 
 </Project>

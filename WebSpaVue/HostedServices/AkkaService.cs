@@ -2,9 +2,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AkkaExt;
-
 using Microsoft.Extensions.Hosting;
+
+using Mumrich.AkkaExt;
 
 using WebSpaVue.Aggregates.FormExample;
 

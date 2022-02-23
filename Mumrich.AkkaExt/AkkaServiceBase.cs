@@ -8,7 +8,7 @@ using Akka.DependencyInjection;
 
 using Microsoft.Extensions.Hosting;
 
-namespace AkkaExt
+namespace Mumrich.AkkaExt
 {
   public abstract class AkkaServiceBase
   {

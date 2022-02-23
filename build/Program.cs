@@ -26,12 +26,11 @@ public class BuildContext : FrostingContext
   }
 }
 
-[TaskName("Default")]
-public class DefaultTask : FrostingTask<BuildContext>
+public abstract class PackTaskBase : FrostingTask<BuildContext>
 {
-  public override void Run(BuildContext context)
+  protected static void PackCsproj(BuildContext context, string csprojName)
   {
-    context.DotNetPack("../Mumrich.SpaDevMiddleware/Mumrich.SpaDevMiddleware.csproj", new DotNetPackSettings
+    context.DotNetPack($"../{csprojName}/{csprojName}.csproj", new DotNetPackSettings
     {
       Configuration = "Release",
       NoLogo = true,
@@ -39,4 +38,31 @@ public class DefaultTask : FrostingTask<BuildContext>
       OutputDirectory = "../build-output"
     });
   }
+}
+
+public class PackSpaDevMiddlewareTask : PackTaskBase
+{
+  public override void Run(BuildContext context)
+  {
+    const string csprojName = "Mumrich.SpaDevMiddleware";
+
+    PackCsproj(context, csprojName);
+  }
+}
+
+public class PackAkkaExtTask : PackTaskBase
+{
+  public override void Run(BuildContext context)
+  {
+    const string csprojName = "Mumrich.AkkaExt";
+
+    PackCsproj(context, csprojName);
+  }
+}
+
+[TaskName("Default")]
+[IsDependentOn(typeof(PackSpaDevMiddlewareTask))]
+[IsDependentOn(typeof(PackAkkaExtTask))]
+public class DefaultTask : FrostingTask<BuildContext>
+{
 }

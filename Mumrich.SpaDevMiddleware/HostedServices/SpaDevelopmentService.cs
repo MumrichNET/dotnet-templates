@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 using Akka.Actor;
 
-using AkkaExt;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Mumrich.AkkaExt;
 using Mumrich.SpaDevMiddleware.Actors;
 using Mumrich.SpaDevMiddleware.Contracts;
 
