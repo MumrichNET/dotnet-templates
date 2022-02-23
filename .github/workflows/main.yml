@@ -28,6 +28,6 @@ jobs:
       # Runs a single command using the runners shell
       - name: cake-build
         run: |
-          git fetch --unshallow --all
+          git fetch --unshallow
           chmod +x ./build.sh
           ./build.sh -t Default
