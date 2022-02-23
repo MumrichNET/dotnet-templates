@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SpaDevServer;
+namespace Mumrich.SpaDevMiddleware;
 
 public enum BundlerType
 {

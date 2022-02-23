@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SpaDevServer.Utils;
+namespace Mumrich.SpaDevMiddleware.Utils;
 
 internal class EventedStreamReader
 {

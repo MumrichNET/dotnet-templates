@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
-using SpaDevServer.Helpers;
+using Mumrich.SpaDevMiddleware.Helpers;
 
-namespace SpaDevServer.Extensions
+namespace Mumrich.SpaDevMiddleware.Extensions
 {
   public static class WebApplicationExtensions
   {

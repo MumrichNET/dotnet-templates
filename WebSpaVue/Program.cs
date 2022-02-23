@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using SpaDevServer.Contracts;
-using SpaDevServer.Extensions;
+using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Extensions;
 
 using WebSpaVue;
 

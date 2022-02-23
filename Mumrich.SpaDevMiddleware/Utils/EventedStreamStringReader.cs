@@ -1,9 +1,7 @@
 using System;
 using System.Text;
 
-using SpaDevServer.HostedServices;
-
-namespace SpaDevServer.Utils;
+namespace Mumrich.SpaDevMiddleware.Utils;
 
 internal class EventedStreamStringReader : IDisposable
 {

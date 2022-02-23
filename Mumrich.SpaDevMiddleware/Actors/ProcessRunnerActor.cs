@@ -8,10 +8,10 @@ using Akka.Actor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using SpaDevServer.Extensions;
-using SpaDevServer.Utils;
+using Mumrich.SpaDevMiddleware.Extensions;
+using Mumrich.SpaDevMiddleware.Utils;
 
-namespace SpaDevServer.Actors
+namespace Mumrich.SpaDevMiddleware.Actors
 {
   public record StartProcessCommand;
 

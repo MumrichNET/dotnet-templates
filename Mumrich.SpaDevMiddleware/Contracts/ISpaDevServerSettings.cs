@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SpaDevServer.Contracts
+namespace Mumrich.SpaDevMiddleware.Contracts
 {
   public interface ISpaDevServerSettings
   {

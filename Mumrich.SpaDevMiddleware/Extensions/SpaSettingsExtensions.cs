@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace SpaDevServer.Extensions
+namespace Mumrich.SpaDevMiddleware.Extensions
 {
   public static class SpaSettingsExtensions
   {

@@ -10,10 +10,10 @@ using AkkaExt;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using SpaDevServer.Actors;
-using SpaDevServer.Contracts;
+using Mumrich.SpaDevMiddleware.Actors;
+using Mumrich.SpaDevMiddleware.Contracts;
 
-namespace SpaDevServer.HostedServices
+namespace Mumrich.SpaDevMiddleware.HostedServices
 {
   public class SpaDevelopmentService : AkkaServiceBase, IHostedService
   {

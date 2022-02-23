@@ -8,12 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Mumrich.SpaDevMiddleware.Helpers;
+using Mumrich.SpaDevMiddleware.HostedServices;
+
 using Newtonsoft.Json.Linq;
 
-using SpaDevServer.Helpers;
-using SpaDevServer.HostedServices;
-
-namespace SpaDevServer.Extensions
+namespace Mumrich.SpaDevMiddleware.Extensions
 {
   public static class WebApplicationBuilderExtensions
   {

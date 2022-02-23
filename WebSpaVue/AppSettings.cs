@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
-using SpaDevServer;
-using SpaDevServer.Contracts;
+using Mumrich.SpaDevMiddleware;
+using Mumrich.SpaDevMiddleware.Contracts;
 
 namespace WebSpaVue
 {

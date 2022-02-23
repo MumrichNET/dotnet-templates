@@ -1,4 +1,4 @@
-namespace SpaDevServer.Helpers
+namespace Mumrich.SpaDevMiddleware.Helpers
 {
   public static class AppPathHelper
   {
