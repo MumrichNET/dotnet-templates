@@ -1,0 +1,36 @@
+<Project>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build">
+    <Message Importance="high" Text="node-version:" />
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js and then restart your command prompt or IDE." />
+  </Target>
+
+  <Target Name="DebugEnsureYarn" AfterTargets="DebugEnsureNodeEnv">
+    <Message Importance="high" Text="yarn-version:" />
+    <Exec Command="yarn --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+  </Target>
+
+  <Target Name="EnsureNodeModulesInstalled" BeforeTargets="Build" Inputs="package.json">
+    <Message Importance="high" Text="Restoring dependencies. This may take a moment..." />
+    <Message Importance="high" Text="SpaRoot: %(SpaRoot.Identity)" />
+    <Exec WorkingDirectory="%(SpaRoot.Identity)" Command="yarn install" />
+  </Target>
+
+  <Target Name="PublishSpas" AfterTargets="ComputeFilesToPublish">
+    <Message Importance="high" Text="Running Spa builds..." />
+    <Exec WorkingDirectory="%(SpaRoot.Identity)" Command="yarn build" />
+    <ItemGroup>
+      <DistFiles Include="%(SpaRoot.Identity)dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

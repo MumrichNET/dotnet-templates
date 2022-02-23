@@ -30,6 +30,4 @@
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-  <Import Project="Build/Mumrich.SpaDevMiddleware.targets" Condition="$([System.String]::Copy($(MSBuildStartupDirectory)).EndsWith('Mumrich.SpaDevMiddleware')) == False" />
-
 </Project>
