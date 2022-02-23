@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <SpaRoot>ClientApp\client-app\</SpaRoot>
+        <SpaRoot>ClientApp\admin-app\</SpaRoot>
+        <TargetFramework>net6.0</TargetFramework>
+        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DotNetify.SignalR" Version="5.3.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="NSwag.AspNetCore" Version="13.15.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\DDD\DDD.csproj" />
+        <ProjectReference Include="..\Extensions\Extensions.csproj" />
+        <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
+    </ItemGroup>
+
+    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build">
+        <Exec Command="node --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+        </Exec>
+        <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js and then restart your command prompt or IDE." />
+    </Target>
+
+    <Target Name="DebugEnsureYarn" AfterTargets="DebugEnsureNodeEnv">
+        <Exec Command="yarn --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+        </Exec>
+    </Target>
+
+    <Target Name="EnsureNodeModulesInstalled" BeforeTargets="Build" Inputs="package.json" Outputs="yarn.lock">
+        <Message Importance="high" Text="Restoring dependencies using 'yarn'. This may take a moment..." />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="yarn install" />
+    </Target>
+
+    <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+        <Message Importance="high" Text="Running yarn build..." />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="yarn build" />
+        <ItemGroup>
+            <DistFiles Include="$(SpaRoot)dist\**" />
+            <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+                <RelativePath>%(DistFiles.Identity)</RelativePath>
+                <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            </ResolvedFileToPublish>
+        </ItemGroup>
+    </Target>
+
+</Project>

@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Hannes Zbinden",
+    "classifications": [
+        "Web"
+    ],
+    "name": "SPA Vue 3 Empty",
+    "identity": "Template.WebSpaVue3Empty", // Unique name for this template
+    "shortName": "vue3", // Short name that can be used on the cli
+    "tags": {
+        "language": "C#", // Specify that this template is in C#.
+        "type": "project"
+    },
+    "sourceName": "Template.WebSpaVue3Empty", // Will replace the string 'Template.WebSpaVue3Empty' with the value provided via -n.
+    "preferNameDirectory": true,
+    "symbols": {}
+}
