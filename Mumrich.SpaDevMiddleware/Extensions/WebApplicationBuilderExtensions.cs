@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Helpers;
 using Mumrich.SpaDevMiddleware.HostedServices;
 
@@ -17,15 +18,18 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 {
   public static class WebApplicationBuilderExtensions
   {
-    public static void RegisterSinglePageAppDevMiddleware(this WebApplicationBuilder builder, Dictionary<string, SpaSettings> singlePageApps)
+    public static void RegisterSinglePageAppDevMiddleware(this WebApplicationBuilder builder, ISpaDevServerSettings spaDevServerSettings)
     {
-      if (builder.Environment.IsDevelopment())
+      if (!builder.Environment.IsDevelopment())
       {
-        builder.Host.ConfigureHostConfiguration(configurationBuilder =>
+        return;
+      }
+
+      builder.Host.ConfigureHostConfiguration(configurationBuilder =>
       {
         var origin = new JObject();
 
-        foreach ((string appPath, SpaSettings spaSettings) in singlePageApps)
+        foreach ((string appPath, SpaSettings spaSettings) in spaDevServerSettings.SinglePageApps)
         {
           var guid = Guid.NewGuid();
           var current = JObject.Parse(spaSettings.Bundler switch
@@ -43,11 +47,11 @@ namespace Mumrich.SpaDevMiddleware.Extensions
         configurationBuilder.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(newConfig)));
       });
 
-        var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
+      var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
 
-        builder.Services.AddHostedService<SpaDevelopmentService>();
-        builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
-      }
+      builder.Services.AddSingleton(spaDevServerSettings);
+      builder.Services.AddHostedService<SpaDevelopmentService>();
+      builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
     }
 
     private static string GetQuasarYarpConfig(string appPath, string address, Guid guid)
