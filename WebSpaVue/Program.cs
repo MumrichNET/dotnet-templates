@@ -23,7 +23,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSignalR();
 builder.Services.AddDotNetify();
 
-builder.RegisterSinglePageAppDevMiddleware(appSettings.SinglePageApps);
+builder.RegisterSinglePageAppDevMiddleware(appSettings);
 
 var app = builder.Build();
 
@@ -43,6 +43,6 @@ app.MapDefaultControllerRoute();
 app.UseWebSockets();
 app.UseDotNetify();
 app.MapHub<DotNetifyHub>("/dotnetify");
-app.MapSinglePageApps(appSettings.SinglePageApps);
+app.MapSinglePageApps(appSettings);
 
 app.Run();
