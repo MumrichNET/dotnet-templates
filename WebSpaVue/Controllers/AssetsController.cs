@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -40,9 +39,10 @@ namespace WebSpaVue.Controllers
 
     [HttpPost]
     [Route("upload")]
-    public async Task UploadAsync(IEnumerable<IFormFile> files)
+    public async Task UploadAsync()
     {
-      foreach (var file in files)
+      // TODO: pass by param
+      foreach (var file in Request.Form.Files)
       {
         if (file == null || file.Length == 0)
         {
