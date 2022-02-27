@@ -80,6 +80,9 @@ module.exports = configure(function (ctx) {
       server: {
         type: 'http',
       },
+      client: {
+        webSocketURL: 'wss://localhost:7189/admin/ws',
+      },
       port: 8080,
       open: false, // opens browser window automatically
     },
