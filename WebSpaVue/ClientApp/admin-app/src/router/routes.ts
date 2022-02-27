@@ -28,7 +28,11 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-
+  {
+    path: '/widgets',
+    component: mainLayout,
+    children: [{ path: '', component: () => import('src/pages/Widgets.vue') }],
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
