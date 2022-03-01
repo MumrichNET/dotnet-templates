@@ -1,4 +1,4 @@
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build">
     <Message Importance="high" Text="node-version:" />
