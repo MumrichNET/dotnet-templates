@@ -15,7 +15,7 @@
     </Exec>
   </Target>
 
-  <Target Name="EnsureNodeModulesInstalled" BeforeTargets="Build" Inputs="package.json">
+  <Target Name="EnsureNodeModulesInstalled" BeforeTargets="Build" Inputs="package.json" Outputs="yarn.lock">
     <Message Importance="high" Text="Restoring dependencies. This may take a moment..." />
     <Message Importance="high" Text="SpaRoot: %(SpaRoot.Identity)" />
     <Exec WorkingDirectory="%(SpaRoot.Identity)" Command="yarn install" />

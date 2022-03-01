@@ -6,7 +6,7 @@
       </q-img>
     </q-card>
   </div>
-  <q-uploader :url="uploadUrl" label="Upload" style="max-width: 300px" />
+  <q-uploader :url="uploadUrl" label="Upload" style="max-width: 300px" @uploaded="onUploaded" />
 </template>
 
 <script lang="ts" setup>
@@ -17,11 +17,11 @@ type PhysicalFileResult = {
   contentType: string;
 };
 
-const host = 'https://localhost:7189';
+const host = window.location.origin;
 const uploadUrl = ref(`${host}/assets/upload`);
 const imageUrls = ref<string[]>([]);
 
-onMounted(async () => {
+async function loadImageUrlsAsync() {
   var response = await fetch(`${host}/assets/get`);
 
   if (response.ok) {
@@ -29,7 +29,13 @@ onMounted(async () => {
 
     imageUrls.value = result.map((f) => `${host}${f.fileName}`);
   }
-});
+}
+
+async function onUploaded(info: { files: File[], xhr: object }) {
+  await loadImageUrlsAsync();
+}
+
+onMounted(async () => await loadImageUrlsAsync());
 </script>
 
 <style scoped>
