@@ -33,3 +33,8 @@ jobs:
           git fetch --unshallow
           chmod +x ./build.sh
           ./build.sh -t NugetPublish -- --NugetOrgApiKey $NUGET_ORG_API_KEY
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-output
+          path: build-output/

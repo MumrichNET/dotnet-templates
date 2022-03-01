@@ -10,7 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		build.ps1 = build.ps1
+		build.sh = build.sh
 		dotnet-templates.sln.DotSettings = dotnet-templates.sln.DotSettings
+		GitVersion.yml = GitVersion.yml
 		LICENSE.txt = LICENSE.txt
 		nuget.config = nuget.config
 		README.md = README.md
@@ -29,6 +32,19 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "build\Build.csproj", "{B610BE10-01A5-4E1C-8B18-8F56ABE36170}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.AkkaExt", "Mumrich.AkkaExt\Mumrich.AkkaExt.csproj", "{B744F1AF-8B00-47BC-A76A-E3C973DCE837}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{DE46697A-14FB-43E4-AE9A-27D765DF394C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{A9810382-4130-4E76-B6E1-5D9DA6E5AE3D}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main.yml = .github\workflows\main.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{AEB1C8C8-0124-46B0-9A11-B5723B0A7BE1}"
+	ProjectSection(SolutionItems) = preProject
+		.vscode\launch.json = .vscode\launch.json
+		.vscode\tasks.json = .vscode\tasks.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +87,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DE46697A-14FB-43E4-AE9A-27D765DF394C} = {CF7BBED8-545E-4925-A33E-4BA35AD6C14C}
+		{A9810382-4130-4E76-B6E1-5D9DA6E5AE3D} = {DE46697A-14FB-43E4-AE9A-27D765DF394C}
+		{AEB1C8C8-0124-46B0-9A11-B5723B0A7BE1} = {CF7BBED8-545E-4925-A33E-4BA35AD6C14C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {451228AD-265C-4410-B958-65D6057ECE6E}
