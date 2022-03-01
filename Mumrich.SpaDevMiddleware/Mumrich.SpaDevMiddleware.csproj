@@ -28,9 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE.txt" Pack="true" PackagePath="\"/>
+    <None Include="..\LICENSE.txt" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="build\**" Pack="True" PackagePath="build\" />
+    <None Include="MSBuild\**" Pack="True" PackagePath="build\" />
   </ItemGroup>
 
 </Project>
