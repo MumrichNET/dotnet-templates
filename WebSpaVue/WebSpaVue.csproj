@@ -26,6 +26,6 @@
     <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
   </ItemGroup>
 
-  <Import Project="../Mumrich.SpaDevMiddleware/Build/Mumrich.SpaDevMiddleware.targets" />
+  <Import Project="../Mumrich.SpaDevMiddleware/build/Mumrich.SpaDevMiddleware.targets" />
 
 </Project>
