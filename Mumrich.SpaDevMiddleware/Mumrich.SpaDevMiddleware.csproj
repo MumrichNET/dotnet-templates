@@ -1,8 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <ImplicitUsings>disable</ImplicitUsings>
-    <IncludeSource>true</IncludeSource>
     <Nullable>disable</Nullable>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/mumrich/dotnet-templates</PackageProjectUrl>
@@ -31,7 +30,7 @@
   <ItemGroup>
     <None Include="..\LICENSE.txt" Pack="true" PackagePath="\"/>
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="build\*.targets" Pack="true" PackagePath="build\" />
+    <None Include="build\**" Pack="True" PackagePath="build\" />
   </ItemGroup>
 
 </Project>

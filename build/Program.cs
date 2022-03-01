@@ -43,7 +43,7 @@ public abstract class PackTaskBase : FrostingTask<BuildContext>
     {
       Configuration = context.MsBuildConriguration,
       NoLogo = true,
-      IncludeSymbols = true,
+      IncludeSource = true,
       OutputDirectory = context.BuildOutputPath
     });
   }
