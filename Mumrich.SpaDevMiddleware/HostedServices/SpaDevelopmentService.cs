@@ -41,6 +41,8 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
     public async Task StopAsync(CancellationToken cancellationToken)
     {
       await GracefullyShutdownAkkaSystemAsync();
+
+      AkkaSystem.Dispose();
     }
   }
 }
