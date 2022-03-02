@@ -43,7 +43,8 @@ namespace Mumrich.AkkaExt
     {
       _logger.LogInformation(nameof(CurrentDomain_ProcessExit));
 
-      GracefullyShutdownAkkaSystemAsync();
+      // TODO: better/cleaner awaiter...
+      GracefullyShutdownAkkaSystemAsync().GetAwaiter().GetResult();
     }
 
     protected ActorSystem AkkaSystem { get; }
