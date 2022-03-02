@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
+    <PackageReference Include="Mumrich.SpaDevMiddleware" Version="0.1.54" />
   </ItemGroup>
 
 </Project>
