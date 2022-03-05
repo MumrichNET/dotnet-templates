@@ -16,10 +16,7 @@
           transition-next="jump-up"
         >
           <q-tab-panel name="markdown" class="bg-grey-2">
-            <MarkdownVue :markdown="modelValue" />
-            <q-popup-edit v-model="modelValue" v-slot="scope" buttons>
-              <q-input type="textarea" counter v-model="scope.value" />
-            </q-popup-edit>
+            <q-input type="textarea" counter v-model="modelValue" />
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -28,7 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-import MarkdownVue from '../../../client-app/src/widgets/Markdown.vue';
 import { ref } from 'vue';
 
 const tab = ref('markdown');

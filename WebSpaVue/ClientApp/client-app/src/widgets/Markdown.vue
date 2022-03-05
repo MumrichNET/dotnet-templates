@@ -1,5 +1,5 @@
 <template>
-  <div v-html="purifiedHtml" />
+  <div v-html="html" />
 </template>
 
 <script lang="ts" setup>
@@ -19,7 +19,10 @@ const props = defineProps({
   },
 });
 
-const html = computed(() => marked.parse(props.markdown ?? "[invalid markdown]"));
+const html = computed(() => {
+  const rawMd = props.markdown ?? "[invalid markdown]";
+  return marked.parse(rawMd)
+});
 const purifiedHtml = computed(() =>
   DOMPurify.sanitize(html.value, props.sanitize)
 );
