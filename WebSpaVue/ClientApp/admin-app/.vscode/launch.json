@@ -7,7 +7,7 @@
     {
       "type": "pwa-msedge",
       "request": "launch",
-      "name": "Edge (admin)",
+      "name": "Edge: /admin",
       "url": "https://localhost:7189/admin/",
       "webRoot": "${workspaceFolder}"
     }
