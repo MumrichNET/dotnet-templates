@@ -17,6 +17,12 @@ const router = createRouter({
               markdown: "# Hello Markdown 😍",
             },
           },
+          {
+            component: "w-markdown",
+            props: {
+              markdown: "This *is* a **text**!",
+            },
+          },
         ],
       },
     },
