@@ -33,6 +33,7 @@ app.UseCors(corsPolicyBuilder => corsPolicyBuilder
   .WithOrigins("http://localhost:8080")
   .AllowCredentials());
 
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
