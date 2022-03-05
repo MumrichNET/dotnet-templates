@@ -49,7 +49,7 @@ const linksList = [
   {
     title: 'Widgets',
     caption: 'Pages & Content',
-    icon: 'public',
+    icon: 'preview',
     link: '/widgets'
   }
 ];
