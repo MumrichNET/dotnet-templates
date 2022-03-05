@@ -7,5 +7,6 @@ namespace WebSpaVue.Models
     public string Path { get; set; }
     public List<VueRoute> Children { get; set; }
     public string Component { get; set; }
+    public VueRouteMeta Meta { get; set; }
   }
 }

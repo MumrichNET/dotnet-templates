@@ -6,6 +6,7 @@ indent_style = space
 trim_trailing_whitespace = true
 charset = utf-8
 end_of_line = lf
+indent_size = 2
 
 # Xml files
 [*.{xml,csproj,targets,props}]
