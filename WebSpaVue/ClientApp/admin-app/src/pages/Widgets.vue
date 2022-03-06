@@ -1,65 +1,103 @@
 <template>
-  <q-splitter v-model="splitterModel" style="height: 100%">
-    <template v-slot:before>
-      <div class="q-pa-md">
-        <q-tree :nodes="simple" node-key="label" v-model:selected="selected" default-expand-all />
-      </div>
-    </template>
-    <template v-slot:after>
-      <div class="q-pa-md">
-        <markdown />
-      </div>
-    </template>
-  </q-splitter>
+  <div>
+    <q-splitter horizontal v-model="editVsPreviewSplitterModel">
+      <template v-slot:before>
+        <q-splitter v-model="treeVsPropsSplitterModel">
+          <template v-slot:before>
+            <div class="q-pa-md">
+              <q-tree
+                :nodes="tree"
+                node-key="path"
+                label-key="title"
+                v-model:selected="selected"
+                default-expand-all
+              />
+            </div>
+          </template>
+          <template v-slot:after>
+            <div class="q-pa-md">
+              <markdown
+                v-if="selectedWidget?.component === 'w-markdown'"
+                :is="selectedWidget.component"
+                v-bind:markdown="selectedWidget.props.markdown"
+              />
+            </div>
+          </template>
+        </q-splitter>
+      </template>
+      <template v-slot:after>
+        <div class="q-pa-md">GUGUS...</div>
+      </template>
+    </q-splitter>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Markdown from 'src/widgets/Markdown.vue';
+import router, { routes } from '../../../client-app/src/routes/router';
+import { RouteRecordRaw } from 'vue-router';
 
-const selected = ref(null);
-const splitterModel = ref(20);
-const simple = ref([
-  {
-    label: 'Markdown',
-    icon: 'preview',
-  },
-]);
-// const simple = ref([
-//   {
-//     label: 'Satisfied customers (with avatar)',
-//     avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
-//     children: [
-//       {
-//         label: 'Good food (with icon)',
-//         icon: 'restaurant_menu',
-//         children: [
-//           { label: 'Quality ingredients' },
-//           { label: 'Good recipe' }
-//         ]
-//       },
-//       {
-//         label: 'Good service (disabled node with icon)',
-//         icon: 'room_service',
-//         disabled: true,
-//         children: [
-//           { label: 'Prompt attention' },
-//           { label: 'Professional waiter' }
-//         ]
-//       },
-//       {
-//         label: 'Pleasant surroundings (with icon)',
-//         icon: 'photo',
-//         children: [
-//           {
-//             label: 'Happy atmosphere (with image)',
-//             img: 'https://cdn.quasar.dev/img/logo_calendar_128px.png'
-//           },
-//           { label: 'Good table presentation' },
-//           { label: 'Pleasing decor' }
-//         ]
-//       }
-//     ]
-//   }
-// ])
+const selected = ref<string | null>(null);
+const treeVsPropsSplitterModel = ref(30);
+const editVsPreviewSplitterModel = ref(50);
+type TreeNode = {
+  path: string;
+  title: string;
+  icon: string;
+  children?: TreeNode[];
+};
+
+type VueWidget = { component: string; props: Record<string, any> };
+
+function getWidgetNodes(
+  path: string,
+  widgets: VueWidget[]
+): TreeNode[] {
+  return widgets.map((w, i) => {
+    return {
+      path: `${path};${i}`,
+      icon: 'preview',
+      title: w.component,
+    };
+  });
+}
+
+function getRouteNodes(routes: RouteRecordRaw[], basePath?: string): TreeNode[] {
+  return routes.map((r) => {
+    const title = r.meta?.title as string;
+    const fullPath = basePath !== undefined ? `${basePath}/${r.path}` : r.path;
+    const pageChildren = r.children ? getRouteNodes(r.children, fullPath) : [];
+    const widgetChildren = r.meta?.widgets
+      ? getWidgetNodes(fullPath, r.meta?.widgets)
+      : [];
+
+    return {
+      icon: 'web',
+      path: fullPath,
+      title,
+      children: [...pageChildren, ...widgetChildren],
+    };
+  });
+}
+
+function getSelectionWidget(fullPath?: string | null): VueWidget | null {
+  if (!fullPath) {
+    return null;
+  }
+
+  const parts = fullPath.split(';');
+  const path = parts[0];
+  const route = router.getRoutes().find((r) => r.path === path) ?? null;
+  const widgetIndex = parts.length > 1 ? parts[1] : null;
+
+  if (widgetIndex !== null && route !== null) {
+    return route.meta.widgets[widgetIndex];
+  }
+
+  return null;
+}
+
+const tree = computed(() => getRouteNodes(routes));
+const selectedWidget = computed(() => getSelectionWidget(selected.value))
 </script>

@@ -25,9 +25,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+
+const props = defineProps({
+  markdown: {
+    required: true,
+    type: String
+  }
+});
+
+const emits = defineEmits({
+  'update:markdown': (v: string) => v
+})
 
 const tab = ref('markdown');
 const splitterModel = ref(20);
-const modelValue = ref('# Hello Markdown 😍\nThis *is* a **text**!')
+
+const modelValue = computed({
+  get: () => props.markdown,
+  set: (v) => emits('update:markdown', v)
+});
 </script>
