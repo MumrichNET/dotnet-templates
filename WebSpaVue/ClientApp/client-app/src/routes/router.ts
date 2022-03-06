@@ -1,11 +1,11 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import HomeVue from "./Home.vue";
 import AboutVue from "./About.vue";
+import DynamicPageRendererVue from "../components/DynamicPageRenderer.vue";
 
 export const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: HomeVue,
+    component: DynamicPageRendererVue,
     meta: {
       title: "Home",
       widgets: [
@@ -26,7 +26,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "/test",
-    component: { template: "<h1>Test</h1>" },
+    component: DynamicPageRendererVue,
     meta: {
       title: "Test",
       widgets: [
@@ -41,7 +41,7 @@ export const routes: RouteRecordRaw[] = [
     children: [
       {
         path: "test-child",
-        component: { template: "<h2>Test-Child</h2>" },
+        component: DynamicPageRendererVue,
         meta: {
           title: "Test-Child",
           widgets: [
