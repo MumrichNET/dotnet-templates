@@ -31,7 +31,7 @@ async function loadImageUrlsAsync() {
   }
 }
 
-async function onUploaded(info: { files: File[], xhr: object }) {
+async function onUploaded() {
   await loadImageUrlsAsync();
 }
 
