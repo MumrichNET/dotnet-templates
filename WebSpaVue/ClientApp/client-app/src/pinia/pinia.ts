@@ -2,8 +2,9 @@ import { defineStore } from "pinia";
 import { RouteRecordRaw } from "vue-router";
 import AboutVue from "../routes/About.vue";
 import DynamicPageRendererVue from "../components/DynamicPageRenderer.vue";
+import { reactive, ref } from "vue";
 
-const routes: RouteRecordRaw[] = [
+const routes = ref<RouteRecordRaw[]>([
   {
     path: "/",
     component: DynamicPageRendererVue,
@@ -64,12 +65,17 @@ const routes: RouteRecordRaw[] = [
       title: "About",
     },
   },
-];
+]);
 
 export const useStore = defineStore("clientRoutes", {
   state: () => {
     return {
-      routes,
+      routes: routes.value,
     };
+  },
+  actions: {
+    setRoutes(newRoutes: RouteRecordRaw[]) {
+      this.routes = newRoutes;
+    },
   },
 });
