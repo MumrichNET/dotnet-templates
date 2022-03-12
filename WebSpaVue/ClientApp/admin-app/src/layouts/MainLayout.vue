@@ -47,10 +47,10 @@ const linksList = [
     link: '/media',
   },
   {
-    title: 'Widgets',
+    title: 'Router',
     caption: 'Pages & Content',
     icon: 'preview',
-    link: '/widgets'
+    link: '/router'
   }
 ];
 
