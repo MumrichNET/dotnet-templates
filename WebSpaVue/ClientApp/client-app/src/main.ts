@@ -1,4 +1,5 @@
 import "virtual:windi.css";
+import "virtual:windi-devtools";
 import App from "./App.vue";
 import i18n from "./i18n/i18n";
 import pinia from "./plugins/Pinia";

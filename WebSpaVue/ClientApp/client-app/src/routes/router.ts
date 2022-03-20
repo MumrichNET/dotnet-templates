@@ -8,7 +8,7 @@ const router: Plugin = {
 
     const router = createRouter({
       history: createWebHashHistory(),
-      routes: store.$state.routes,
+      routes: store.routes,
     });
 
     app.use(router);
