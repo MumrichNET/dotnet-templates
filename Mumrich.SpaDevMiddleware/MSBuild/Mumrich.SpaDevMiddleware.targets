@@ -17,13 +17,13 @@
 
   <Target Name="EnsureNodeModulesInstalled" BeforeTargets="Build" Inputs="package.json" Outputs="yarn.lock">
     <Message Importance="high" Text="Restoring dependencies. This may take a moment..." />
-    <Message Importance="high" Text="SpaRoot: %(SpaRoot.Identity)" />
+    <Message Importance="high" Text="Install SpaRoot: %(SpaRoot.Identity)" />
     <Exec WorkingDirectory="%(SpaRoot.Identity)" Command="yarn install" />
   </Target>
 
   <Target Name="PublishSpas" AfterTargets="ComputeFilesToPublish">
-    <Message Importance="high" Text="Running Spa builds..." />
-    <Exec WorkingDirectory="%(SpaRoot.Identity)" Command="yarn build" />
+    <Message Importance="high" Text="Build SpaRoot: %(SpaRoot.Identity) with EnvironmentVariables: %(SpaRoot.BuildEnv)" />
+    <Exec EnvironmentVariables="%(SpaRoot.BuildEnv)" WorkingDirectory="%(SpaRoot.Identity)" Command="yarn build" />
     <ItemGroup>
       <DistFiles Include="%(SpaRoot.Identity)dist\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
