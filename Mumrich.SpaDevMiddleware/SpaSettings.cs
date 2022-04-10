@@ -45,4 +45,14 @@ public class SpaSettings
   /// E. g.: 'npm run dev' or 'yarn run', etc.
   /// </summary>
   public string StartCommand { get; set; }
+
+  /// <summary>
+  /// Name of the policy or "Default", "Anonymous"
+  /// </summary>
+  public string AuthorizationPolicy { get; set; } = "Anonymous";
+
+  /// <summary>
+  /// Name of the CorsPolicy to apply to this route or "Default", "Disable"
+  /// </summary>
+  public string CorsPolicy { get; set; } = "Default";
 }

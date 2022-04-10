@@ -34,8 +34,8 @@ namespace Mumrich.SpaDevMiddleware.Extensions
           var guid = Guid.NewGuid();
           var current = JObject.Parse(spaSettings.Bundler switch
           {
-            BundlerType.ViteJs => GetViteJsYarpConfig(appPath, spaSettings.DevServerAddress, guid),
-            BundlerType.QuasarCli => GetQuasarYarpConfig(appPath, spaSettings.DevServerAddress, guid),
+            BundlerType.ViteJs => GetViteJsYarpConfig(appPath, guid, spaSettings),
+            BundlerType.QuasarCli => GetQuasarYarpConfig(appPath, guid, spaSettings),
             _ => throw new NotImplementedException()
           });
 
@@ -54,35 +54,43 @@ namespace Mumrich.SpaDevMiddleware.Extensions
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
     }
 
-    private static string GetQuasarYarpConfig(string appPath, string address, Guid guid)
+    private static string GetQuasarYarpConfig(string appPath, Guid guid, SpaSettings spaSettings)
     {
-      return GetYarpConfig(appPath, address, new Dictionary<string, string>
-      {
+      return GetYarpConfig(
+        appPath,
+        spaSettings,
+        new Dictionary<string, string>
         {
-          $"SpaRoot-{guid}", "{**any}"
-        }
-      }, guid);
+          {
+            $"SpaRoot-{guid}", "{**any}"
+          }
+        },
+        guid);
     }
 
-    private static string GetViteJsYarpConfig(string appPath, string address, Guid guid)
+    private static string GetViteJsYarpConfig(string appPath, Guid guid, SpaSettings spaSettings)
     {
       //language=regexp
       const string spaRootExpression = @"^.+\\..+$";
       //language=regexp
       const string spaAssetsExpression = "^(src|node_modules|@[a-zA-Z]+)$";
 
-      return GetYarpConfig(appPath, address, new Dictionary<string, string>
-      {
+      return GetYarpConfig(
+        appPath,
+        spaSettings,
+        new Dictionary<string, string>
         {
-          $"SpaRoot-{guid}", $"{{filename:regex({spaRootExpression})?}}"
+          {
+            $"SpaRoot-{guid}", $"{{filename:regex({spaRootExpression})?}}"
+          },
+          {
+            $"SpaAssets-{guid}", $"{{name:regex({spaAssetsExpression})}}/{{**any}}"
+          }
         },
-        {
-          $"SpaAssets-{guid}", $"{{name:regex({spaAssetsExpression})}}/{{**any}}"
-        }
-      }, guid);
+        guid);
     }
 
-    private static string GetYarpConfig(string appPath, string address, Dictionary<string, string> routeMatches, Guid guid)
+    private static string GetYarpConfig(string appPath, SpaSettings spaSettings, Dictionary<string, string> routeMatches, Guid guid)
     {
       appPath = AppPathHelper.GetValidIntermediateAppPath(appPath);
       string clusterId = $"spa-cluster-{guid}";
@@ -93,7 +101,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
               ""{clusterId}"": {{
                 ""Destinations"": {{
                   ""spa-cluster-destination-{guid}"": {{
-                    ""Address"": ""{address}""
+                    ""Address"": ""{spaSettings.DevServerAddress}""
                   }}
                 }}
               }}
@@ -103,19 +111,21 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
       foreach ((string route, string path) in routeMatches)
       {
-        rootConfig.Merge(JObject.Parse(GetYarpRoute(route, clusterId, appPath + path)));
+        rootConfig.Merge(JObject.Parse(GetYarpRoute(route, clusterId, appPath + path, spaSettings)));
       }
 
       return rootConfig.ToString();
     }
 
-    private static string GetYarpRoute(string route, string clusterId, string path)
+    private static string GetYarpRoute(string route, string clusterId, string path, SpaSettings spaSettings)
     {
       return $@"{{
         ""ReverseProxy"": {{
           ""Routes"": {{
             ""{route}"": {{
               ""ClusterId"": ""{clusterId}"",
+              ""AuthorizationPolicy"": ""{spaSettings.AuthorizationPolicy}"",
+              ""CorsPolicy"": ""{spaSettings.CorsPolicy}"",
               ""Match"": {{
                 ""Path"": ""{path}""
               }}
