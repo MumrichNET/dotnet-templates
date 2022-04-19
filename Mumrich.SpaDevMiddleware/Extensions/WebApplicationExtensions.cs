@@ -29,7 +29,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
     public static void MapSinglePageApp(this WebApplication webApplication, string appPath, SpaSettings spaSettings)
     {
-      var clientAppRoot = Path.Combine(webApplication.Environment.ContentRootPath, $"{spaSettings.SpaRootPath}/dist");
+      var clientAppRoot = Path.GetFullPath(Path.Combine(webApplication.Environment.ContentRootPath, spaSettings.SpaRootPath, "dist"));
 
       webApplication.UseStaticFiles(new StaticFileOptions
       {
@@ -37,9 +37,11 @@ namespace Mumrich.SpaDevMiddleware.Extensions
         RequestPath = appPath == "/" ? string.Empty : appPath
       });
 
-      var clientAppIndex = Path.Combine(clientAppRoot, "index.html");
+      var clientAppIndex = Path.GetFullPath(Path.Combine(clientAppRoot, "index.html"));
 
-      webApplication.MapGet(AppPathHelper.GetValidIntermediateAppPath(appPath), async context => await context.Response.SendFileAsync(clientAppIndex));
+      webApplication.MapGet(
+        AppPathHelper.GetValidIntermediateAppPath(appPath),
+        async context => await context.Response.SendFileAsync(clientAppIndex));
     }
   }
 }

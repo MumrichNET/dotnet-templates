@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
@@ -9,12 +11,67 @@ namespace Mumrich.SpaDevMiddleware.Extensions
   {
     private static readonly Regex EnvVarRegex = new("^%.+%$");
 
+    private static string GetExeName(this SpaSettings spaSettings)
+    {
+      return spaSettings.NodePackageManager switch
+      {
+        NodePackageManager.Npm => "npm",
+        NodePackageManager.Yarn => "yarn",
+        NodePackageManager.Npx => "npx",
+        NodePackageManager.Pnpm => "pnpm",
+        _ => "npm",
+      };
+    }
+
+    private static string BuildCommand(this SpaSettings spaSettings, string arguments = null)
+    {
+      var command = new StringBuilder();
+      var isNpm = spaSettings.NodePackageManager == NodePackageManager.Npm;
+
+      if (isNpm)
+      {
+        command.Append("run ");
+      }
+
+      command.Append(spaSettings.StartCommand);
+      command.Append(' ');
+
+      if (isNpm)
+      {
+        command.Append("-- ");
+      }
+
+      if (!string.IsNullOrWhiteSpace(arguments))
+      {
+        command.Append(arguments);
+      }
+
+      return command.ToString();
+    }
+
+    private static (string, string) GetCompleteCommand(this SpaSettings spaSettings)
+    {
+      string completeArguments = spaSettings.BuildCommand();
+      string exeName = spaSettings.GetExeName();
+
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+      {
+        // On Windows, the NPM executable is a .cmd file, so it can't be executed
+        // directly (except with UseShellExecute=true, but that's no good, because
+        // it prevents capturing stdio). So we need to invoke it via "cmd /c".
+        completeArguments = $"/c {exeName} {completeArguments}";
+        exeName = "cmd";
+      }
+
+      return (exeName, completeArguments);
+    }
+
     public static ProcessStartInfo GetProcessStartInfo(this SpaSettings spaSettings)
     {
-      var arguments = $"/c {spaSettings.StartCommand}";
-      var processStartInfo = new ProcessStartInfo("cmd")
+      var (exeName, completeArguments) = spaSettings.GetCompleteCommand();
+      var processStartInfo = new ProcessStartInfo(exeName)
       {
-        Arguments = arguments,
+        Arguments = completeArguments,
         UseShellExecute = false,
         RedirectStandardInput = true,
         RedirectStandardOutput = true,
