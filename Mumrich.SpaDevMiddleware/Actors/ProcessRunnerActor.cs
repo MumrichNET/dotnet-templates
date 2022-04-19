@@ -30,6 +30,8 @@ namespace Mumrich.SpaDevMiddleware.Actors
       var regex = spaSettings.Regex;
       var processStartInfo = spaSettings.GetProcessStartInfo();
 
+      logger.LogInformation($"{nameof(processStartInfo)}: {processStartInfo.FileName} {processStartInfo.Arguments}");
+
       ReceiveAsync<StartProcessCommand>(async _ =>
       {
         RunnerProcess = LaunchNodeProcess(processStartInfo);
@@ -47,12 +49,15 @@ namespace Mumrich.SpaDevMiddleware.Actors
           // it doesn't do so until it's finished compiling, and even then only if there were
           // no compiler warnings. So instead of waiting for that, consider it ready as soon
           // as it starts listening for requests.
-          await StdOut.WaitForMatch(new Regex(!string.IsNullOrWhiteSpace(regex) ? regex : DefaultRegex, RegexOptions.None, RegexMatchTimeout));
+          await StdOut.WaitForMatch(new Regex(
+            !string.IsNullOrWhiteSpace(regex) ? regex : DefaultRegex,
+            RegexOptions.None,
+            RegexMatchTimeout));
         }
         catch (EndOfStreamException ex)
         {
           throw new InvalidOperationException(
-            $"The Command '{spaSettings.StartCommand}' exited without indicating that the " +
+            $"The Command '{spaSettings.NodeStartScript}' exited without indicating that the " +
             "server was listening for requests. The error output was: " +
             $"{stdErrReader.ReadAsString()}", ex);
         }
@@ -78,7 +83,6 @@ namespace Mumrich.SpaDevMiddleware.Actors
       {
         var process = Process.Start(startInfo);
 
-        // See equivalent comment in OutOfProcessNodeInstance.cs for why
         process.EnableRaisingEvents = true;
 
         return process;
@@ -87,7 +91,7 @@ namespace Mumrich.SpaDevMiddleware.Actors
       {
         var message = $"Failed to start '{startInfo.FileName}'. To resolve this:.\n\n"
                       + $"[1] Ensure that '{startInfo.FileName}' is installed and can be found in one of the PATH directories.\n"
-                      + $"    Current PATH enviroment variable is: { Environment.GetEnvironmentVariable("PATH") }\n"
+                      + $"    Current PATH enviroment variable is: {Environment.GetEnvironmentVariable("PATH")}\n"
                       + "    Make sure the executable is in one of those directories, or update your PATH.\n\n"
                       + "[2] See the InnerException for further details of the cause.";
         throw new InvalidOperationException(message, ex);

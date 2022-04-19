@@ -57,7 +57,7 @@ public class SpaSettings
   /// The star-command for the dev-server to launch
   /// E. g.: 'npm run dev' or 'yarn run', etc.
   /// </summary>
-  public string StartCommand { get; set; }
+  public string NodeStartScript { get; set; }
 
   /// <summary>
   /// Name of the policy or "Default", "Anonymous"

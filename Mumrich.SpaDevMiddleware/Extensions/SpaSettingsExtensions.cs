@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Helpers;
+
 namespace Mumrich.SpaDevMiddleware.Extensions
 {
   public static class SpaSettingsExtensions
@@ -33,7 +35,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
         command.Append("run ");
       }
 
-      command.Append(spaSettings.StartCommand);
+      command.Append(spaSettings.NodeStartScript);
       command.Append(' ');
 
       if (isNpm)
@@ -54,21 +56,23 @@ namespace Mumrich.SpaDevMiddleware.Extensions
       string completeArguments = spaSettings.BuildCommand();
       string exeName = spaSettings.GetExeName();
 
-      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+      if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
       {
-        // On Windows, the NPM executable is a .cmd file, so it can't be executed
-        // directly (except with UseShellExecute=true, but that's no good, because
-        // it prevents capturing stdio). So we need to invoke it via "cmd /c".
-        completeArguments = $"/c {exeName} {completeArguments}";
-        exeName = "cmd";
+        return (exeName, completeArguments);
       }
+
+      // On Windows, the NPM executable is a .cmd file, so it can't be executed
+      // directly (except with UseShellExecute=true, but that's no good, because
+      // it prevents capturing stdio). So we need to invoke it via "cmd /c".
+      completeArguments = $"/c {exeName} {completeArguments}";
+      exeName = "cmd";
 
       return (exeName, completeArguments);
     }
 
     public static ProcessStartInfo GetProcessStartInfo(this SpaSettings spaSettings)
     {
-      var (exeName, completeArguments) = spaSettings.GetCompleteCommand();
+      (string exeName, string completeArguments) = spaSettings.GetCompleteCommand();
       var processStartInfo = new ProcessStartInfo(exeName)
       {
         Arguments = completeArguments,
@@ -76,7 +80,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
         RedirectStandardInput = true,
         RedirectStandardOutput = true,
         RedirectStandardError = true,
-        WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), spaSettings.SpaRootPath)
+        WorkingDirectory = DirPathHelper.CombineToFullPath(Directory.GetCurrentDirectory(), spaSettings.SpaRootPath)
       };
 
       foreach ((string key, string value) in spaSettings.Environment)
