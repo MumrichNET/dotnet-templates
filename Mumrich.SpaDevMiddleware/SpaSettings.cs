@@ -8,6 +8,14 @@ public enum BundlerType
   QuasarCli
 }
 
+public enum NodePackageManager
+{
+  Npm,
+  Yarn,
+  Npx,
+  Pnpm
+}
+
 public class SpaSettings
 {
   /// <summary>
@@ -22,6 +30,11 @@ public class SpaSettings
   /// E. g.: Vue.js, Quasar-CLI, etc.
   /// </summary>
   public BundlerType Bundler { get; set; } = BundlerType.ViteJs;
+
+  /// <summary>
+  /// The npm-compatible package-manager to use.
+  /// </summary>
+  public NodePackageManager NodePackageManager { get; set; } = NodePackageManager.Yarn;
 
   /// <summary>
   /// The full Url to the dev-server.
