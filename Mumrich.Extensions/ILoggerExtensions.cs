@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 using Microsoft.Extensions.Logging;
 
-namespace Extensions
+namespace Mumrich.Extensions
 {
   public static class LoggerExtensions
   {

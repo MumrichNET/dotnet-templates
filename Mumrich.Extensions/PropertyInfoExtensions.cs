@@ -4,12 +4,12 @@ using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 
-using Helpers;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Extensions
+using Mumrich.Helpers;
+
+namespace Mumrich.Extensions
 {
   public static class PropertyInfoExtensions
   {

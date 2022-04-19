@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Helpers
+namespace Mumrich.Helpers
 {
   public static class ExceptionHelper
   {

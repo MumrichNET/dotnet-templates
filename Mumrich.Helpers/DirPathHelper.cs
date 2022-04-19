@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Helpers
+namespace Mumrich.Helpers
 {
   public static class DirPathHelper
   {

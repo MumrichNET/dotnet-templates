@@ -49,7 +49,7 @@ public abstract class PackTaskBase : FrostingTask<BuildContext>
   }
 }
 
-public class PackSpaDevMiddlewareTask : PackTaskBase
+public class PackMumrichSpaDevMiddlewareTask : PackTaskBase
 {
   public override void Run(BuildContext context)
   {
@@ -59,7 +59,7 @@ public class PackSpaDevMiddlewareTask : PackTaskBase
   }
 }
 
-public class PackAkkaExtTask : PackTaskBase
+public class PackMumrichAkkaExtTask : PackTaskBase
 {
   public override void Run(BuildContext context)
   {
@@ -69,16 +69,37 @@ public class PackAkkaExtTask : PackTaskBase
   }
 }
 
+public class PackMumrichExtensionsTask : PackTaskBase
+{
+  public override void Run(BuildContext context)
+  {
+    const string csprojName = "Mumrich.Extensions";
+
+    PackCsproj(context, csprojName);
+  }
+}
+
+public class PackMumrichHelpersTask : PackTaskBase
+{
+  public override void Run(BuildContext context)
+  {
+    const string csprojName = "Mumrich.Helpers";
+
+    PackCsproj(context, csprojName);
+  }
+}
+
 [TaskName("Default")]
-[IsDependentOn(typeof(PackSpaDevMiddlewareTask))]
-[IsDependentOn(typeof(PackAkkaExtTask))]
+[IsDependentOn(typeof(PackMumrichSpaDevMiddlewareTask))]
+[IsDependentOn(typeof(PackMumrichAkkaExtTask))]
+[IsDependentOn(typeof(PackMumrichExtensionsTask))]
+[IsDependentOn(typeof(PackMumrichHelpersTask))]
 public class DefaultTask : FrostingTask<BuildContext>
 {
 }
 
 [TaskName("NugetPublish")]
-[IsDependentOn(typeof(PackSpaDevMiddlewareTask))]
-[IsDependentOn(typeof(PackAkkaExtTask))]
+[IsDependentOn(typeof(DefaultTask))]
 public class NugetPublishTask : FrostingTask<BuildContext>
 {
   public override void Run(BuildContext context)

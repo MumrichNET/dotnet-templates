@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DDD\DDD.csproj" />
-    <ProjectReference Include="..\Extensions\Extensions.csproj" />
+    <ProjectReference Include="..\Extensions\Mumrich.Extensions.csproj" />
     <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
   </ItemGroup>
 

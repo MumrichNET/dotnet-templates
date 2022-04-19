@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Extensions
+namespace Mumrich.Extensions
 {
   public static class ExceptionExtensions
   {

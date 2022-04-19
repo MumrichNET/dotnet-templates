@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using Helpers;
+using Mumrich.Helpers;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
 {

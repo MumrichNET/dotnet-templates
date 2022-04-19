@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Extensions.Logging;
 
-namespace Extensions
+namespace Mumrich.Extensions
 {
   public static class ObjectExtensions
   {
