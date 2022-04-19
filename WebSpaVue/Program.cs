@@ -36,6 +36,7 @@ app.UseCors(corsPolicyBuilder => corsPolicyBuilder
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors();
 app.UseOpenApi();
 app.UseSwaggerUi3();
 app.MapControllers();
