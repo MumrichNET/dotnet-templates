@@ -70,21 +70,16 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
     private static string GetViteJsYarpConfig(string appPath, Guid guid, SpaSettings spaSettings)
     {
-      //language=regexp
-      const string spaRootExpression = @"^.+\\..+$";
-      //language=regexp
-      const string spaAssetsExpression = "^(src|node_modules|@[a-zA-Z]+)$";
-
       return GetYarpConfig(
         appPath,
         spaSettings,
         new Dictionary<string, string>
         {
           {
-            $"SpaRoot-{guid}", $"{{filename:regex({spaRootExpression})?}}"
+            $"SpaRoot-{guid}", $"{{filename:regex({spaSettings.SpaRootExpression})?}}"
           },
           {
-            $"SpaAssets-{guid}", $"{{name:regex({spaAssetsExpression})}}/{{**any}}"
+            $"SpaAssets-{guid}", $"{{name:regex({spaSettings.SpaAssetsExpression})}}/{{**any}}"
           }
         },
         guid);
