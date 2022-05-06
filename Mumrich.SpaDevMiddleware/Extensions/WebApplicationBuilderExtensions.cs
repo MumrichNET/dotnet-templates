@@ -36,6 +36,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
           {
             BundlerType.ViteJs => GetViteJsYarpConfig(appPath, guid, spaSettings),
             BundlerType.QuasarCli => GetQuasarYarpConfig(appPath, guid, spaSettings),
+            BundlerType.Custom => @"{{ ""ReverseProxy"": {spaSettings.CustomYarpConfiguration} }}",
             _ => throw new NotImplementedException()
           });
 
@@ -70,21 +71,16 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
     private static string GetViteJsYarpConfig(string appPath, Guid guid, SpaSettings spaSettings)
     {
-      //language=regexp
-      const string spaRootExpression = @"^.+\\..+$";
-      //language=regexp
-      const string spaAssetsExpression = "^(src|node_modules|@[a-zA-Z]+)$";
-
       return GetYarpConfig(
         appPath,
         spaSettings,
         new Dictionary<string, string>
         {
           {
-            $"SpaRoot-{guid}", $"{{filename:regex({spaRootExpression})?}}"
+            $"SpaRoot-{guid}", $"{{filename:regex({spaSettings.SpaRootExpression})?}}"
           },
           {
-            $"SpaAssets-{guid}", $"{{name:regex({spaAssetsExpression})}}/{{**any}}"
+            $"SpaAssets-{guid}", $"{{name:regex({spaSettings.SpaAssetsExpression})}}/{{**any}}"
           }
         },
         guid);

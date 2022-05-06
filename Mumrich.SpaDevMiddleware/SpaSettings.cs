@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 
+using Yarp.ReverseProxy.Configuration;
+
 namespace Mumrich.SpaDevMiddleware;
 
 public enum BundlerType
 {
   ViteJs,
-  QuasarCli
+  QuasarCli,
+  Custom,
 }
 
 public enum NodePackageManager
@@ -68,4 +71,18 @@ public class SpaSettings
   /// Name of the CorsPolicy to apply to this route or "Default", "Disable"
   /// </summary>
   public string CorsPolicy { get; set; } = "Default";
+
+  /// <summary>
+  /// The RegExp for detecting SPA-Root requests.
+  /// </summary>
+  //language=regexp
+  public string SpaRootExpression { get; set; } = @"^.+\\..+$";
+
+  /// <summary>
+  /// The RegExp for detecting SPA-Assets requests.
+  /// </summary>
+  //language=regexp
+  public string SpaAssetsExpression { get; set; } = "^(src|node_modules|@[a-zA-Z]+|.*vite.*)$";
+
+  public IProxyConfig CustomYarpConfiguration { get; set; }
 }
