@@ -36,6 +36,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
           {
             BundlerType.ViteJs => GetViteJsYarpConfig(appPath, guid, spaSettings),
             BundlerType.QuasarCli => GetQuasarYarpConfig(appPath, guid, spaSettings),
+            BundlerType.Custom => @"{{ ""ReverseProxy"": {spaSettings.CustomYarpConfiguration} }}",
             _ => throw new NotImplementedException()
           });
 

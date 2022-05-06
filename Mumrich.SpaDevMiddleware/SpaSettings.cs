@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 
+using Yarp.ReverseProxy.Configuration;
+
 namespace Mumrich.SpaDevMiddleware;
 
 public enum BundlerType
 {
   ViteJs,
-  QuasarCli
+  QuasarCli,
+  Custom,
 }
 
 public enum NodePackageManager
@@ -80,4 +83,6 @@ public class SpaSettings
   /// </summary>
   //language=regexp
   public string SpaAssetsExpression { get; set; } = "^(src|node_modules|@[a-zA-Z]+|.*vite.*)$";
+
+  public IProxyConfig CustomYarpConfiguration { get; set; }
 }
