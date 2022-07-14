@@ -31,14 +31,14 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
         foreach ((string appPath, SpaSettings spaSettings) in spaDevServerSettings.SinglePageApps)
         {
-          var guid = Guid.NewGuid();
-          var current = JObject.Parse(spaSettings.Bundler switch
+          Guid guid = Guid.NewGuid();
+          JObject current = spaSettings.Bundler switch
           {
             BundlerType.ViteJs => GetViteJsYarpConfig(appPath, guid, spaSettings),
             BundlerType.QuasarCli => GetQuasarYarpConfig(appPath, guid, spaSettings),
-            BundlerType.Custom => @"{{ ""ReverseProxy"": {spaSettings.CustomYarpConfiguration} }}",
+            BundlerType.Custom => JObject.FromObject(new { ReverseProxy = spaSettings.CustomYarpConfiguration }),
             _ => throw new NotImplementedException()
-          });
+          };
 
           origin.Merge(current);
         }
@@ -55,7 +55,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
     }
 
-    private static string GetQuasarYarpConfig(string appPath, Guid guid, SpaSettings spaSettings)
+    private static JObject GetQuasarYarpConfig(string appPath, Guid guid, SpaSettings spaSettings)
     {
       return GetYarpConfig(
         appPath,
@@ -69,7 +69,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
         guid);
     }
 
-    private static string GetViteJsYarpConfig(string appPath, Guid guid, SpaSettings spaSettings)
+    private static JObject GetViteJsYarpConfig(string appPath, Guid guid, SpaSettings spaSettings)
     {
       return GetYarpConfig(
         appPath,
@@ -86,49 +86,72 @@ namespace Mumrich.SpaDevMiddleware.Extensions
         guid);
     }
 
-    private static string GetYarpConfig(string appPath, SpaSettings spaSettings, Dictionary<string, string> routeMatches, Guid guid)
+    private static JObject GetYarpConfig(
+      string appPath,
+      SpaSettings spaSettings,
+      Dictionary<string, string> routeMatches,
+      Guid guid)
     {
       appPath = AppPathHelper.GetValidIntermediateAppPath(appPath);
       string clusterId = $"spa-cluster-{guid}";
-
-      var rootConfig = JObject.Parse($@"{{
-          ""ReverseProxy"": {{
-            ""Clusters"": {{
-              ""{clusterId}"": {{
-                ""Destinations"": {{
-                  ""spa-cluster-destination-{guid}"": {{
-                    ""Address"": ""{spaSettings.DevServerAddress}""
-                  }}
-                }}
-              }}
-            }}
-          }}
-        }}");
+      JObject rootConfig = JObject.FromObject(new
+      {
+        ReverseProxy = new
+        {
+          Clusters = new Dictionary<string, object>
+            {
+              {
+                clusterId,
+                new
+                {
+                  Destinations = new Dictionary<string, object>
+                  {
+                    {
+                      $"spa-cluster-destination-{guid}",
+                      new
+                      {
+                        Address = spaSettings.DevServerAddress
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        }
+      });
 
       foreach ((string route, string path) in routeMatches)
       {
-        rootConfig.Merge(JObject.Parse(GetYarpRoute(route, clusterId, appPath + path, spaSettings)));
+        rootConfig.Merge(GetYarpRoute(route, clusterId, appPath + path, spaSettings));
       }
 
-      return rootConfig.ToString();
+      return rootConfig;
     }
 
-    private static string GetYarpRoute(string route, string clusterId, string path, SpaSettings spaSettings)
+    private static JObject GetYarpRoute(string route, string clusterId, string path, SpaSettings spaSettings)
     {
-      return $@"{{
-        ""ReverseProxy"": {{
-          ""Routes"": {{
-            ""{route}"": {{
-              ""ClusterId"": ""{clusterId}"",
-              ""AuthorizationPolicy"": ""{spaSettings.AuthorizationPolicy}"",
-              ""CorsPolicy"": ""{spaSettings.CorsPolicy}"",
-              ""Match"": {{
-                ""Path"": ""{path}""
-              }}
-            }}
-          }}
-        }}
-      }}";
+      return JObject.FromObject(new
+      {
+        ReverseProxy = new
+        {
+          Routes = new Dictionary<string, object>
+          {
+            {
+              route,
+              new
+              {
+                ClusterId = clusterId,
+                spaSettings.AuthorizationPolicy,
+                spaSettings.CorsPolicy,
+                Match = new
+                {
+                  Path = path
+                }
+              }
+            }
+          }
+        }
+      });
     }
   }
 }
