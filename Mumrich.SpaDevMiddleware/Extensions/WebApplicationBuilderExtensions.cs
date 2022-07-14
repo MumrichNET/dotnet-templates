@@ -46,6 +46,8 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
         var newConfig = origin.ToString();
 
+        Console.WriteLine(newConfig);
+
         configurationBuilder.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(newConfig)));
       });
 
