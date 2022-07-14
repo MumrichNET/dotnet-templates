@@ -13,13 +13,17 @@ namespace WebSpaVue.ClientViewModels
 
     public HelloDotnetify()
     {
-      _timer = new Timer(state =>
+      _timer = new Timer(_ =>
       {
         Changed(nameof(ServerTime));
         PushUpdates();
       }, null, 0, 1000);
     }
 
-    public override void Dispose() => _timer.Dispose();
+    public override void Dispose()
+    {
+      _timer.Dispose();
+      GC.SuppressFinalize(this);
+    }
   }
 }
