@@ -1,23 +1,9 @@
 using System.Collections.Generic;
 
-using Yarp.ReverseProxy.Configuration;
+using Mumrich.SpaDevMiddleware.Models;
+using Mumrich.SpaDevMiddleware.Types;
 
 namespace Mumrich.SpaDevMiddleware;
-
-public enum BundlerType
-{
-  ViteJs,
-  QuasarCli,
-  Custom,
-}
-
-public enum NodePackageManager
-{
-  Npm,
-  Yarn,
-  Npx,
-  Pnpm
-}
 
 public class SpaSettings
 {
@@ -60,7 +46,7 @@ public class SpaSettings
   /// The star-command for the dev-server to launch
   /// E. g.: 'npm run dev' or 'yarn run', etc.
   /// </summary>
-  public string NodeStartScript { get; set; }
+  public string NodeStartScript { get; set; } = "dev";
 
   /// <summary>
   /// Name of the policy or "Default", "Anonymous"
@@ -84,5 +70,5 @@ public class SpaSettings
   //language=regexp
   public string SpaAssetsExpression { get; set; } = "^(src|node_modules|@[a-zA-Z]+|.*vite.*)$";
 
-  public IProxyConfig CustomYarpConfiguration { get; set; }
+  public SpaProxyConfig CustomYarpConfiguration { get; set; }
 }

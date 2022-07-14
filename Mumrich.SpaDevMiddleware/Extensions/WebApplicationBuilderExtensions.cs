@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Helpers;
 using Mumrich.SpaDevMiddleware.HostedServices;
+using Mumrich.SpaDevMiddleware.Types;
 
 using Newtonsoft.Json.Linq;
 

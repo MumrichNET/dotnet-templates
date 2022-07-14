@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Mumrich.Helpers;
+using Mumrich.SpaDevMiddleware.Types;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
 {
