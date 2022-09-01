@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using Akka.Actor;
+using Akka.Hosting;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Mumrich.AkkaExt.Extensions;
+using Mumrich.SpaDevMiddleware.Actors;
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Helpers;
-using Mumrich.SpaDevMiddleware.HostedServices;
 using Mumrich.SpaDevMiddleware.Types;
 
 using Newtonsoft.Json.Linq;
@@ -54,7 +58,15 @@ namespace Mumrich.SpaDevMiddleware.Extensions
       var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
 
       builder.Services.AddSingleton(spaDevServerSettings);
-      builder.Services.AddHostedService<SpaDevelopmentService>();
+      builder.Services.AddAkka("spa-development-system", configurationBuilder =>
+      {
+        configurationBuilder.WithActors((system, registry) =>
+        {
+          IActorRef spaBuilderActor = system.ActorOfWithArgs<SpaBuilderActor>(spaDevServerSettings);
+
+          registry.TryRegister<SpaBuilderActor>(spaBuilderActor);
+        });
+      });
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
     }
 

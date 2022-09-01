@@ -21,16 +21,17 @@ namespace Mumrich.SpaDevMiddleware.Actors
     private const string DefaultRegex = "running at";
     private static readonly Regex AnsiColorRegex = new("\x001b\\[[0-9;]*m", RegexOptions.None, TimeSpan.FromSeconds(1));
     private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMinutes(5);
+    private readonly ILogger<ProcessRunnerActor> _logger;
 
     public ProcessRunnerActor(IServiceProvider serviceProvider, SpaSettings spaSettings)
     {
       var serviceProviderScope = serviceProvider.CreateScope();
-      var logger = serviceProviderScope.ServiceProvider.GetService<ILogger<ProcessRunnerActor>>();
+      _logger = serviceProviderScope.ServiceProvider.GetService<ILogger<ProcessRunnerActor>>();
 
       var regex = spaSettings.Regex;
       var processStartInfo = spaSettings.GetProcessStartInfo();
 
-      logger.LogInformation($"{nameof(processStartInfo)}: {processStartInfo.FileName} {processStartInfo.Arguments}");
+      _logger.LogInformation($"{nameof(processStartInfo)}: {processStartInfo.FileName} {processStartInfo.Arguments}");
 
       ReceiveAsync<StartProcessCommand>(async _ =>
       {
@@ -39,7 +40,7 @@ namespace Mumrich.SpaDevMiddleware.Actors
         StdOut = new EventedStreamReader(RunnerProcess.StandardOutput);
         StdErr = new EventedStreamReader(RunnerProcess.StandardError);
 
-        AttachToLogger(logger);
+        AttachToLogger(_logger);
 
         using var stdErrReader = new EventedStreamStringReader(StdErr);
 
@@ -74,6 +75,7 @@ namespace Mumrich.SpaDevMiddleware.Actors
 
     protected override void PostStop()
     {
+      _logger.LogInformation("Kill Bill!");
       Kill();
     }
 
@@ -103,34 +105,46 @@ namespace Mumrich.SpaDevMiddleware.Actors
 
     private void AttachToLogger(ILogger logger)
     {
-      void StdOutOrErrOnReceivedLine(string line)
+      void StdErrOnReceivedLine(string line)
       {
-        if (string.IsNullOrWhiteSpace(line))
-        {
-          return;
-        }
+        //if (string.IsNullOrWhiteSpace(line))
+        //{
+        //  return;
+        //}
 
         // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
         // those to loggers (because a logger isn't necessarily any kind of terminal)
         // making this console for debug purpose
-        if (line.StartsWith("<s>"))
-        {
-          line = line[3..];
-        }
+        //if (line.StartsWith("<s>"))
+        //{
+        //  line = line[3..];
+        //}
 
-        if (logger == null)
-        {
+        //if (logger == null)
+        //{
           Console.Error.WriteLine(line);
-        }
-        else
-        {
-          logger.LogInformation(StripAnsiColors(line).TrimEnd('\n'));
-        }
+        //}
+        //else
+        //{
+        //  logger.LogError(line);
+        //}
+      }
+
+      void StdOutOnReceivedLine(string line)
+      {
+        //if (logger == null)
+        //{
+          Console.WriteLine(line);
+        //}
+        //else
+        //{
+        //  logger.LogInformation(line);
+        //}
       }
 
       // When the NPM task emits complete lines, pass them through to the real logger
-      StdOut.OnReceivedLine += StdOutOrErrOnReceivedLine;
-      StdErr.OnReceivedLine += StdOutOrErrOnReceivedLine;
+      StdOut.OnReceivedLine += StdOutOnReceivedLine;
+      StdErr.OnReceivedLine += StdErrOnReceivedLine;
 
       // But when it emits incomplete lines, assume this is progress information and
       // hence just pass it through to StdOut regardless of logger config.
@@ -147,8 +161,18 @@ namespace Mumrich.SpaDevMiddleware.Actors
 
     private void Kill()
     {
-      try { RunnerProcess?.Kill(); } catch { }
-      try { RunnerProcess?.WaitForExit(); } catch { }
+      try
+      {
+        RunnerProcess.Kill(entireProcessTree: true);
+      }
+      catch (Exception exception)
+      {
+        _logger.LogError(exception, exception.Message);
+      }
+      finally
+      {
+        RunnerProcess.WaitForExit();
+      }
     }
   }
 }
