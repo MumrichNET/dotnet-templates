@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <ImplicitUsings>false</ImplicitUsings>
-    <Nullable>false</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
     <Authors>Hannes Morgenthaler</Authors>
     <ContentTargetFolders>content</ContentTargetFolders>
     <Description>New empty ASP.NET Core 6 Template with Vue 3 SPA.</Description>
@@ -11,11 +11,14 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IsPackable>true</IsPackable>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
     <PackageId>Template.WebSpaVue3Empty</PackageId>
     <PackageTags>dotnet-new;templates;vue;vue3</PackageTags>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0</PackageVersion>
     <TargetFramework>net6.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +28,6 @@
 
   <ItemGroup>
     <Content Include="**\*" Exclude="**\bin\**;**\obj\**;**\ClientApp\node_modules\**" />
-    <Compile Remove="**\*" />
   </ItemGroup>
 
   <ItemGroup>
