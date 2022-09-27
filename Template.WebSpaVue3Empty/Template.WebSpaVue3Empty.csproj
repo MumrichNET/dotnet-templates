@@ -5,7 +5,7 @@
     <ContentTargetFolders>content</ContentTargetFolders>
     <Description>New empty ASP.NET Core 6 Template with Vue 3 SPA.</Description>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IsPackable>true</IsPackable>
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mumrich.SpaDevMiddleware" Version="0.1.54" />
+    <PackageReference Include="Mumrich.SpaDevMiddleware" Version="1.0.4" />
   </ItemGroup>
 
 </Project>

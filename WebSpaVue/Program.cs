@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Mumrich.SpaDevMiddleware.Contracts;
-using Mumrich.SpaDevMiddleware.Extensions;
 
 using WebSpaVue;
+using WebSpaVue.HostedServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();
@@ -23,7 +23,8 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSignalR();
 builder.Services.AddDotNetify();
 
-builder.RegisterSinglePageAppDevMiddleware(appSettings);
+//builder.RegisterSinglePageAppDevMiddleware(appSettings);
+builder.Services.AddHostedService<AkkaHostParentService>();
 
 var app = builder.Build();
 
@@ -44,6 +45,7 @@ app.MapDefaultControllerRoute();
 app.UseWebSockets();
 app.UseDotNetify();
 app.MapHub<DotNetifyHub>("/dotnetify");
-app.MapSinglePageApps(appSettings);
+
+//app.MapSinglePageApps(appSettings);
 
 app.Run();

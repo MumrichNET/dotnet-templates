@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mumrich.SpaDevMiddleware.Utils;
 
-internal class EventedStreamReader
+public class EventedStreamReader
 {
   private readonly StringBuilder _linesBuffer;
 
