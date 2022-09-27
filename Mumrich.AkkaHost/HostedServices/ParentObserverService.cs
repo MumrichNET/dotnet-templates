@@ -9,11 +9,11 @@ using Mumrich.Extensions;
 
 namespace Mumrich.AkkaHost.HostedServices
 {
-  public sealed class ExampleHostedService : IHostedService
+  public sealed class ParentObserverService : IHostedService
   {
     private readonly ILogger _logger;
 
-    public ExampleHostedService(ILogger<ExampleHostedService> logger, IHostApplicationLifetime appLifetime)
+    public ParentObserverService(ILogger<ParentObserverService> logger, IHostApplicationLifetime appLifetime)
     {
       _logger = logger;
 

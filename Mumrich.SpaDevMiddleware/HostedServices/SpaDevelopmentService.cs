@@ -22,8 +22,8 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
 
     public SpaDevelopmentService(IServiceProvider serviceProvider) : base("spa-development-system", serviceProvider)
     {
-      _appLifetime = serviceProvider.GetService<IHostApplicationLifetime>();
-      _spaDevServerSettings = serviceProvider.GetService<ISpaDevServerSettings>();
+      _appLifetime = serviceProvider.GetRequiredService<IHostApplicationLifetime>();
+      _spaDevServerSettings = serviceProvider.GetRequiredService<ISpaDevServerSettings>();
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -41,7 +41,7 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
         _processRunners.Add(spaPath, AkkaSystem.ActorOf(DependencyInjectionResolver.Props<ProcessRunnerActor>(spaSettings)));
       }
 
-      //RegisterApplicationShutdownIfAkkaSystemTerminates(_appLifetime, cancellationToken);
+      RegisterApplicationShutdownIfAkkaSystemTerminates(_appLifetime, cancellationToken);
 
       return Task.CompletedTask;
     }
@@ -58,13 +58,13 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-      //await GracefullyShutdownAkkaSystemAsync();
+      await GracefullyShutdownAkkaSystemAsync();
 
       await CoordinatedShutdown
         .Get(AkkaSystem)
         .Run(CoordinatedShutdown.ClrExitReason.Instance);
 
-      //AkkaSystem.Dispose();
+      AkkaSystem.Dispose();
     }
   }
 }

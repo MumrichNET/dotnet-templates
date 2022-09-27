@@ -8,8 +8,11 @@ using Akka.Actor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Extensions;
 using Mumrich.SpaDevMiddleware.Utils;
+
+using Newtonsoft.Json;
 
 namespace Mumrich.SpaDevMiddleware.Actors
 {
@@ -25,12 +28,16 @@ namespace Mumrich.SpaDevMiddleware.Actors
     public ProcessRunnerActor(IServiceProvider serviceProvider, SpaSettings spaSettings)
     {
       var serviceProviderScope = serviceProvider.CreateScope();
+      var spaDevServerSettings = serviceProviderScope.ServiceProvider.GetService<ISpaDevServerSettings>();
       var logger = serviceProviderScope.ServiceProvider.GetService<ILogger<ProcessRunnerActor>>();
 
       var regex = spaSettings.Regex;
-      var processStartInfo = spaSettings.GetProcessStartInfo();
 
-      logger.LogInformation($"{nameof(processStartInfo)}: {processStartInfo.FileName} {processStartInfo.Arguments}");
+      logger.LogInformation(JsonConvert.SerializeObject(spaSettings, Formatting.Indented));
+
+      var processStartInfo = spaSettings.GetProcessStartInfo(spaDevServerSettings);
+
+      logger.LogInformation($"{nameof(processStartInfo)}: {processStartInfo.FileName} {processStartInfo.Arguments} (cwd: '{processStartInfo.WorkingDirectory}')");
 
       ReceiveAsync<StartProcessCommand>(async _ =>
       {
