@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mumrich.Extensions\Mumrich.Extensions.csproj" />
     <ProjectReference Include="..\Mumrich.Helpers\Mumrich.Helpers.csproj" />
     <ProjectReference Include="..\Mumrich.AkkaExt\Mumrich.AkkaExt.csproj" />
   </ItemGroup>

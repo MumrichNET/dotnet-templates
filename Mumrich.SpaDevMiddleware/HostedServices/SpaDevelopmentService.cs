@@ -28,14 +28,6 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-      _appLifetime.ApplicationStopping.Register(() =>
-      {
-        Console.WriteLine("ApplicationStopping called");
-      });
-
-      AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-      AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
-
       foreach ((string spaPath, SpaSettings spaSettings) in _spaDevServerSettings.SinglePageApps)
       {
         _processRunners.Add(spaPath, AkkaSystem.ActorOf(DependencyInjectionResolver.Props<ProcessRunnerActor>(spaSettings)));
@@ -46,25 +38,9 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
       return Task.CompletedTask;
     }
 
-    private void CurrentDomain_ProcessExit(object sender, EventArgs e)
-    {
-      Console.WriteLine("CurrentDomain_ProcessExit");
-    }
-
-    private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-    {
-      Console.WriteLine("CurrentDomain_UnhandledException");
-    }
-
     public async Task StopAsync(CancellationToken cancellationToken)
     {
       await GracefullyShutdownAkkaSystemAsync();
-
-      await CoordinatedShutdown
-        .Get(AkkaSystem)
-        .Run(CoordinatedShutdown.ClrExitReason.Instance);
-
-      AkkaSystem.Dispose();
     }
   }
 }

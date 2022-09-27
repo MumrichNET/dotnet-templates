@@ -8,6 +8,7 @@ using Akka.Actor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Mumrich.Extensions;
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Extensions;
 using Mumrich.SpaDevMiddleware.Utils;
@@ -81,7 +82,7 @@ namespace Mumrich.SpaDevMiddleware.Actors
 
     protected override void PostStop()
     {
-      Kill();
+      RunnerProcess.KillProcessTree();
     }
 
     private static Process LaunchNodeProcess(ProcessStartInfo startInfo)
@@ -150,12 +151,6 @@ namespace Mumrich.SpaDevMiddleware.Actors
           Console.Write(chunk.Array, chunk.Offset, chunk.Count);
         }
       };
-    }
-
-    private void Kill()
-    {
-      try { RunnerProcess?.Kill(); } catch { }
-      try { RunnerProcess?.WaitForExit(); } catch { }
     }
   }
 }

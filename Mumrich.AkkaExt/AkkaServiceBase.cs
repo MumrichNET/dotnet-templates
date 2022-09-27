@@ -35,16 +35,6 @@ namespace Mumrich.AkkaExt
 
       AkkaSystem = ActorSystem.Create(actorSystemName, actorSystemSetup);
       DependencyInjectionResolver = DependencyResolver.For(AkkaSystem);
-
-      AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
-    }
-
-    private void CurrentDomain_ProcessExit(object sender, EventArgs e)
-    {
-      _logger.LogInformation(nameof(CurrentDomain_ProcessExit));
-
-      // TODO: better/cleaner awaiter...
-      GracefullyShutdownAkkaSystemAsync().GetAwaiter().GetResult();
     }
 
     protected ActorSystem AkkaSystem { get; }

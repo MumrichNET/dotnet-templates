@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 using Mumrich.SpaDevMiddleware.Utils;
 
@@ -13,15 +12,10 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
 {
   public class AkkaHostParentService : IHostedService
   {
-    private readonly ILogger<AkkaHostParentService> _logger;
     private Process _akkaHostProcess;
     private EventedStreamReader _stdOut;
     private EventedStreamReader _stdErr;
 
-    public AkkaHostParentService(ILogger<AkkaHostParentService> logger, IHostApplicationLifetime appLifetime)
-    {
-      _logger = logger;
-    }
     public Task StartAsync(CancellationToken cancellationToken)
     {
       var processStartInfo = new ProcessStartInfo("dotnet")
@@ -39,24 +33,16 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
       _stdOut = new EventedStreamReader(_akkaHostProcess.StandardOutput);
       _stdErr = new EventedStreamReader(_akkaHostProcess.StandardError);
 
-      _stdOut.OnReceivedLine += (line) =>
-      {
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine(line);
-      };
+      _stdOut.OnReceivedLine += (line) => Console.WriteLine(line);
 
-      _stdErr.OnReceivedLine += (line) =>
-      {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(line);
-      };
+      _stdErr.OnReceivedLine += (line) => Console.WriteLine(line);
 
       return Task.CompletedTask;
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-      _akkaHostProcess.Kill(entireProcessTree: true);
+      _akkaHostProcess.Close();
       await _akkaHostProcess.WaitForExitAsync();
     }
   }

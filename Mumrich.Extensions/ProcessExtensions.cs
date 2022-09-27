@@ -10,6 +10,21 @@ namespace Mumrich.Extensions;
 
 public static class ProcessExtensions
 {
+  public static IEnumerable<Process> GetChildProcesses(this Process process)
+  {
+    if (OperatingSystem.IsWindows())
+    {
+      List<Process> children = new();
+      foreach (ManagementObject mo in new ManagementObjectSearcher($"Select * From Win32_Process Where ParentProcessID={process.Id}").GetManagementObjects())
+      {
+        children.Add(Process.GetProcessById(mo.GetProcessId()));
+      }
+      return children;
+    }
+
+    return Array.Empty<Process>();
+  }
+
   public static Process GetParentProcess(this Process process)
   {
     if (OperatingSystem.IsWindows())
@@ -25,21 +40,6 @@ public static class ProcessExtensions
     return null;
   }
 
-  public static IEnumerable<Process> GetChildProcesses(this Process process)
-  {
-    if (OperatingSystem.IsWindows())
-    {
-      List<Process> children = new();
-      foreach (ManagementObject mo in new ManagementObjectSearcher($"Select * From Win32_Process Where ParentProcessID={process.Id}").GetManagementObjects())
-      {
-        children.Add(Process.GetProcessById(mo.GetProcessId()));
-      }
-      return children;
-    }
-
-    return null;
-  }
-
   public static bool IsVisualStudioDebugger(this Process process)
   {
     return process.ProcessName.Contains("VsDebugConsole");
@@ -48,5 +48,20 @@ public static class ProcessExtensions
   public static bool IsVsCodeDebugger(this Process process)
   {
     return process.ProcessName.Contains("vsdbg-ui");
+  }
+
+  public static void KillProcessTree(this Process process)
+  {
+    try
+    {
+      foreach (var childProcess in process.GetChildProcesses())
+      {
+        childProcess.KillProcessTree();
+      }
+
+      process.Kill(entireProcessTree: true);
+    }
+    catch { }
+    try { process.WaitForExit(); } catch { }
   }
 }
