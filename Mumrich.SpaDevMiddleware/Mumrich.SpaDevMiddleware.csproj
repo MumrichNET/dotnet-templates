@@ -12,7 +12,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <DebugType>embedded</DebugType>
+    <!--<DebugType>embedded</DebugType>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -48,7 +48,7 @@
       <Pack>True</Pack>
       <PackagePath>/build/</PackagePath>
     </None>
-    <None Include="bin/$(Configuration)/**/$(AssemblyName)*" Exclude="**/*.exe;**/*.dll;**/*.runtimeconfig.json">
+    <None Include="bin/$(Configuration)/**/$(AssemblyName)*" Exclude="**/*.exe;**/*.dll;**/*.runtimeconfig.json;**/*.pdb">
       <Pack>True</Pack>
       <PackagePath>lib</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
