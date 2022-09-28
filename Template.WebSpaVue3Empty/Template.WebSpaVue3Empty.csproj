@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <Authors>Hannes Zbinden</Authors>
+    <Authors>Hannes Morgenthaler</Authors>
     <ContentTargetFolders>content</ContentTargetFolders>
     <Description>New empty ASP.NET Core 6 Template with Vue 3 SPA.</Description>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
