@@ -75,13 +75,13 @@ public class PackMumrichSpaDevMiddlewareTask : PackTaskBase
 
 public abstract class PackTaskBase : FrostingTask<BuildContext>
 {
-  protected static void PackCsproj(BuildContext context, string csprojName)
+  protected static void PackCsproj(BuildContext context, string csprojName, bool includeSource = false)
   {
     context.DotNetPack($"../{csprojName}/{csprojName}.csproj", new DotNetPackSettings
     {
       Configuration = context.MsBuildConriguration,
       NoLogo = true,
-      IncludeSource = true,
+      IncludeSource = includeSource,
       OutputDirectory = context.BuildOutputPath
     });
   }

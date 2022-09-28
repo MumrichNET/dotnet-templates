@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 using DotNetify;
 
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +11,8 @@ using Mumrich.SpaDevMiddleware.Extensions;
 using Mumrich.SpaDevMiddleware.HostedServices;
 
 using WebSpaVue;
+
+var p = Process.GetCurrentProcess();
 
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();

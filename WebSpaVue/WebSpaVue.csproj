@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <ImplicitUsings>disable</ImplicitUsings>
@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DDD\DDD.csproj" />
-    <ProjectReference Include="..\Mumrich.HelpersAndExtensions\Mumrich.HelpersAndExtensions.csproj" />
     <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
   </ItemGroup>
 

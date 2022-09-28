@@ -1,5 +1,14 @@
 <Project>
 
+  <ItemGroup>
+    <JsonFiles Include="$(MSBuildThisFileDirectory)/../lib/**/*.json" />
+  </ItemGroup>
+
+  <Target Name="CopyFiles" AfterTargets="Build">
+    <Message Importance="high" Text="copy json files to target dir..." />
+    <Copy SourceFiles="@(JsonFiles)" DestinationFolder="$(TargetDir)" />
+  </Target>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build">
     <Message Importance="high" Text="node-version:" />
     <Exec Command="node --version" ContinueOnError="true">

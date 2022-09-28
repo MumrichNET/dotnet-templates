@@ -7,6 +7,12 @@
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/mumrich/dotnet-templates</PackageProjectUrl>
     <TargetFramework>net6.0</TargetFramework>
+    <RepositoryUrl>https://github.com/mumrich/dotnet-templates</RepositoryUrl>
+    <PackageTags>SPA</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +23,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Yarp.ReverseProxy" Version="1.0.0" />
+    <PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,9 +36,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../LICENSE.txt" Pack="true" PackagePath="/" />
-    <None Include="README.md" Pack="true" PackagePath="/" />
-    <None Include="MSBuild/**" Pack="True" PackagePath="/build/" />
+    <None Include="../LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>/</PackagePath>
+    </None>
+    <None Include="../README.md">
+      <Pack>True</Pack>
+      <PackagePath>/</PackagePath>
+    </None>
+    <None Include="MSBuild/**">
+      <Pack>True</Pack>
+      <PackagePath>/build/</PackagePath>
+    </None>
+    <None Include="bin/$(Configuration)/**/$(AssemblyName)*" Exclude="**/*.exe;**/*.dll;**/*.runtimeconfig.json">
+      <Pack>True</Pack>
+      <PackagePath>lib</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </None>
   </ItemGroup>
 
 </Project>
