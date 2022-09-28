@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Helpers;
+using Mumrich.SpaDevMiddleware.Models;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
-using Mumrich.SpaDevMiddleware;
 using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Models;
 
 namespace Mumrich.SpaDevHost
 {

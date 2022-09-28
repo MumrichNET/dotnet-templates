@@ -10,17 +10,19 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IsPackable>true</IsPackable>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
     <Nullable>enable</Nullable>
     <PackageId>Template.WebSpaVue3Empty</PackageId>
     <PackageTags>dotnet-new;templates;vue;vue3</PackageTags>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0</PackageVersion>
     <TargetFramework>net6.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Include="**\*" Exclude="**\bin\**;**\obj\**;**\ClientApp\node_modules\**" />
-    <Compile Remove="**\*" />
   </ItemGroup>
 
   <ItemGroup>

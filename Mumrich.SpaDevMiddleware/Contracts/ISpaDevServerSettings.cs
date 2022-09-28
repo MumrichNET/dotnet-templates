@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+using Mumrich.SpaDevMiddleware.Models;
+
 namespace Mumrich.SpaDevMiddleware.Contracts
 {
   public interface ISpaDevServerSettings

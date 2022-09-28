@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Helpers;
 using Mumrich.SpaDevMiddleware.HostedServices;
+using Mumrich.SpaDevMiddleware.Models;
+using Mumrich.SpaDevMiddleware.Types;
 
 using Newtonsoft.Json.Linq;
 
@@ -44,6 +46,8 @@ namespace Mumrich.SpaDevMiddleware.Extensions
         }
 
         var newConfig = origin.ToString();
+
+        Console.WriteLine(newConfig);
 
         configurationBuilder.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(newConfig)));
       });

@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 
 using Mumrich.Helpers;
 using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Models;
+using Mumrich.SpaDevMiddleware.Types;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
 {

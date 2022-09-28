@@ -104,8 +104,8 @@ public class EventedStreamReader
 
       OnChunk(new ArraySegment<char>(buf, 0, chunkLength));
 
-      int lineBreakPos = -1;
       int startPos = 0;
+      int lineBreakPos;
 
       // get all the newlines
       while ((lineBreakPos = Array.IndexOf(buf, '\n', startPos, chunkLength - startPos)) >= 0 && startPos < chunkLength)
