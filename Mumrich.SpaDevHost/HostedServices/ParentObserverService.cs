@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 using Mumrich.Extensions;
 
-namespace Mumrich.AkkaHost.HostedServices
+namespace Mumrich.SpaDevHost.HostedServices
 {
   public sealed class ParentObserverService : IHostedService
   {

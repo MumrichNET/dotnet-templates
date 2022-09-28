@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 
 using Mumrich.Extensions;
@@ -37,9 +36,5 @@ public static class DebuggerHelper
     }
 
     return false;
-  }
-
-  public static void RegisterDebuggerExitAction(Action failsafeAction)
-  {
   }
 }

@@ -46,7 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{AEB1
 		.vscode\tasks.json = .vscode\tasks.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mumrich.AkkaHost", "Mumrich.AkkaHost\Mumrich.AkkaHost.csproj", "{EB146C21-6589-4361-9402-4ED3026FF05C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mumrich.SpaDevHost", "Mumrich.SpaDevHost\Mumrich.SpaDevHost.csproj", "{EB146C21-6589-4361-9402-4ED3026FF05C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

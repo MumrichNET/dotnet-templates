@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
 
+using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Utils;
 
 namespace Mumrich.SpaDevMiddleware.HostedServices
@@ -20,7 +21,8 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
     {
       var processStartInfo = new ProcessStartInfo("dotnet")
       {
-        Arguments = $"Mumrich.AkkaHost.dll --SpaRootPath={Directory.GetCurrentDirectory()}",
+        // TODO: better arrangment of namespaces
+        Arguments = $"{nameof(Mumrich)}.SpaDevHost.dll --{nameof(ISpaDevServerSettings.SpaRootPath)}={Directory.GetCurrentDirectory()}",
         WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory,
         UseShellExecute = false,
         RedirectStandardInput = true,

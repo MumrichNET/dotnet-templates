@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Mumrich.SpaDevMiddleware;
 using Mumrich.SpaDevMiddleware.Contracts;
 
-namespace Mumrich.AkkaHost
+namespace Mumrich.SpaDevHost
 {
   public class HostSettings : ISpaDevServerSettings
   {

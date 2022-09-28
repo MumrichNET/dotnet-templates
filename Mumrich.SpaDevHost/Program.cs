@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Mumrich.AkkaHost;
-using Mumrich.AkkaHost.HostedServices;
+using Mumrich.SpaDevHost;
+using Mumrich.SpaDevHost.HostedServices;
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.HostedServices;
 

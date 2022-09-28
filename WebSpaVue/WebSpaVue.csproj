@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DDD\DDD.csproj" />
-    <ProjectReference Include="..\Mumrich.AkkaHost\Mumrich.AkkaHost.csproj" />
+    <ProjectReference Include="..\Mumrich.SpaDevHost\Mumrich.SpaDevHost.csproj" />
     <ProjectReference Include="..\Mumrich.Extensions\Mumrich.Extensions.csproj" />
     <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
   </ItemGroup>

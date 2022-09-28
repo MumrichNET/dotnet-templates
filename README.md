@@ -92,7 +92,7 @@ A .NET Middleware for **ASP.NET Core 6** that automatically integrates (multiple
    app.Run();
    ```
 
-6. When using **hot-reloading**, adapt your **SPA-bundling-setup** accordingly to accept the .NET-Webhost-Proxy on the correct Port. Custom-ENV-Variables can be passed via `appsettings.json`:
+6. When using **hot-reloading**, adapt your **SPA-bundling-setup** accordingly to accept the .NET-Webhost-Proxy on the correct Port. Custom-ENV-Variables can be passed via `appsettings.json` - e.g for [vite.config.ts](https://vitejs.dev/config/):
 
    ```ts
    const protocol = process.env.HMR_PROTOCOL ?? "ws";
@@ -102,6 +102,8 @@ A .NET Middleware for **ASP.NET Core 6** that automatically integrates (multiple
    export default defineConfig({
      plugins: [vue()],
      server: {
+       port: 3000,
+       strictPort: true,
        hmr: {
          protocol,
          port,
