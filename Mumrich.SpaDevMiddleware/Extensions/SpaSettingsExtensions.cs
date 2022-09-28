@@ -6,6 +6,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Mumrich.Helpers;
+using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Models;
+using Mumrich.SpaDevMiddleware.Types;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
 {
@@ -70,7 +73,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
       return (exeName, completeArguments);
     }
 
-    public static ProcessStartInfo GetProcessStartInfo(this SpaSettings spaSettings)
+    public static ProcessStartInfo GetProcessStartInfo(this SpaSettings spaSettings, ISpaDevServerSettings spaDevServerSettings = null)
     {
       (string exeName, string completeArguments) = spaSettings.GetCompleteCommand();
       var processStartInfo = new ProcessStartInfo(exeName)
@@ -80,7 +83,9 @@ namespace Mumrich.SpaDevMiddleware.Extensions
         RedirectStandardInput = true,
         RedirectStandardOutput = true,
         RedirectStandardError = true,
-        WorkingDirectory = DirPathHelper.CombineToFullPath(Directory.GetCurrentDirectory(), spaSettings.SpaRootPath)
+        WorkingDirectory = DirPathHelper.CombineToFullPath(
+          spaDevServerSettings?.SpaRootPath ?? Directory.GetCurrentDirectory(),
+          spaSettings.SpaRootPath)
       };
 
       foreach ((string key, string value) in spaSettings.Environment)

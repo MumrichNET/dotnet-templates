@@ -1,14 +1,13 @@
 using System.Collections.Generic;
-using System.IO;
 
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Models;
 
-namespace WebSpaVue
+namespace Mumrich.SpaDevHost
 {
-  public class AppSettings : ISpaDevServerSettings
+  public class HostSettings : ISpaDevServerSettings
   {
     public Dictionary<string, SpaSettings> SinglePageApps { get; set; } = new();
-    public string SpaRootPath { get; set; } = Directory.GetCurrentDirectory();
+    public string SpaRootPath { get; set; }
   }
 }

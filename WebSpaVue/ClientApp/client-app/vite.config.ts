@@ -9,6 +9,8 @@ const port = Number(process.env.HMR_PORT) ?? 3000;
 export default defineConfig({
   plugins: [vue(), WindiCSS()],
   server: {
+    port: 3000,
+    strictPort: true,
     hmr: {
       protocol,
       port,

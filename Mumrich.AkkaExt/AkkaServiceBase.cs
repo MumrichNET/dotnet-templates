@@ -35,16 +35,6 @@ namespace Mumrich.AkkaExt
 
       AkkaSystem = ActorSystem.Create(actorSystemName, actorSystemSetup);
       DependencyInjectionResolver = DependencyResolver.For(AkkaSystem);
-
-      AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
-    }
-
-    private void CurrentDomain_ProcessExit(object sender, EventArgs e)
-    {
-      _logger.LogInformation(nameof(CurrentDomain_ProcessExit));
-
-      // TODO: better/cleaner awaiter...
-      GracefullyShutdownAkkaSystemAsync().GetAwaiter().GetResult();
     }
 
     protected ActorSystem AkkaSystem { get; }
@@ -57,7 +47,9 @@ namespace Mumrich.AkkaExt
 
       // strictly speaking this may not be necessary - terminating the ActorSystem would also work
       // but this call guarantees that the shutdown of the cluster is graceful regardless
-      await CoordinatedShutdown.Get(AkkaSystem).Run(CoordinatedShutdown.ClrExitReason.Instance);
+      await CoordinatedShutdown
+        .Get(AkkaSystem)
+        .Run(CoordinatedShutdown.ClrExitReason.Instance);
     }
 
     protected void RegisterApplicationShutdownIfAkkaSystemTerminates(IHostApplicationLifetime appLifetime, CancellationToken cancellationToken)
