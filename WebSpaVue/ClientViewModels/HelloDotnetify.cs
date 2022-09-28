@@ -8,8 +8,6 @@ namespace WebSpaVue.ClientViewModels
   public class HelloDotnetify : BaseVM
   {
     private readonly Timer _timer;
-    public string Greetings => "Hello Dotnetify!";
-    public DateTime ServerTime => DateTime.Now;
 
     public HelloDotnetify()
     {
@@ -19,6 +17,9 @@ namespace WebSpaVue.ClientViewModels
         PushUpdates();
       }, null, 0, 1000);
     }
+
+    public string Greetings => "Hello Dotnetify!";
+    public DateTime ServerTime => DateTime.Now;
 
     public override void Dispose()
     {

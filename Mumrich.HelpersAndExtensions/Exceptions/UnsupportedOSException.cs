@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Runtime.Serialization;
 
-namespace Mumrich.Extensions.Exceptions;
+namespace Mumrich.HelpersAndExtensions.Exceptions;
 
 public class UnsupportedOSException : Exception
 {

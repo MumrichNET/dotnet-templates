@@ -21,8 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DDD\DDD.csproj" />
-    <ProjectReference Include="..\Mumrich.SpaDevHost\Mumrich.SpaDevHost.csproj" />
-    <ProjectReference Include="..\Mumrich.Extensions\Mumrich.Extensions.csproj" />
+    <ProjectReference Include="..\Mumrich.HelpersAndExtensions\Mumrich.HelpersAndExtensions.csproj" />
     <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
   </ItemGroup>
 

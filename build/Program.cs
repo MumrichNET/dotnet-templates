@@ -20,11 +20,6 @@ public static class Program
 
 public class BuildContext : FrostingContext
 {
-  public string BuildOutputPath { get; set; }
-  public string MsBuildConriguration { get; set; }
-  public string NugetOrgApiKey { get; set; }
-  public string NugetOrgSource { get; set; }
-
   public BuildContext(ICakeContext context)
     : base(context)
   {
@@ -33,30 +28,19 @@ public class BuildContext : FrostingContext
     NugetOrgApiKey = context.Argument<string>(nameof(NugetOrgApiKey), null);
     NugetOrgSource = context.Argument(nameof(NugetOrgSource), "https://api.nuget.org/v3/index.json");
   }
+
+  public string BuildOutputPath { get; set; }
+  public string MsBuildConriguration { get; set; }
+  public string NugetOrgApiKey { get; set; }
+  public string NugetOrgSource { get; set; }
 }
 
-public abstract class PackTaskBase : FrostingTask<BuildContext>
+[TaskName("Default")]
+[IsDependentOn(typeof(PackMumrichSpaDevMiddlewareTask))]
+[IsDependentOn(typeof(PackMumrichAkkaExtTask))]
+[IsDependentOn(typeof(PackMumrichExtensionsTask))]
+public class DefaultTask : FrostingTask<BuildContext>
 {
-  protected static void PackCsproj(BuildContext context, string csprojName)
-  {
-    context.DotNetPack($"../{csprojName}/{csprojName}.csproj", new DotNetPackSettings
-    {
-      Configuration = context.MsBuildConriguration,
-      NoLogo = true,
-      IncludeSource = true,
-      OutputDirectory = context.BuildOutputPath
-    });
-  }
-}
-
-public class PackMumrichSpaDevMiddlewareTask : PackTaskBase
-{
-  public override void Run(BuildContext context)
-  {
-    const string csprojName = "Mumrich.SpaDevMiddleware";
-
-    PackCsproj(context, csprojName);
-  }
 }
 
 public class PackMumrichAkkaExtTask : PackTaskBase
@@ -73,29 +57,34 @@ public class PackMumrichExtensionsTask : PackTaskBase
 {
   public override void Run(BuildContext context)
   {
-    const string csprojName = "Mumrich.Extensions";
+    const string csprojName = "Mumrich.HelpersAndExtensions";
 
     PackCsproj(context, csprojName);
   }
 }
 
-public class PackMumrichHelpersTask : PackTaskBase
+public class PackMumrichSpaDevMiddlewareTask : PackTaskBase
 {
   public override void Run(BuildContext context)
   {
-    const string csprojName = "Mumrich.Helpers";
+    const string csprojName = "Mumrich.SpaDevMiddleware";
 
     PackCsproj(context, csprojName);
   }
 }
 
-[TaskName("Default")]
-[IsDependentOn(typeof(PackMumrichSpaDevMiddlewareTask))]
-[IsDependentOn(typeof(PackMumrichAkkaExtTask))]
-[IsDependentOn(typeof(PackMumrichExtensionsTask))]
-[IsDependentOn(typeof(PackMumrichHelpersTask))]
-public class DefaultTask : FrostingTask<BuildContext>
+public abstract class PackTaskBase : FrostingTask<BuildContext>
 {
+  protected static void PackCsproj(BuildContext context, string csprojName)
+  {
+    context.DotNetPack($"../{csprojName}/{csprojName}.csproj", new DotNetPackSettings
+    {
+      Configuration = context.MsBuildConriguration,
+      NoLogo = true,
+      IncludeSource = true,
+      OutputDirectory = context.BuildOutputPath
+    });
+  }
 }
 
 [TaskName("NugetPublish")]

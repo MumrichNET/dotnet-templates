@@ -8,7 +8,7 @@ using Akka.Actor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using Mumrich.Extensions;
+using Mumrich.HelpersAndExtensions;
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Extensions;
 using Mumrich.SpaDevMiddleware.Models;

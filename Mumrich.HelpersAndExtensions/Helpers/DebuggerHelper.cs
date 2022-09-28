@@ -1,8 +1,6 @@
 using System.Diagnostics;
 
-using Mumrich.Extensions;
-
-namespace Mumrich.Helpers;
+namespace Mumrich.HelpersAndExtensions.Helpers;
 
 public static class DebuggerHelper
 {

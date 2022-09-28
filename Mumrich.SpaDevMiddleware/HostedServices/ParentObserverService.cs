@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using Mumrich.Extensions;
+using Mumrich.HelpersAndExtensions;
 
-namespace Mumrich.SpaDevHost.HostedServices
+namespace Mumrich.SpaDevMiddleware.HostedServices
 {
   public sealed class ParentObserverService : IHostedService
   {
-    private readonly ILogger _logger;
     private readonly IHostApplicationLifetime _appLifetime;
+    private readonly ILogger _logger;
 
     public ParentObserverService(ILogger<ParentObserverService> logger, IHostApplicationLifetime appLifetime)
     {
@@ -31,12 +31,6 @@ namespace Mumrich.SpaDevHost.HostedServices
       parent.ErrorDataReceived += Parent_Exited;
       parent.Disposed += Parent_Exited;
       parent.Exited += Parent_Exited;
-    }
-
-    private void Parent_Exited(object? sender, System.EventArgs e)
-    {
-      _logger.LogCritical("Parent is dead!");
-      _appLifetime.StopApplication();
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -58,14 +52,20 @@ namespace Mumrich.SpaDevHost.HostedServices
       _logger.LogInformation("2. OnStarted has been called.");
     }
 
+    private void OnStopped()
+    {
+      _logger.LogInformation("5. OnStopped has been called.");
+    }
+
     private void OnStopping()
     {
       _logger.LogInformation("3. OnStopping has been called.");
     }
 
-    private void OnStopped()
+    private void Parent_Exited(object sender, System.EventArgs e)
     {
-      _logger.LogInformation("5. OnStopped has been called.");
+      _logger.LogCritical("Parent is dead!");
+      _appLifetime.StopApplication();
     }
   }
 }

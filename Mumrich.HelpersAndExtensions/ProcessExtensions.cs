@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Management;
 
-using Mumrich.Extensions.WMI;
+using Mumrich.HelpersAndExtensions.WMI;
 
-namespace Mumrich.Extensions;
+namespace Mumrich.HelpersAndExtensions;
 
 public static class ProcessExtensions
 {

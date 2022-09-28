@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 
-using Mumrich.Extensions.Exceptions;
+using Mumrich.HelpersAndExtensions.Exceptions;
 
-namespace Mumrich.Extensions.WMI;
+namespace Mumrich.HelpersAndExtensions.WMI;
 
 public static class ManagementObjectSearcherExtensions
 {

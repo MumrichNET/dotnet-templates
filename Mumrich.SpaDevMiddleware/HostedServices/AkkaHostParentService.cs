@@ -14,15 +14,14 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
   public class AkkaHostParentService : IHostedService
   {
     private Process _akkaHostProcess;
-    private EventedStreamReader _stdOut;
     private EventedStreamReader _stdErr;
+    private EventedStreamReader _stdOut;
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
       var processStartInfo = new ProcessStartInfo("dotnet")
       {
-        // TODO: better arrangment of namespaces
-        Arguments = $"{nameof(Mumrich)}.SpaDevHost.dll --{nameof(ISpaDevServerSettings.SpaRootPath)}={Directory.GetCurrentDirectory()}",
+        Arguments = $"{nameof(Mumrich)}.{nameof(SpaDevMiddleware)}.dll --{nameof(ISpaDevServerSettings.SpaRootPath)}={Directory.GetCurrentDirectory()}",
         WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory,
         UseShellExecute = false,
         RedirectStandardInput = true,

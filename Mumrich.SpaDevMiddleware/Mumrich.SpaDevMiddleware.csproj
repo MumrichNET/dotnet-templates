@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
@@ -24,9 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mumrich.Extensions\Mumrich.Extensions.csproj" />
-    <ProjectReference Include="..\Mumrich.Helpers\Mumrich.Helpers.csproj" />
     <ProjectReference Include="..\Mumrich.AkkaExt\Mumrich.AkkaExt.csproj" />
+    <ProjectReference Include="..\Mumrich.HelpersAndExtensions\Mumrich.HelpersAndExtensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

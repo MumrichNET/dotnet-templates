@@ -12,8 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mumrich.Extensions\Mumrich.Extensions.csproj" />
+    <ProjectReference Include="..\Mumrich.HelpersAndExtensions\Mumrich.HelpersAndExtensions.csproj" />
     <ProjectReference Include="..\Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="HostedServices\" />
   </ItemGroup>
 
 </Project>

@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mumrich.SpaDevMiddleware" Version="1.0.4" />
+    <PackageReference Include="Mumrich.SpaDevMiddleware" Version="1.1.*" />
   </ItemGroup>
 
 </Project>
