@@ -5,7 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using Mumrich.Helpers;
+using Mumrich.HelpersAndExtensions.Helpers;
+using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Models;
 using Mumrich.SpaDevMiddleware.Types;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
@@ -14,16 +16,29 @@ namespace Mumrich.SpaDevMiddleware.Extensions
   {
     private static readonly Regex EnvVarRegex = new("^%.+%$");
 
-    private static string GetExeName(this SpaSettings spaSettings)
+    public static ProcessStartInfo GetProcessStartInfo(this SpaSettings spaSettings, ISpaDevServerSettings spaDevServerSettings = null)
     {
-      return spaSettings.NodePackageManager switch
+      (string exeName, string completeArguments) = spaSettings.GetCompleteCommand();
+      var processStartInfo = new ProcessStartInfo(exeName)
       {
-        NodePackageManager.Npm => "npm",
-        NodePackageManager.Yarn => "yarn",
-        NodePackageManager.Npx => "npx",
-        NodePackageManager.Pnpm => "pnpm",
-        _ => "npm",
+        Arguments = completeArguments,
+        UseShellExecute = false,
+        RedirectStandardInput = true,
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        WorkingDirectory = DirPathHelper.CombineToFullPath(
+          spaDevServerSettings?.SpaRootPath ?? Directory.GetCurrentDirectory(),
+          spaSettings.SpaRootPath)
       };
+
+      foreach ((string key, string value) in spaSettings.Environment)
+      {
+        processStartInfo.Environment[key] = EnvVarRegex.IsMatch(value)
+          ? Environment.GetEnvironmentVariable(value.Replace("%", string.Empty))
+          : value;
+      }
+
+      return processStartInfo;
     }
 
     private static string BuildCommand(this SpaSettings spaSettings, string arguments = null)
@@ -71,27 +86,16 @@ namespace Mumrich.SpaDevMiddleware.Extensions
       return (exeName, completeArguments);
     }
 
-    public static ProcessStartInfo GetProcessStartInfo(this SpaSettings spaSettings)
+    private static string GetExeName(this SpaSettings spaSettings)
     {
-      (string exeName, string completeArguments) = spaSettings.GetCompleteCommand();
-      var processStartInfo = new ProcessStartInfo(exeName)
+      return spaSettings.NodePackageManager switch
       {
-        Arguments = completeArguments,
-        UseShellExecute = false,
-        RedirectStandardInput = true,
-        RedirectStandardOutput = true,
-        RedirectStandardError = true,
-        WorkingDirectory = DirPathHelper.CombineToFullPath(Directory.GetCurrentDirectory(), spaSettings.SpaRootPath)
+        NodePackageManager.Npm => "npm",
+        NodePackageManager.Yarn => "yarn",
+        NodePackageManager.Npx => "npx",
+        NodePackageManager.Pnpm => "pnpm",
+        _ => "npm",
       };
-
-      foreach ((string key, string value) in spaSettings.Environment)
-      {
-        processStartInfo.Environment[key] = EnvVarRegex.IsMatch(value)
-          ? Environment.GetEnvironmentVariable(value.Replace("%", string.Empty))
-          : value;
-      }
-
-      return processStartInfo;
     }
   }
 }

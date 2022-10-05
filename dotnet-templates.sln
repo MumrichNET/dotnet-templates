@@ -23,9 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.SpaDevMiddleware", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD", "DDD\DDD.csproj", "{AC3A7161-20C6-4917-BD11-8F85C341ABC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.Extensions", "Mumrich.Extensions\Mumrich.Extensions.csproj", "{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.Helpers", "Mumrich.Helpers\Mumrich.Helpers.csproj", "{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.HelpersAndExtensions", "Mumrich.HelpersAndExtensions\Mumrich.HelpersAndExtensions.csproj", "{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.WebSpaVue3Empty", "Template.WebSpaVue3Empty\Template.WebSpaVue3Empty.csproj", "{82E72FFF-1C19-4814-8E78-B233B62A1391}"
 EndProject
@@ -68,10 +66,6 @@ Global
 		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FFB3FF67-9934-4E36-A7DA-782BE62AEE07}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82E72FFF-1C19-4814-8E78-B233B62A1391}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82E72FFF-1C19-4814-8E78-B233B62A1391}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82E72FFF-1C19-4814-8E78-B233B62A1391}.Release|Any CPU.ActiveCfg = Release|Any CPU

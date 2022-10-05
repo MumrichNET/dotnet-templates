@@ -6,7 +6,7 @@ using DDD.Stereotypes.Aggregate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-using Mumrich.Extensions;
+using Mumrich.HelpersAndExtensions;
 
 namespace WebSpaVue.Aggregates.FormExample;
 

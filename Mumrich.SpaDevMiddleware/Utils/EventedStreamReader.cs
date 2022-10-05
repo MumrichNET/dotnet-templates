@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mumrich.SpaDevMiddleware.Utils;
 
-internal class EventedStreamReader
+public class EventedStreamReader
 {
   private readonly StringBuilder _linesBuffer;
 
@@ -103,6 +103,7 @@ internal class EventedStreamReader
       }
 
       OnChunk(new ArraySegment<char>(buf, 0, chunkLength));
+
       int startPos = 0;
       int lineBreakPos;
 

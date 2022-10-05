@@ -15,6 +15,8 @@ using Mumrich.AkkaExt.Extensions;
 using Mumrich.SpaDevMiddleware.Actors;
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Helpers;
+using Mumrich.SpaDevMiddleware.HostedServices;
+using Mumrich.SpaDevMiddleware.Models;
 using Mumrich.SpaDevMiddleware.Types;
 
 using Newtonsoft.Json.Linq;
@@ -57,16 +59,8 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
       var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
 
-      builder.Services.AddSingleton(spaDevServerSettings);
-      builder.Services.AddAkka("spa-development-system", configurationBuilder =>
-      {
-        configurationBuilder.WithActors((system, registry) =>
-        {
-          IActorRef spaBuilderActor = system.ActorOfWithArgs<SpaBuilderActor>(spaDevServerSettings);
-
-          registry.TryRegister<SpaBuilderActor>(spaBuilderActor);
-        });
-      });
+      builder.Services.AddSingleton(spaDevServerSettings); // TODO: really needed?
+      builder.Services.AddHostedService<AkkaHostParentService>();
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
     }
 

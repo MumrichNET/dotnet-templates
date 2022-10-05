@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 
-using Mumrich.SpaDevMiddleware.Models;
 using Mumrich.SpaDevMiddleware.Types;
 
-namespace Mumrich.SpaDevMiddleware;
+namespace Mumrich.SpaDevMiddleware.Models;
 
 public class SpaSettings
 {
@@ -15,15 +14,22 @@ public class SpaSettings
   public Dictionary<string, string> Environment = new();
 
   /// <summary>
+  /// Name of the policy or "Default", "Anonymous"
+  /// </summary>
+  public string AuthorizationPolicy { get; set; } = "Anonymous";
+
+  /// <summary>
   /// The Bundler used by the SPA.
   /// E. g.: Vue.js, Quasar-CLI, etc.
   /// </summary>
   public BundlerType Bundler { get; set; } = BundlerType.ViteJs;
 
   /// <summary>
-  /// The npm-compatible package-manager to use.
+  /// Name of the CorsPolicy to apply to this route or "Default", "Disable"
   /// </summary>
-  public NodePackageManager NodePackageManager { get; set; } = NodePackageManager.Yarn;
+  public string CorsPolicy { get; set; } = "Default";
+
+  public SpaProxyConfig CustomYarpConfiguration { get; set; }
 
   /// <summary>
   /// The full Url to the dev-server.
@@ -32,15 +38,9 @@ public class SpaSettings
   public string DevServerAddress { get; set; }
 
   /// <summary>
-  /// A regular-expression that matches when the dev-server has successfully started.
+  /// The npm-compatible package-manager to use.
   /// </summary>
-  public string Regex { get; set; }
-
-  /// <summary>
-  /// The path to the app root-dir, relative to the current directory.
-  /// E. g.: "client-app" assuming the SPA resides in "%ProjectDir%/client-app"
-  /// </summary>
-  public string SpaRootPath { get; set; }
+  public NodePackageManager NodePackageManager { get; set; } = NodePackageManager.Yarn;
 
   /// <summary>
   /// The star-command for the dev-server to launch
@@ -49,14 +49,15 @@ public class SpaSettings
   public string NodeStartScript { get; set; } = "dev";
 
   /// <summary>
-  /// Name of the policy or "Default", "Anonymous"
+  /// A regular-expression that matches when the dev-server has successfully started.
   /// </summary>
-  public string AuthorizationPolicy { get; set; } = "Anonymous";
+  public string Regex { get; set; }
 
   /// <summary>
-  /// Name of the CorsPolicy to apply to this route or "Default", "Disable"
+  /// The RegExp for detecting SPA-Assets requests.
   /// </summary>
-  public string CorsPolicy { get; set; } = "Default";
+  //language=regexp
+  public string SpaAssetsExpression { get; set; } = "^(src|node_modules|@[a-zA-Z]+|.*vite.*)$";
 
   /// <summary>
   /// The RegExp for detecting SPA-Root requests.
@@ -65,10 +66,8 @@ public class SpaSettings
   public string SpaRootExpression { get; set; } = @"^.+\\..+$";
 
   /// <summary>
-  /// The RegExp for detecting SPA-Assets requests.
+  /// The path to the app root-dir, relative to the current directory.
+  /// E. g.: "client-app" assuming the SPA resides in "%ProjectDir%/client-app"
   /// </summary>
-  //language=regexp
-  public string SpaAssetsExpression { get; set; } = "^(src|node_modules|@[a-zA-Z]+|.*vite.*)$";
-
-  public SpaProxyConfig CustomYarpConfiguration { get; set; }
+  public string SpaRootPath { get; set; }
 }

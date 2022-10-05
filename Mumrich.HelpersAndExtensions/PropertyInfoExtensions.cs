@@ -7,9 +7,9 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-using Mumrich.Helpers;
+using Mumrich.HelpersAndExtensions.Helpers;
 
-namespace Mumrich.Extensions
+namespace Mumrich.HelpersAndExtensions
 {
   public static class PropertyInfoExtensions
   {

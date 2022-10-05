@@ -8,8 +8,13 @@ using Akka.Actor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Mumrich.HelpersAndExtensions;
+using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Extensions;
+using Mumrich.SpaDevMiddleware.Models;
 using Mumrich.SpaDevMiddleware.Utils;
+
+using Newtonsoft.Json;
 
 namespace Mumrich.SpaDevMiddleware.Actors
 {
@@ -26,12 +31,16 @@ namespace Mumrich.SpaDevMiddleware.Actors
     public ProcessRunnerActor(IServiceProvider serviceProvider, SpaSettings spaSettings)
     {
       var serviceProviderScope = serviceProvider.CreateScope();
-      _logger = serviceProviderScope.ServiceProvider.GetService<ILogger<ProcessRunnerActor>>();
+      var spaDevServerSettings = serviceProviderScope.ServiceProvider.GetService<ISpaDevServerSettings>();
+      var logger = serviceProviderScope.ServiceProvider.GetService<ILogger<ProcessRunnerActor>>();
 
       var regex = spaSettings.Regex;
-      var processStartInfo = spaSettings.GetProcessStartInfo();
 
-      _logger.LogInformation($"{nameof(processStartInfo)}: {processStartInfo.FileName} {processStartInfo.Arguments}");
+      logger.LogInformation(JsonConvert.SerializeObject(spaSettings, Formatting.Indented));
+
+      var processStartInfo = spaSettings.GetProcessStartInfo(spaDevServerSettings);
+
+      logger.LogInformation($"{nameof(processStartInfo)}: {processStartInfo.FileName} {processStartInfo.Arguments} (cwd: '{processStartInfo.WorkingDirectory}')");
 
       ReceiveAsync<StartProcessCommand>(async _ =>
       {
@@ -75,8 +84,7 @@ namespace Mumrich.SpaDevMiddleware.Actors
 
     protected override void PostStop()
     {
-      _logger.LogInformation("Kill Bill!");
-      Kill();
+      RunnerProcess.KillProcessTree();
     }
 
     private static Process LaunchNodeProcess(ProcessStartInfo startInfo)
@@ -122,7 +130,7 @@ namespace Mumrich.SpaDevMiddleware.Actors
 
         //if (logger == null)
         //{
-          Console.Error.WriteLine(line);
+        Console.Error.WriteLine(line);
         //}
         //else
         //{
@@ -134,7 +142,7 @@ namespace Mumrich.SpaDevMiddleware.Actors
       {
         //if (logger == null)
         //{
-          Console.WriteLine(line);
+        Console.WriteLine(line);
         //}
         //else
         //{
@@ -157,22 +165,6 @@ namespace Mumrich.SpaDevMiddleware.Actors
           Console.Write(chunk.Array, chunk.Offset, chunk.Count);
         }
       };
-    }
-
-    private void Kill()
-    {
-      try
-      {
-        RunnerProcess.Kill(entireProcessTree: true);
-      }
-      catch (Exception exception)
-      {
-        _logger.LogError(exception, exception.Message);
-      }
-      finally
-      {
-        RunnerProcess.WaitForExit();
-      }
     }
   }
 }

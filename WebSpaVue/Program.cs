@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 using DotNetify;
 
 using Microsoft.AspNetCore.Builder;
@@ -6,8 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Extensions;
+using Mumrich.SpaDevMiddleware.HostedServices;
 
 using WebSpaVue;
+
+var p = Process.GetCurrentProcess();
 
 var builder = WebApplication.CreateBuilder(args);
 var appSettings = builder.Configuration.Get<AppSettings>();
@@ -24,6 +29,7 @@ builder.Services.AddSignalR();
 builder.Services.AddDotNetify();
 
 builder.RegisterSinglePageAppDevMiddleware(appSettings);
+builder.Services.AddHostedService<AkkaHostParentService>();
 
 var app = builder.Build();
 
@@ -44,6 +50,7 @@ app.MapDefaultControllerRoute();
 app.UseWebSockets();
 app.UseDotNetify();
 app.MapHub<DotNetifyHub>("/dotnetify");
+
 app.MapSinglePageApps(appSettings);
 
 app.Run();

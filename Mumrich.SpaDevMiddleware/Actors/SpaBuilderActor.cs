@@ -4,6 +4,7 @@ using Akka.Actor;
 
 using Mumrich.AkkaExt.Extensions;
 using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Models;
 
 namespace Mumrich.SpaDevMiddleware.Actors
 {

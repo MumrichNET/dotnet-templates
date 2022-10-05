@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A CMS administration app",
   "productName": "Admin App",
-  "author": "Hannes Zbinden <hanneszbinden@outlook.com>",
+  "author": "Hannes Morgenthaler <hannes@morgethaler.ch>",
   "private": true,
   "scripts": {
     "build": "quasar build",
