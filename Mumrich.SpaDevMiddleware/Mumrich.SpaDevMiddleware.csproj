@@ -12,7 +12,6 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <!--<DebugType>embedded</DebugType>-->
   </PropertyGroup>
 
   <ItemGroup>
