@@ -11,7 +11,7 @@ namespace WebSpaVue.ClientViewModels
 
     public HelloDotnetify()
     {
-      _timer = new Timer(state =>
+      _timer = new Timer(_ =>
       {
         Changed(nameof(ServerTime));
         PushUpdates();
