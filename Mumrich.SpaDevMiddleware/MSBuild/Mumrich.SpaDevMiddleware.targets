@@ -25,6 +25,11 @@
   </Target>
 
   <!-- TODO: Refactor with https://docs.microsoft.com/en-us/visualstudio/msbuild/tutorial-custom-task-code-generation?view=vs-2022 -->
+  <!-- Example for SpaRoot definitions: -->
+  <!-- <ItemGroup>
+    <SpaRoot Include="app1\" />
+    <SpaRoot Include="app2\" />
+  </ItemGroup> -->
 
   <Target Name="EnsureNodeModulesInstalled" BeforeTargets="Build" Inputs="package.json" Outputs="yarn.lock">
     <Message Importance="high" Text="Restoring dependencies. This may take a moment..." />
