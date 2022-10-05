@@ -2,7 +2,11 @@
   "$schema": "http://json.schemastore.org/template",
   "author": "Hannes Morgenthaler",
   "classifications": [
-    "Web"
+    "Web",
+    "ASP.NET",
+    "SPA",
+    "Empty",
+    "Vue.js"
   ],
   "name": "SPA Vue 3 Empty",
   "identity": "Template.WebSpaVue3Empty", // Unique name for this template
