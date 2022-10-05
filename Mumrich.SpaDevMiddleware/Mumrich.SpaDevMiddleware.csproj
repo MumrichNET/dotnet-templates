@@ -47,9 +47,9 @@
       <Pack>True</Pack>
       <PackagePath>/build/</PackagePath>
     </None>
-    <None Include="bin/$(Configuration)/**/$(AssemblyName)*" Exclude="**/*.exe;**/*.dll;**/*.runtimeconfig.json;**/*.pdb">
+    <None Include="$(OutputPath)/$(AssemblyName).deps.json">
       <Pack>True</Pack>
-      <PackagePath>lib</PackagePath>
+      <PackagePath>/lib/$(TargetFramework)</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
     </None>
   </ItemGroup>
