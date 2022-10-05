@@ -6,7 +6,7 @@ public class PackMumrichTemplatesTask : PackTaskBase
 {
   public override void Run(BuildContext context)
   {
-    const string csprojName = "Mumrich.Template";
+    const string csprojName = "Mumrich.Templates";
 
     PackCsproj(context, csprojName);
   }
