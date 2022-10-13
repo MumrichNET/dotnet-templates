@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using Akka.Actor;
-using Akka.Hosting;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Mumrich.AkkaExt.Extensions;
-using Mumrich.SpaDevMiddleware.Actors;
 using Mumrich.SpaDevMiddleware.Contracts;
 using Mumrich.SpaDevMiddleware.Helpers;
 using Mumrich.SpaDevMiddleware.HostedServices;
