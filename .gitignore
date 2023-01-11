@@ -349,3 +349,6 @@ MigrationBackup/
 
 # build-output
 build-output
+
+# JetBrains
+.idea/
