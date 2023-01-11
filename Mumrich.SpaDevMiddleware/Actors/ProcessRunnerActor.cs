@@ -32,15 +32,15 @@ namespace Mumrich.SpaDevMiddleware.Actors
     {
       var serviceProviderScope = serviceProvider.CreateScope();
       var spaDevServerSettings = serviceProviderScope.ServiceProvider.GetService<ISpaDevServerSettings>();
-      var logger = serviceProviderScope.ServiceProvider.GetService<ILogger<ProcessRunnerActor>>();
+      _logger = serviceProviderScope.ServiceProvider.GetService<ILogger<ProcessRunnerActor>>();
 
       var regex = spaSettings.Regex;
 
-      logger.LogInformation(JsonConvert.SerializeObject(spaSettings, Formatting.Indented));
+      _logger.LogInformation("SpaSettings: {}", JsonConvert.SerializeObject(spaSettings, Formatting.Indented));
 
       var processStartInfo = spaSettings.GetProcessStartInfo(spaDevServerSettings);
 
-      logger.LogInformation($"{nameof(processStartInfo)}: {processStartInfo.FileName} {processStartInfo.Arguments} (cwd: '{processStartInfo.WorkingDirectory}')");
+      _logger.LogInformation("{}: {} {} (cwd: '{}')", nameof(processStartInfo), processStartInfo.FileName, processStartInfo.Arguments, processStartInfo.WorkingDirectory);
 
       ReceiveAsync<StartProcessCommand>(async _ =>
       {
@@ -49,7 +49,7 @@ namespace Mumrich.SpaDevMiddleware.Actors
         StdOut = new EventedStreamReader(RunnerProcess.StandardOutput);
         StdErr = new EventedStreamReader(RunnerProcess.StandardError);
 
-        AttachToLogger(_logger);
+        AttachToLogger();
 
         using var stdErrReader = new EventedStreamStringReader(StdErr);
 
@@ -93,7 +93,10 @@ namespace Mumrich.SpaDevMiddleware.Actors
       {
         var process = Process.Start(startInfo);
 
-        process.EnableRaisingEvents = true;
+        if (process != null)
+        {
+          process.EnableRaisingEvents = true;
+        }
 
         return process;
       }
@@ -108,46 +111,47 @@ namespace Mumrich.SpaDevMiddleware.Actors
       }
     }
 
-    private static string StripAnsiColors(string line)
-      => AnsiColorRegex.Replace(line, string.Empty);
+    private static string StripAnsiColors(string line) => AnsiColorRegex.Replace(line, string.Empty);
 
-    private void AttachToLogger(ILogger logger)
+    private void AttachToLogger()
     {
       void StdErrOnReceivedLine(string line)
       {
-        //if (string.IsNullOrWhiteSpace(line))
-        //{
-        //  return;
-        //}
+        if (string.IsNullOrWhiteSpace(line))
+        {
+          return;
+        }
 
         // NPM tasks commonly emit ANSI colors, but it wouldn't make sense to forward
         // those to loggers (because a logger isn't necessarily any kind of terminal)
         // making this console for debug purpose
-        //if (line.StartsWith("<s>"))
-        //{
-        //  line = line[3..];
-        //}
+        if (line.StartsWith("<s>"))
+        {
+          line = line[3..];
+        }
 
-        //if (logger == null)
-        //{
-        Console.Error.WriteLine(line);
-        //}
-        //else
-        //{
-        //  logger.LogError(line);
-        //}
+        if (_logger == null)
+        {
+         Console.Error.WriteLine(line);
+        }
+        else
+        {
+          var effectiveLine = StripAnsiColors(line).TrimEnd('\n');
+          _logger.LogError("{}", effectiveLine);
+        }
       }
 
       void StdOutOnReceivedLine(string line)
       {
-        //if (logger == null)
-        //{
-        Console.WriteLine(line);
-        //}
-        //else
-        //{
-        //  logger.LogInformation(line);
-        //}
+        if (_logger == null)
+        {
+         Console.WriteLine(line);
+        }
+        else
+        {
+          var effectiveLine = StripAnsiColors(line).TrimEnd('\n');
+          _logger.LogInformation("{}", effectiveLine);
+        }
       }
 
       // When the NPM task emits complete lines, pass them through to the real logger
@@ -158,11 +162,16 @@ namespace Mumrich.SpaDevMiddleware.Actors
       // hence just pass it through to StdOut regardless of logger config.
       StdErr.OnReceivedChunk += chunk =>
       {
+        if (chunk.Array == null)
+        {
+          return;
+        }
+
         var containsNewline = Array.IndexOf(chunk.Array, '\n', chunk.Offset, chunk.Count) >= 0;
 
         if (!containsNewline)
         {
-          Console.Write(chunk.Array, chunk.Offset, chunk.Count);
+          _logger.LogInformation("{}", new string(chunk.Array));
         }
       };
     }
