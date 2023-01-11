@@ -22,16 +22,16 @@ const uploadUrl = ref(`${host}/assets/upload`);
 const imageUrls = ref<string[]>([]);
 
 async function loadImageUrlsAsync() {
-  var response = await fetch(`${host}/assets/get`);
+  const response = await fetch(`${host}/assets/get`);
 
   if (response.ok) {
-    var result = (await response.json()) as PhysicalFileResult[];
+    const result = (await response.json()) as PhysicalFileResult[];
 
     imageUrls.value = result.map((f) => `${host}${f.fileName}`);
   }
 }
 
-async function onUploaded(info: { files: File[], xhr: object }) {
+async function onUploaded() {
   await loadImageUrlsAsync();
 }
 

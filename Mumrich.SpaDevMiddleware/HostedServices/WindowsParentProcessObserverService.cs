@@ -9,12 +9,12 @@ using Mumrich.HelpersAndExtensions;
 
 namespace Mumrich.SpaDevMiddleware.HostedServices
 {
-  public sealed class ParentObserverService : IHostedService
+  public sealed class WindowsParentProcessObserverService : IHostedService
   {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly ILogger _logger;
 
-    public ParentObserverService(ILogger<ParentObserverService> logger, IHostApplicationLifetime appLifetime)
+    public WindowsParentProcessObserverService(ILogger<WindowsParentProcessObserverService> logger, IHostApplicationLifetime appLifetime)
     {
       _logger = logger;
       _appLifetime = appLifetime;

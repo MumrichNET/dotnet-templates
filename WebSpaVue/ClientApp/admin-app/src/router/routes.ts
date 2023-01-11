@@ -24,20 +24,20 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('src/pages/Media.vue'),
+        component: () => import('src/pages/AdminMedia.vue'),
       },
     ],
   },
   {
     path: '/widgets',
     component: mainLayout,
-    children: [{ path: '', component: () => import('src/pages/Widgets.vue') }],
+    children: [{ path: '', component: () => import('src/pages/AdminWidgets.vue') }],
   },
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/Error404.vue'),
+    component: () => import('pages/ErrorHttp404.vue'),
   },
 ];
 

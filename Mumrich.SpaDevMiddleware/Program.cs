@@ -18,10 +18,10 @@ IHost host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((hostContext, services) =>
     {
-      var hostSettings = hostContext.Configuration.Get<HostSettings>();
+      var hostSettings = hostContext.Configuration.Get<AppSettings>();
       services.AddSingleton(hostSettings);
       services.AddSingleton<ISpaDevServerSettings>(hostSettings);
-      services.AddHostedService<ParentObserverService>();
+      services.AddHostedService<WindowsParentProcessObserverService>();
       services.AddHostedService<SpaDevelopmentService>();
     })
     .Build();
