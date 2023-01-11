@@ -55,7 +55,14 @@ namespace Mumrich.SpaDevMiddleware.Extensions
       var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
 
       builder.Services.AddSingleton(spaDevServerSettings); // TODO: really needed?
-      builder.Services.AddHostedService<AkkaHostParentService>();
+      if (spaDevServerSettings.UseParentObserverServiceOnWindows)
+      {
+        builder.Services.AddHostedService<AkkaHostParentService>();
+      }
+      else
+      {
+        builder.Services.AddHostedService<SpaDevelopmentService>();
+      }
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
     }
 
