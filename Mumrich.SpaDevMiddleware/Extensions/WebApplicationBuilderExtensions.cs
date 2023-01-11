@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 using Microsoft.AspNetCore.Builder;
@@ -20,6 +22,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 {
   public static class WebApplicationBuilderExtensions
   {
+    [SuppressMessage("Usage", "ASP0013:Suggest switching from using Configure methods to WebApplicationBuilder.Configuration")]
     public static void RegisterSinglePageAppDevMiddleware(this WebApplicationBuilder builder, ISpaDevServerSettings spaDevServerSettings)
     {
       if (!builder.Environment.IsDevelopment())
@@ -54,8 +57,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
       var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
 
-      builder.Services.AddSingleton(spaDevServerSettings); // TODO: really needed?
-      if (spaDevServerSettings.UseParentObserverServiceOnWindows)
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && spaDevServerSettings.UseParentObserverServiceOnWindows)
       {
         builder.Services.AddHostedService<AkkaHostParentService>();
       }

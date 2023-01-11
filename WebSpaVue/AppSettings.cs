@@ -10,6 +10,6 @@ namespace WebSpaVue
   {
     public Dictionary<string, SpaSettings> SinglePageApps { get; set; } = new();
     public string SpaRootPath { get; set; } = Directory.GetCurrentDirectory();
-    public bool UseParentObserverServiceOnWindows { get; set; } = false;
+    public bool UseParentObserverServiceOnWindows { get; set; } = true;
   }
 }
