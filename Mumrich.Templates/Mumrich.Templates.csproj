@@ -10,7 +10,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicense>MIT</PackageLicense>
     <PackageDescription>dotnet-new templates SPA Vue.js.</PackageDescription>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>

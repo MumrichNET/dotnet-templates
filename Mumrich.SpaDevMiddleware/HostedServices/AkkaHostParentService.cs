@@ -34,9 +34,9 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
       _stdOut = new EventedStreamReader(_akkaHostProcess.StandardOutput);
       _stdErr = new EventedStreamReader(_akkaHostProcess.StandardError);
 
-      _stdOut.OnReceivedLine += (line) => Console.WriteLine(line);
+      _stdOut.OnReceivedLine += Console.WriteLine;
 
-      _stdErr.OnReceivedLine += (line) => Console.WriteLine(line);
+      _stdErr.OnReceivedLine += Console.WriteLine;
 
       return Task.CompletedTask;
     }
@@ -44,7 +44,7 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
     public async Task StopAsync(CancellationToken cancellationToken)
     {
       _akkaHostProcess.Close();
-      await _akkaHostProcess.WaitForExitAsync();
+      await _akkaHostProcess.WaitForExitAsync(cancellationToken);
     }
   }
 }

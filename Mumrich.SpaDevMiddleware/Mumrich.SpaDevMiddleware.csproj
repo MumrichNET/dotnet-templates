@@ -6,7 +6,7 @@
     <Nullable>disable</Nullable>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/mumrich/dotnet-templates</PackageProjectUrl>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RepositoryUrl>https://github.com/mumrich/dotnet-templates</RepositoryUrl>
     <PackageTags>SPA</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
