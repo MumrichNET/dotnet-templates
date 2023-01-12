@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
 
-using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
 using Mumrich.SpaDevMiddleware.Utils;
 
 namespace Mumrich.SpaDevMiddleware.HostedServices

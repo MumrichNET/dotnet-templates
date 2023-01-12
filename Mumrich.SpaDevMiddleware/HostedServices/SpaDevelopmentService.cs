@@ -10,8 +10,8 @@ using Microsoft.Extensions.Hosting;
 
 using Mumrich.AkkaExt;
 using Mumrich.SpaDevMiddleware.Actors;
-using Mumrich.SpaDevMiddleware.Contracts;
-using Mumrich.SpaDevMiddleware.Models;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Models;
 
 namespace Mumrich.SpaDevMiddleware.HostedServices
 {

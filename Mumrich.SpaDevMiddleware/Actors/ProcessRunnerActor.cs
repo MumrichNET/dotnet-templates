@@ -9,9 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Mumrich.HelpersAndExtensions;
-using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Models;
 using Mumrich.SpaDevMiddleware.Extensions;
-using Mumrich.SpaDevMiddleware.Models;
 using Mumrich.SpaDevMiddleware.Utils;
 
 using Newtonsoft.Json;

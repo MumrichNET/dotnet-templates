@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -32,6 +32,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Mumrich.AkkaExt\Mumrich.AkkaExt.csproj" />
     <ProjectReference Include="..\Mumrich.HelpersAndExtensions\Mumrich.HelpersAndExtensions.csproj" />
+    <ProjectReference Include="..\Mumrich.SpaDevMiddleware.Domain\Mumrich.SpaDevMiddleware.Domain.csproj" />
+    <ProjectReference Include="..\Mumrich.SpaDevMiddleware.MsBuild\Mumrich.SpaDevMiddleware.MsBuild.csproj" />
   </ItemGroup>
 
   <ItemGroup>

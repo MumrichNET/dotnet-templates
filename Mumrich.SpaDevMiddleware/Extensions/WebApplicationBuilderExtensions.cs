@@ -10,11 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Models;
+using Mumrich.SpaDevMiddleware.Domain.Types;
 using Mumrich.SpaDevMiddleware.Helpers;
 using Mumrich.SpaDevMiddleware.HostedServices;
-using Mumrich.SpaDevMiddleware.Models;
-using Mumrich.SpaDevMiddleware.Types;
 
 using Newtonsoft.Json.Linq;
 

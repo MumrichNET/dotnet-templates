@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 
-using Mumrich.SpaDevMiddleware.Contracts;
-using Mumrich.SpaDevMiddleware.Models;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Models;
 
 namespace WebSpaVue
 {

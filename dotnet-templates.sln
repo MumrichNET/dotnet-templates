@@ -45,6 +45,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{AEB1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.Templates", "Mumrich.Templates\Mumrich.Templates.csproj", "{388CF318-47DE-4BC2-B8EF-A61877510FBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mumrich.SpaDevMiddleware.Domain", "Mumrich.SpaDevMiddleware.Domain\Mumrich.SpaDevMiddleware.Domain.csproj", "{6CD8183A-FFE1-4085-A4CA-522143DD804B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mumrich.SpaDevMiddleware.MsBuild", "Mumrich.SpaDevMiddleware.MsBuild\Mumrich.SpaDevMiddleware.MsBuild.csproj", "{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,14 @@ Global
 		{388CF318-47DE-4BC2-B8EF-A61877510FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{388CF318-47DE-4BC2-B8EF-A61877510FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{388CF318-47DE-4BC2-B8EF-A61877510FBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD8183A-FFE1-4085-A4CA-522143DD804B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD8183A-FFE1-4085-A4CA-522143DD804B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD8183A-FFE1-4085-A4CA-522143DD804B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD8183A-FFE1-4085-A4CA-522143DD804B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

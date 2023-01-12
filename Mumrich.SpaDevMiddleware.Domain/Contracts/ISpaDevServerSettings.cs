@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-using Mumrich.SpaDevMiddleware.Models;
+using Mumrich.SpaDevMiddleware.Domain.Models;
 
-namespace Mumrich.SpaDevMiddleware.Contracts
+namespace Mumrich.SpaDevMiddleware.Domain.Contracts
 {
   public interface ISpaDevServerSettings
   {
