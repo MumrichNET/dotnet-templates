@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
 using Mumrich.SpaDevMiddleware.Extensions;
-using Mumrich.SpaDevMiddleware.HostedServices;
 
 using WebSpaVue;
 
@@ -29,14 +28,13 @@ builder.Services.AddSignalR();
 builder.Services.AddDotNetify();
 
 builder.RegisterSinglePageAppDevMiddleware(appSettings);
-builder.Services.AddHostedService<AkkaHostParentService>();
 
 var app = builder.Build();
 
 app.UseCors(corsPolicyBuilder => corsPolicyBuilder
   .AllowAnyMethod()
   .AllowAnyHeader()
-  .WithOrigins("http://localhost:8080")
+  .WithOrigins("http://localhost:8901")
   .AllowCredentials());
 
 app.UseStaticFiles();

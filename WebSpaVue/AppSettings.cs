@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 
-using Mumrich.SpaDevMiddleware.Contracts;
-using Mumrich.SpaDevMiddleware.Models;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Models;
 
 namespace WebSpaVue
 {
@@ -10,5 +10,6 @@ namespace WebSpaVue
   {
     public Dictionary<string, SpaSettings> SinglePageApps { get; set; } = new();
     public string SpaRootPath { get; set; } = Directory.GetCurrentDirectory();
+    public bool UseParentObserverServiceOnWindows { get; set; } = true;
   }
 }

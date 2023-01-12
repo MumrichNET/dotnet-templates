@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Mumrich.HelpersAndExtensions.Helpers;
-using Mumrich.SpaDevMiddleware.Contracts;
-using Mumrich.SpaDevMiddleware.Models;
-using Mumrich.SpaDevMiddleware.Types;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Models;
+using Mumrich.SpaDevMiddleware.Domain.Types;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
 {

@@ -1,23 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
-
-using Akka.Actor;
-using Akka.Hosting;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Mumrich.AkkaExt.Extensions;
-using Mumrich.SpaDevMiddleware.Actors;
-using Mumrich.SpaDevMiddleware.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Contracts;
+using Mumrich.SpaDevMiddleware.Domain.Models;
+using Mumrich.SpaDevMiddleware.Domain.Types;
 using Mumrich.SpaDevMiddleware.Helpers;
 using Mumrich.SpaDevMiddleware.HostedServices;
-using Mumrich.SpaDevMiddleware.Models;
-using Mumrich.SpaDevMiddleware.Types;
 
 using Newtonsoft.Json.Linq;
 
@@ -25,6 +22,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 {
   public static class WebApplicationBuilderExtensions
   {
+    [SuppressMessage("Usage", "ASP0013:Suggest switching from using Configure methods to WebApplicationBuilder.Configuration")]
     public static void RegisterSinglePageAppDevMiddleware(this WebApplicationBuilder builder, ISpaDevServerSettings spaDevServerSettings)
     {
       if (!builder.Environment.IsDevelopment())
@@ -59,8 +57,14 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
       var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
 
-      builder.Services.AddSingleton(spaDevServerSettings); // TODO: really needed?
-      builder.Services.AddHostedService<AkkaHostParentService>();
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && spaDevServerSettings.UseParentObserverServiceOnWindows)
+      {
+        builder.Services.AddHostedService<AkkaHostParentService>();
+      }
+      else
+      {
+        builder.Services.AddHostedService<SpaDevelopmentService>();
+      }
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
     }
 

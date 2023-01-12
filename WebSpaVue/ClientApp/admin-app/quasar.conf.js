@@ -91,7 +91,7 @@ module.exports = configure(function (ctx) {
         logging: 'verbose',
         overlay: false,
       },
-      port: 8080,
+      port: 8901,
       open: false, // opens browser window automatically
     },
 

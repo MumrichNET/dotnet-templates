@@ -1,4 +1,5 @@
 <Project>
+  <UsingTask TaskName="Mumrich.SpaDevMiddleware.MsBuild.SpaPublisherTask" AssemblyFile="$(TargetDir)Mumrich.SpaDevMiddleware.MsBuild.dll" />
 
   <ItemGroup>
     <JsonFiles Include="$(MSBuildThisFileDirectory)/../lib/**/*.json" />
@@ -24,22 +25,21 @@
     </Exec>
   </Target>
 
-  <!-- TODO: Refactor with https://docs.microsoft.com/en-us/visualstudio/msbuild/tutorial-custom-task-code-generation?view=vs-2022 -->
-  <!-- Example for SpaRoot definitions: -->
-  <!-- <ItemGroup>
-    <SpaRoot Include="app1\" />
-    <SpaRoot Include="app2\" />
-  </ItemGroup> -->
-
   <Target Name="EnsureNodeModulesInstalled" BeforeTargets="Build" Inputs="package.json" Outputs="yarn.lock">
+    <SpaPublisherTask AspNetCoreEnvironment="$(ASPNETCORE_ENVIRONMENT)">
+      <Output TaskParameter="SpaPaths" ItemName="SpaRoot"/>
+    </SpaPublisherTask>
     <Message Importance="high" Text="Restoring dependencies. This may take a moment..." />
-    <Message Importance="high" Text="Install SpaRoot: %(SpaRoot.Identity)" />
+    <Message Importance="high" Text="Install Single Page App: '%(SpaRoot.Identity)' ..." />
     <Exec WorkingDirectory="%(SpaRoot.Identity)" Command="yarn install" />
   </Target>
 
   <Target Name="PublishSpas" AfterTargets="ComputeFilesToPublish">
-    <Message Importance="high" Text="Build SpaRoot: %(SpaRoot.Identity) with EnvironmentVariables: %(SpaRoot.BuildEnv)" />
-    <Exec EnvironmentVariables="%(SpaRoot.BuildEnv)" WorkingDirectory="%(SpaRoot.Identity)" Command="yarn build" />
+    <SpaPublisherTask AspNetCoreEnvironment="$(ASPNETCORE_ENVIRONMENT)">
+      <Output TaskParameter="SpaPaths" ItemName="SpaRoot"/>
+    </SpaPublisherTask>
+    <Message Importance="high" Text="Build Single Page App: '%(SpaRoot.Identity)' ..." />
+    <Exec EnvironmentVariables="%(SpaRoot.BuildEnv)" WorkingDirectory="%(SpaRoot.Identity)" Command="yarn %(SpaRoot.NodeBuildScript)" />
     <ItemGroup>
       <DistFiles Include="%(SpaRoot.Identity)dist\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">

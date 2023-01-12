@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,7 +6,7 @@
     <Nullable>disable</Nullable>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/mumrich/dotnet-templates</PackageProjectUrl>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RepositoryUrl>https://github.com/mumrich/dotnet-templates</RepositoryUrl>
     <PackageTags>SPA</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -15,13 +15,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Akka.Hosting" Version="0.4.2" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.8.2">
+    <PackageReference Include="Akka.Hosting" Version="1.0.1" />
+    <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
     <PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" />
   </ItemGroup>
 
@@ -32,6 +32,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Mumrich.AkkaExt\Mumrich.AkkaExt.csproj" />
     <ProjectReference Include="..\Mumrich.HelpersAndExtensions\Mumrich.HelpersAndExtensions.csproj" />
+    <ProjectReference Include="..\Mumrich.SpaDevMiddleware.Domain\Mumrich.SpaDevMiddleware.Domain.csproj" />
+    <ProjectReference Include="..\Mumrich.SpaDevMiddleware.MsBuild\Mumrich.SpaDevMiddleware.MsBuild.csproj" />
   </ItemGroup>
 
   <ItemGroup>
