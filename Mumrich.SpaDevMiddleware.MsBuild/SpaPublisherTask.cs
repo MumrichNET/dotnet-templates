@@ -59,7 +59,7 @@ namespace Mumrich.SpaDevMiddleware.MSBuild
       return true;
     }
 
-    private string ConvertToMsBuildCompatiblePath(string spaRootPath)
+    private static string ConvertToMsBuildCompatiblePath(string spaRootPath)
     {
       var spaRootPathWithBackslashed = spaRootPath.Replace("/", "\\");
       return spaRootPathWithBackslashed.EndsWith("\\") ? spaRootPathWithBackslashed : $"{spaRootPathWithBackslashed}\\";
