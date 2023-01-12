@@ -8,7 +8,7 @@ namespace Mumrich.SpaDevMiddleware.Domain
 {
   public class DefaultAppSettings : ISpaDevServerSettings
   {
-    public Dictionary<string, SpaSettings> SinglePageApps { get; set; } = new Dictionary<string, SpaSettings>();
+    public Dictionary<string, SpaSettings> SinglePageApps { get; set; } = new();
     public string SpaRootPath { get; set; } = Directory.GetCurrentDirectory();
     public bool UseParentObserverServiceOnWindows { get; set; } = false;
   }

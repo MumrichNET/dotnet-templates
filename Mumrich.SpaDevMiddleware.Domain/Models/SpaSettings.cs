@@ -52,7 +52,7 @@ namespace Mumrich.SpaDevMiddleware.Domain.Models
     /// The build-commmand for the spa to build/publish
     /// E. g.: 'npm run build' or 'yarn build', etc.
     /// </summary>
-    public string NodeBuildScript { get; set; }
+    public string NodeBuildScript { get; set; } = "build";
 
     /// <summary>
     /// A regular-expression that matches when the dev-server has successfully started.

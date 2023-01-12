@@ -3,8 +3,8 @@
 A .NET Middleware for **ASP.NET Core 6** that automatically integrates (multiple) Single-Page-Apps in a .NET-Webhost.
 
 - Automatic **node-package install** (`npm`/`yarn`/`pnpm`)
-- SPAs are automatically built uppon (`dotnet publish` triggers the `build`-script in `package.json`)
-- Automatic **path-mapping** for the **SPA** by aid of the supperb [YARP](https://microsoft.github.io/reverse-proxy/)
+- SPAs are automatically built upon (`dotnet publish` triggers the `build`-script in `package.json`)
+- Automatic **path-mapping** for the **SPA** by aid of the superb [YARP](https://microsoft.github.io/reverse-proxy/)
 - SPA **Hot-Reloading** supported
 - **Custom-ENV-Variables** can be passed to the Node-Instance via `appsettings.json`
 - Usage of **MSBUILD-Variables** supported
@@ -18,21 +18,13 @@ A .NET Middleware for **ASP.NET Core 6** that automatically integrates (multiple
    ```cs
    public class AppSettings : ISpaDevServerSettings
    {
-       public Dictionary<string, SpaSettings> SinglePageApps { get; set; } = new();
+     public Dictionary<string, SpaSettings> SinglePageApps { get; set; } = new();
+     public string SpaRootPath { get; set; } = Directory.GetCurrentDirectory();
+     public bool UseParentObserverServiceOnWindows { get; set; } = false;
    }
    ```
 
-3. Create the MSBuild-Item-Group in the `csproj`-File for **node-package install** and **dotnet-publish** to work "out of the box":
-
-   ```xml
-   <ItemGroup>
-       <!-- Multiple spa-apps are possible - NOTE: the trailing backslash! -->
-       <SpaRoot Include="app1\" />
-       <SpaRoot Include="app2\" />
-   </ItemGroup>
-   ```
-
-4. Extend `appsettings.json` with a SPA-Config e.g.:
+3. Extend `appsettings.json` with a SPA-Config e.g.:
 
    ```json
    {
@@ -49,6 +41,7 @@ A .NET Middleware for **ASP.NET Core 6** that automatically integrates (multiple
          "SpaRootPath": "app1",
          "NodePackageManager": "Yarn",
          "NodeStartScript": "dev",
+         "NodeBuildScript": "build",
          "Regex": "dev server running at:",
          "Bundler": "ViteJs",
          "Environment": {
@@ -68,7 +61,7 @@ A .NET Middleware for **ASP.NET Core 6** that automatically integrates (multiple
    }
    ```
 
-5. Register **Services** and setup app e.g.:
+4. Register **Services** and setup app e.g.:
 
    ```cs
    using Mumrich.SpaDevMiddleware.Extensions;
@@ -92,7 +85,7 @@ A .NET Middleware for **ASP.NET Core 6** that automatically integrates (multiple
    app.Run();
    ```
 
-6. When using **hot-reloading**, adapt your **SPA-bundling-setup** accordingly to accept the .NET-Webhost-Proxy on the correct Port. Custom-ENV-Variables can be passed via `appsettings.json` - e.g for [vite.config.ts](https://vitejs.dev/config/):
+5. When using **hot-reloading**, adapt your **SPA-bundling-setup** accordingly to accept the .NET-Webhost-Proxy on the correct Port. Custom-ENV-Variables can be passed via `appsettings.json` - e.g for [vite.config.ts](https://vitejs.dev/config/):
 
    ```ts
    const protocol = process.env.HMR_PROTOCOL ?? "ws";
@@ -112,7 +105,7 @@ A .NET Middleware for **ASP.NET Core 6** that automatically integrates (multiple
    });
    ```
 
-7. Run the app (`dotnet run`), navigate to the .NET-Webhost-Url and enjoy 👌!
+6. Run the app (`dotnet run`), navigate to the .NET-Web-host-Url and enjoy 👌!
 
 ### Troubleshooting
 
