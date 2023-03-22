@@ -12,10 +12,8 @@ using Mumrich.SpaDevMiddleware.Domain.Types;
 
 namespace Mumrich.SpaDevMiddleware.Extensions
 {
-  public static class SpaSettingsExtensions
+  public static partial class SpaSettingsExtensions
   {
-    private static readonly Regex EnvVarRegex = new("^%.+%$");
-
     public static ProcessStartInfo GetProcessStartInfo(this SpaSettings spaSettings, ISpaDevServerSettings spaDevServerSettings = null)
     {
       (string exeName, string completeArguments) = spaSettings.GetCompleteCommand();
@@ -33,7 +31,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
       foreach ((string key, string value) in spaSettings.Environment)
       {
-        processStartInfo.Environment[key] = EnvVarRegex.IsMatch(value)
+        processStartInfo.Environment[key] = EnvVarRegex().IsMatch(value)
           ? Environment.GetEnvironmentVariable(value.Replace("%", string.Empty))
           : value;
       }
@@ -66,6 +64,9 @@ namespace Mumrich.SpaDevMiddleware.Extensions
 
       return command.ToString();
     }
+
+    [GeneratedRegex("^%.+%$")]
+    private static partial Regex EnvVarRegex();
 
     private static (string, string) GetCompleteCommand(this SpaSettings spaSettings)
     {

@@ -25,7 +25,7 @@ namespace Mumrich.SpaDevMiddleware.HostedServices
       Process self = Process.GetCurrentProcess();
       Process parent = self.GetParentProcess();
 
-      _logger.LogInformation($"parent: {parent.ProcessName}");
+      _logger.LogInformation("parent: {}", parent.ProcessName);
 
       parent.EnableRaisingEvents = true;
       parent.ErrorDataReceived += Parent_Exited;

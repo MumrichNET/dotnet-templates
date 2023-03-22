@@ -11,7 +11,7 @@ namespace Mumrich.SpaDevMiddleware.Domain.Models
     /// Values can be env-vars themselves and must be surrounded with '%'
     /// E. g.: %ASPNETCORE_HTTPS_PORT%, etc.
     /// </summary>
-    public Dictionary<string, string> Environment = new Dictionary<string, string>();
+    public Dictionary<string, string> Environment = new();
 
     /// <summary>
     /// Name of the policy or "Default", "Anonymous"
@@ -38,6 +38,12 @@ namespace Mumrich.SpaDevMiddleware.Domain.Models
     public string DevServerAddress { get; set; }
 
     /// <summary>
+    /// The build-commmand for the spa to build/publish
+    /// E. g.: 'npm run build' or 'yarn build', etc.
+    /// </summary>
+    public string NodeBuildScript { get; set; } = "build";
+
+    /// <summary>
     /// The npm-compatible package-manager to use.
     /// </summary>
     public NodePackageManager NodePackageManager { get; set; } = NodePackageManager.Yarn;
@@ -47,12 +53,6 @@ namespace Mumrich.SpaDevMiddleware.Domain.Models
     /// E. g.: 'npm run dev' or 'yarn run', etc.
     /// </summary>
     public string NodeStartScript { get; set; } = "dev";
-
-    /// <summary>
-    /// The build-commmand for the spa to build/publish
-    /// E. g.: 'npm run build' or 'yarn build', etc.
-    /// </summary>
-    public string NodeBuildScript { get; set; } = "build";
 
     /// <summary>
     /// A regular-expression that matches when the dev-server has successfully started.

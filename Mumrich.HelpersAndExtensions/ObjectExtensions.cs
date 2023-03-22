@@ -6,14 +6,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Mumrich.HelpersAndExtensions
 {
-  public static class ObjectExtensions
+  public static partial class ObjectExtensions
   {
-    private static readonly Regex EnumerableExpr = new(@"(.+)\[(\d)\]");
-
     public static bool TrySetProperty<TValue>(this object targetObject, string propertyNamespace, TValue rawValue, ILogger logger, char namespaceSeparator = '.')
     {
       return targetObject.TrySetProperty(propertyNamespace.Split(namespaceSeparator).ToArray(), rawValue, logger);
     }
+
+    [GeneratedRegex("(.+)\\[(\\d)\\]")]
+    private static partial Regex EnumerableExpr();
 
     private static bool TrySetProperty<TValue>(this object targetObject, string[] propertyNamespaceParts, TValue rawValue, ILogger logger)
     {
@@ -41,7 +42,7 @@ namespace Mumrich.HelpersAndExtensions
           return false;
         }
 
-        var match = EnumerableExpr.Match(topLevelPropName);
+        var match = EnumerableExpr().Match(topLevelPropName);
 
         if (match.Success)
         {
