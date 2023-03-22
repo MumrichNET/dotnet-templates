@@ -17,6 +17,8 @@ public static class Program
 [TaskName("build")]
 [IsDependentOn(typeof(PackMumrichAkkaExtTask))]
 [IsDependentOn(typeof(PackMumrichHelpersAndExtensionsTask))]
+[IsDependentOn(typeof(PackMumrichSpaDevMiddlewareDomainTask))]
+[IsDependentOn(typeof(PackMumrichSpaDevMiddlewareMsBuildTask))]
 [IsDependentOn(typeof(PackMumrichSpaDevMiddlewareTask))]
 [IsDependentOn(typeof(PackMumrichTemplatesTask))]
 public class BuildTask : FrostingTask<BuildContext>
