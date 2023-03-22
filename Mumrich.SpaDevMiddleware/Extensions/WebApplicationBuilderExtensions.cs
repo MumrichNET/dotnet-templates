@@ -65,6 +65,7 @@ namespace Mumrich.SpaDevMiddleware.Extensions
       {
         builder.Services.AddHostedService<SpaDevelopmentService>();
       }
+
       builder.Services.AddReverseProxy().LoadFromConfig(reverseProxyConfig);
     }
 
