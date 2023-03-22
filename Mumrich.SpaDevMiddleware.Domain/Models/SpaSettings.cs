@@ -7,11 +7,10 @@ namespace Mumrich.SpaDevMiddleware.Domain.Models
   public class SpaSettings
   {
     /// <summary>
-    /// The env-vars to pass to the dev-server-process.
-    /// Values can be env-vars themselves and must be surrounded with '%'
-    /// E. g.: %ASPNETCORE_HTTPS_PORT%, etc.
+    /// This is the name of the launch-file within the <see cref="NodeBuildOutputPath"/>.
+    /// E. g.: 'index.html'.
     /// </summary>
-    public Dictionary<string, string> Environment = new();
+    public string AppIndexFileName { get; set; } = "index.html";
 
     /// <summary>
     /// Name of the policy or "Default", "Anonymous"
@@ -36,6 +35,20 @@ namespace Mumrich.SpaDevMiddleware.Domain.Models
     /// E. g.: "http://localhost:8080/" or "https://app:3000/"
     /// </summary>
     public string DevServerAddress { get; set; }
+
+    /// <summary>
+    /// The env-vars to pass to the dev-server-process.
+    /// Values can be env-vars themselves and must be surrounded with '%'
+    /// E. g.: %ASPNETCORE_HTTPS_PORT%, etc.
+    /// </summary>
+    public Dictionary<string, string> Environment { get; set; } = new();
+
+    /// <summary>
+    /// The output-path of the built/published app.
+    /// Usually, this is the name of a folder within <see cref="SpaRootPath"/>.
+    /// E. g.: 'dist'.
+    /// </summary>
+    public string NodeBuildOutputPath { get; set; } = "dist";
 
     /// <summary>
     /// The build-commmand for the spa to build/publish
@@ -63,7 +76,7 @@ namespace Mumrich.SpaDevMiddleware.Domain.Models
     /// The RegExp for detecting SPA-Assets requests.
     /// </summary>
     //language=regexp
-    public string SpaAssetsExpression { get; set; } = "^(src|node_modules|@[a-zA-Z]+|.*vite.*)$";
+    public string SpaAssetsExpression { get; set; } = "^(src|node_modules|favicon.+|@[a-zA-Z]+|.*vite.*)$";
 
     /// <summary>
     /// The RegExp for detecting SPA-Root requests.
