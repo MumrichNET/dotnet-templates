@@ -1,5 +1,9 @@
 using Build.Tasks;
 
+using Cake.Common.IO;
+using Cake.Common.Tools.DotNet.NuGet.Push;
+using Cake.Common.Tools.DotNet;
+using Cake.Core;
 using Cake.Frosting;
 
 namespace Build;
@@ -15,12 +19,30 @@ public static class Program
 }
 
 [TaskName("build")]
-[IsDependentOn(typeof(PackMumrichAkkaExtTask))]
-[IsDependentOn(typeof(PackMumrichHelpersAndExtensionsTask))]
-[IsDependentOn(typeof(PackMumrichSpaDevMiddlewareDomainTask))]
-[IsDependentOn(typeof(PackMumrichSpaDevMiddlewareMsBuildTask))]
-[IsDependentOn(typeof(PackMumrichSpaDevMiddlewareTask))]
 [IsDependentOn(typeof(PackMumrichTemplatesTask))]
 public class BuildTask : FrostingTask<BuildContext>
 {
+}
+
+[TaskName("nuget-publish")]
+[IsDependentOn(typeof(BuildTask))]
+public class NugetPublishTask : FrostingTask<BuildContext>
+{
+  public override void Run(BuildContext context)
+  {
+    if (string.IsNullOrWhiteSpace(context.NugetOrgApiKey))
+    {
+      throw new CakeException($"Property '{nameof(context.NugetOrgApiKey)}' must be set!");
+    }
+
+    foreach (var nugetFile in context.GetFiles($"{context.BuildOutputPath}/*.nupkg"))
+    {
+      context.DotNetNuGetPush(nugetFile, new DotNetNuGetPushSettings
+      {
+        ApiKey = context.NugetOrgApiKey,
+        Source = context.NugetOrgSource,
+        SkipDuplicate = true
+      });
+    }
+  }
 }
