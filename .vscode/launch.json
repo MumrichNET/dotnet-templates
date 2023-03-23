@@ -10,7 +10,7 @@
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/WebSpaVue/bin/Debug/net6.0/WebSpaVue.dll",
+      "program": "${workspaceFolder}/WebSpaVue/bin/Debug/net7.0/WebSpaVue.dll",
       "args": [],
       "cwd": "${workspaceFolder}/WebSpaVue",
       "stopAtEntry": false,
