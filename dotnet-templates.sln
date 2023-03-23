@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSpaVue", "WebSpaVue\WebSpaVue.csproj", "{4B1908A7-5FBA-4299-BB74-660C48793F18}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF7BBED8-545E-4925-A33E-4BA35AD6C14C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -20,15 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.SpaDevMiddleware", "Mumrich.SpaDevMiddleware\Mumrich.SpaDevMiddleware.csproj", "{508C839E-04A9-4654-B228-206F5BCB5638}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD", "DDD\DDD.csproj", "{AC3A7161-20C6-4917-BD11-8F85C341ABC7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.HelpersAndExtensions", "Mumrich.HelpersAndExtensions\Mumrich.HelpersAndExtensions.csproj", "{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "build\Build.csproj", "{B610BE10-01A5-4E1C-8B18-8F56ABE36170}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.AkkaExt", "Mumrich.AkkaExt\Mumrich.AkkaExt.csproj", "{B744F1AF-8B00-47BC-A76A-E3C973DCE837}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{DE46697A-14FB-43E4-AE9A-27D765DF394C}"
 EndProject
@@ -45,52 +35,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{AEB1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mumrich.Templates", "Mumrich.Templates\Mumrich.Templates.csproj", "{388CF318-47DE-4BC2-B8EF-A61877510FBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mumrich.SpaDevMiddleware.Domain", "Mumrich.SpaDevMiddleware.Domain\Mumrich.SpaDevMiddleware.Domain.csproj", "{6CD8183A-FFE1-4085-A4CA-522143DD804B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mumrich.SpaDevMiddleware.MsBuild", "Mumrich.SpaDevMiddleware.MsBuild\Mumrich.SpaDevMiddleware.MsBuild.csproj", "{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B1908A7-5FBA-4299-BB74-660C48793F18}.Release|Any CPU.Build.0 = Release|Any CPU
-		{508C839E-04A9-4654-B228-206F5BCB5638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{508C839E-04A9-4654-B228-206F5BCB5638}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{508C839E-04A9-4654-B228-206F5BCB5638}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{508C839E-04A9-4654-B228-206F5BCB5638}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC3A7161-20C6-4917-BD11-8F85C341ABC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC3A7161-20C6-4917-BD11-8F85C341ABC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC3A7161-20C6-4917-BD11-8F85C341ABC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC3A7161-20C6-4917-BD11-8F85C341ABC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{057ABCFB-266B-4B88-8A4D-F0C7093DF8A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B610BE10-01A5-4E1C-8B18-8F56ABE36170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B610BE10-01A5-4E1C-8B18-8F56ABE36170}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B610BE10-01A5-4E1C-8B18-8F56ABE36170}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B610BE10-01A5-4E1C-8B18-8F56ABE36170}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B744F1AF-8B00-47BC-A76A-E3C973DCE837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B744F1AF-8B00-47BC-A76A-E3C973DCE837}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B744F1AF-8B00-47BC-A76A-E3C973DCE837}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B744F1AF-8B00-47BC-A76A-E3C973DCE837}.Release|Any CPU.Build.0 = Release|Any CPU
 		{388CF318-47DE-4BC2-B8EF-A61877510FBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{388CF318-47DE-4BC2-B8EF-A61877510FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{388CF318-47DE-4BC2-B8EF-A61877510FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{388CF318-47DE-4BC2-B8EF-A61877510FBB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CD8183A-FFE1-4085-A4CA-522143DD804B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD8183A-FFE1-4085-A4CA-522143DD804B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CD8183A-FFE1-4085-A4CA-522143DD804B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CD8183A-FFE1-4085-A4CA-522143DD804B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{991BBFFF-7643-41E3-BCA3-C83B27C73A5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
