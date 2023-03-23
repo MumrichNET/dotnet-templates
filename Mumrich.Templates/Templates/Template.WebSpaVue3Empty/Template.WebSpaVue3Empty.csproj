@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>Hannes Morgenthaler</Authors>
     <ContentTargetFolders>content</ContentTargetFolders>
-    <Description>New empty ASP.NET Core 6 Template with Vue 3 SPA.</Description>
+    <Description>New empty ASP.NET Core 7 Template with Vue 3 SPA.</Description>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
     <ImplicitUsings>disable</ImplicitUsings>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -16,14 +16,14 @@
     <PackageTags>dotnet-new;templates;vue;vue3</PackageTags>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0</PackageVersion>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- Multiple spa-apps are possible - NOTE: the trailing backslash! -->
-    <SpaRoot Include="ClientApp\" />
+    <SpaRoot Include="ClientApp\vue-app" />
   </ItemGroup>
 
   <ItemGroup>
