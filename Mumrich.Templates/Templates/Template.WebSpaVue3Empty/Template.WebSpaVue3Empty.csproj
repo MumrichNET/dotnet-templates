@@ -22,12 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Multiple spa-apps are possible - NOTE: the trailing backslash! -->
-    <SpaRoot Include="ClientApp\vue-app" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Mumrich.SpaDevMiddleware" Version="1.2.0" />
+    <PackageReference Include="Mumrich.SpaDevMiddleware" Version="1.3.2" />
   </ItemGroup>
 
 </Project>

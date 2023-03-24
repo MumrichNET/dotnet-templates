@@ -23,7 +23,7 @@
       <Pack>True</Pack>
       <PackagePath>/</PackagePath>
     </None>
-    <Content Include="Templates\**\*" Exclude="Templates\**\bin\**;Templates\**\obj\**" />
+    <Content Include="Templates\**\*" Exclude="Templates\**\bin\**;Templates\**\obj\**;Templates\**\node_modules\**" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
